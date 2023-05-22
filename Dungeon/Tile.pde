@@ -1,5 +1,5 @@
 class Tile {
-  int x,y
+  int x,y;
   
   public void changePos(int x, int y){
   
