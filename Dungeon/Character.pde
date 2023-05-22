@@ -8,7 +8,7 @@ public abstract class Character {
   }
   public void move(){
   }
-  public void basickAttack(){
+  public void basicAttack(){
   }
   public void takeDmg(){
   }
