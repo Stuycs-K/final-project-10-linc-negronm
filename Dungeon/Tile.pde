@@ -1,9 +1,21 @@
 class Tile {
   int x,y;
+  Character chara;
   
   public Tile(int xpos, int ypos){
     x = xpos;
     y = ypos;
+    chara = null;
+  }
+  
+  public Tile(int xpos, int ypos, Character character){
+    x = xpos;
+    y = ypos;
+    chara = character;
+  }
+  
+  public void setChar(Character character){
+    chara = character;
   }
   
   public void changePos(int x, int y){

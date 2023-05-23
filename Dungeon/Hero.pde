@@ -5,6 +5,10 @@ class Hero extends Character{
     health = maxHP;
   }
   
+  public String getType(){
+    return "hero";
+  }
+  
   public void move(){
   }
   public void basicAttack(Enemy e){
