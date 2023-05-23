@@ -3,7 +3,6 @@ abstract class Character {
   int maxHealth;
   int x,y;
   abstract void move();
-  abstract void basicAttack(Enemy e);
   void takeDmg(int x){
     health -= x;
   }

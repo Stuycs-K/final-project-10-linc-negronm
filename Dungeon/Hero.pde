@@ -19,7 +19,7 @@ class Hero extends Character{
   public void heal(int x){
     health += x;
     if(health > maxHealth){
-      health = maxHealth
+      health = maxHealth;
     }
   }
   public boolean isDead(){

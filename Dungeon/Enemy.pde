@@ -7,8 +7,10 @@ class Enemy extends Character{
   
   public void move(){
   }
-  public void basicAttack(Enemy e){
+  public void basicAttack(){
+    int x =2;
   }
+  
   public void takeDmg(int x){
     health -= x;
   }
