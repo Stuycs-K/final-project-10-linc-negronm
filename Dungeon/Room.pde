@@ -5,7 +5,7 @@ class Room{
   
   public Room(int xsize, int ysize){
     map = new Tile[ysize][xsize];
-    exitX = xsize/2;
+    exitX = xsize-2;
     exitY = ysize/2;
     enemiesKilled = 0;
   }
@@ -16,9 +16,9 @@ class Room{
     for (int y = 0; y < maxY; y++){
       for (int x = 0; x < maxX; x++){
         if (y == 0 || y == maxY-1 || x == 0 || x == maxX-1){
-          map[y][x] = new Wall();
+          map[y][x] = new Wall(x, y);
         }else{
-          map[y][x] = new Tile(;
+          map[y][x] = new Tile(x, y);
         }
       }
     }
@@ -30,14 +30,18 @@ class Room{
     stroke(255);
     while (x < map[0].length){
       while (y < map.length){
-        if (map[y][x].getW() == true){
+        if (map[y][x].isWall() == true){
           fill(0);
+        }else if (x == exitX && y == exitY){
+          fill (255, 0, 0);
         }else{
-          fill(255);
+          fill(200);
         }
         rect(x*20, y*20, 20, 20);
         y++;
       }
+    x++;
+    y = 0;
     }
   }
 }
