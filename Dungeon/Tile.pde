@@ -1,6 +1,11 @@
 class Tile {
   int x,y;
   
+  public Tile(int xpos, int ypos){
+    x = xpos;
+    y = ypos;
+  }
+  
   public void changePos(int x, int y){
   this.x =x;
   this.y =y;

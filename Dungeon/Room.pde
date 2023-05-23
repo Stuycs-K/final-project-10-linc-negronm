@@ -16,9 +16,9 @@ class Room{
     for (int y = 0; y < maxY; y++){
       for (int x = 0; x < maxX; x++){
         if (y == 0 || y == maxY-1 || x == 0 || x == maxX-1){
-          map[y][x] = new Tile(true);
+          map[y][x] = new Wall();
         }else{
-          map[y][x] = new Tile(false);
+          map[y][x] = new Tile(;
         }
       }
     }
