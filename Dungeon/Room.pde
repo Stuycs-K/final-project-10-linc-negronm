@@ -22,6 +22,18 @@ class Room{
         }
       }
     }
+    
+    for (int y = 1; y < maxY -1; y++){
+      for (int x = 1; x < maxX -1; x++){
+        float r = random(-2,8);
+        if (r <= 0){
+          if(!(y == exitY && x ==1)){
+            map[y][x] = new Wall(x, y);
+          }
+        }
+      }
+    }
+          
   }
   
   public void showRoom(){
