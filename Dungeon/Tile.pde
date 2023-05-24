@@ -32,8 +32,14 @@ class Tile {
   public int getX(){
     return x;
   }
-  public int gety(){
+  public int getY(){
     return y;
+  }
+  public void setX(int X){
+    x = X;
+  }
+  public void setY(int Y){
+    y = Y;
   }
   public boolean isWall(){
     return false;
