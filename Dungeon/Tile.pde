@@ -18,6 +18,10 @@ class Tile {
     chara = character;
   }
   
+  public Character getChar(){
+    return chara;
+  }
+  
   public void changePos(int x, int y){
   this.x =x;
   this.y =y;
