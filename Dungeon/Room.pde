@@ -3,6 +3,7 @@ class Room{
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
   private int ySize, xSize;
+  public int heroX, heroY;
   
   public Room(int xsize, int ysize){
     map = new Tile[ysize][xsize];
@@ -10,6 +11,8 @@ class Room{
     xSize = xsize;
     exitX = xsize-2;
     exitY = ysize/2;
+    heroX = 1;
+    heroY = ysize/2;
     enemiesKilled = 0;
   }
   
@@ -60,6 +63,13 @@ class Room{
       }
     }
     return wall;
+  }
+  
+  public void swap(int x, int y, int desX, int desY){
+    Character character = map[y][x].getChar();
+    Character desChar = map[desX][desY].getChar();
+    map[y][x].setChar(desChar);
+    map[desY][desX].setChar(character);
   }
   
   public void generateRoom(){
