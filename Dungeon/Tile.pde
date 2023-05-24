@@ -1,6 +1,7 @@
 class Tile {
   int x,y;
   Character chara;
+  color c;
   
   public Tile(int xpos, int ypos){
     x = xpos;
@@ -20,6 +21,14 @@ class Tile {
   
   public Character getChar(){
     return chara;
+  }
+  
+  public void setColor(color col){
+    c = col;
+  }
+  
+  public color getColor(){
+    return c;
   }
   
   public void changePos(int x, int y){

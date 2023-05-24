@@ -94,7 +94,7 @@ class Room{
     // PLACING ENEMIES
     while (enemyCount <= 5){
       for (int y = 1; y < ySize-1; y++){
-        for (int x = 1; x < xSize-1; x++){
+        for (int x = xSize/2; x < xSize-1; x++){
           r = random(0, 100);
           if(r < 0.01 && map[y][x].isWall() == false){
             map[y][x] = new Tile(x, y, new Enemy(25));
