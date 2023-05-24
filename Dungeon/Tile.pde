@@ -18,6 +18,10 @@ class Tile {
     chara = character;
   }
   
+  public Character getChar(){
+    return chara;
+  }
+  
   public void changePos(int x, int y){
   this.x =x;
   this.y =y;
@@ -28,8 +32,14 @@ class Tile {
   public int getX(){
     return x;
   }
-  public int gety(){
+  public int getY(){
     return y;
+  }
+  public void setX(int X){
+    x = X;
+  }
+  public void setY(int Y){
+    y = Y;
   }
   public boolean isWall(){
     return false;

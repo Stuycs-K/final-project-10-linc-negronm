@@ -9,3 +9,9 @@ void setup(){
 void draw(){
   room.showRoom();
 }
+
+void keyPressed(){
+  if (key == 'r'){
+    room.generateRoom();
+  }
+}
