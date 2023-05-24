@@ -1,17 +1,20 @@
 class Tile {
   int x,y;
   Character chara;
+  boolean isTargeted;
   
   public Tile(int xpos, int ypos){
     x = xpos;
     y = ypos;
     chara = null;
+    isTargeted = false;
   }
   
   public Tile(int xpos, int ypos, Character character){
     x = xpos;
     y = ypos;
     chara = character;
+    isTargeted = false;
   }
   
   public void setChar(Character character){
