@@ -63,6 +63,8 @@ class Room{
   }
   
   public void generateRoom(){
+    enemyCount = 0;
+    enemiesKilled = 0;
     float r;
     int maxY = map.length;
     int maxX = map[0].length;
@@ -88,6 +90,23 @@ class Room{
       map[ySize/2][1] = new Tile(1, ySize/2);
     }
     map[ySize/2][1].setChar(new Hero(50));
+    // PLACING ENEMIES
+    while (enemyCount <= 5){
+      for (int y = 1; y < ySize-1; y++){
+        for (int x = 1; x < xSize-1; x++){
+          r = random(0, 100);
+          if(r < 0.01 && map[y][x].isWall() == false){
+            map[y][x] = new Tile(x, y, new Enemy(25));
+            enemyCount++;
+            if (enemyCount >= 5){
+              x = xSize+1;
+              y = ySize+1;
+            }
+          }
+        }
+      }
+    }
+    
   }
   
   public void showRoom(){
@@ -99,9 +118,14 @@ class Room{
         if (map[y][x].isWall() == true){
           fill(0);
         }else if (x == exitX && y == exitY){
-          fill (255, 0, 0);
-        }else if (map[y][x].getChar() != null && map[y][x].getChar().getType().equals("hero")){
-          fill(0, 0, 225);
+          fill (255, 0, 255);
+        }else if (map[y][x].getChar() != null){
+          if (map[y][x].getChar().getType().equals("hero")){
+            fill(0, 0, 255);
+          }else if (map[y][x].getChar().getType().equals("enemy")){
+            fill(255, 0, 0);
+          }
+          
         }else{
           fill(200);
         }
