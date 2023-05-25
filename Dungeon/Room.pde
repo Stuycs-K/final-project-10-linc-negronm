@@ -2,7 +2,8 @@ class Room{
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
-  private int ySize, xSize;
+  public int ySize, xSize;
+  public int heroX, heroY;
   
   public Room(int xsize, int ysize){
     map = new Tile[ysize][xsize];
@@ -10,6 +11,8 @@ class Room{
     xSize = xsize;
     exitX = xsize-2;
     exitY = ysize/2;
+    heroX = 1;
+    heroY = ysize/2;
     enemiesKilled = 0;
   }
   
@@ -62,6 +65,13 @@ class Room{
     return wall;
   }
   
+  public void swap(int x, int y, int desX, int desY){
+    Character character = map[y][x].getChar();
+    Character desChar = map[desX][desY].getChar();
+    map[y][x].setChar(desChar);
+    map[desY][desX].setChar(character);
+  }
+  
   public void generateRoom(){
     enemyCount = 0;
     enemiesKilled = 0;
@@ -71,6 +81,8 @@ class Room{
     map = new Tile[xSize][ySize];
     int space = xSize/4-1;
     int[] walls = new int[]{space*1-1, space*2-1, space*3-1, space*4-1};
+    heroX = 1;
+    heroY = ySize/2;
     
     for (int y = 0; y < ySize; y++){
       if (isIn(walls, y)){
@@ -85,6 +97,7 @@ class Room{
         }
       }
     }
+
     rotateMap();
     if(map[ySize/2][1].isWall()){
       map[ySize/2][1] = new Tile(1, ySize/2);
@@ -93,7 +106,7 @@ class Room{
     // PLACING ENEMIES
     while (enemyCount <= 5){
       for (int y = 1; y < ySize-1; y++){
-        for (int x = 1; x < xSize-1; x++){
+        for (int x = xSize/2; x < xSize-1; x++){
           r = random(0, 100);
           if(r < 0.01 && map[y][x].isWall() == false){
             map[y][x] = new Tile(x, y, new Enemy(25));
@@ -106,7 +119,7 @@ class Room{
         }
       }
     }
-    
+
   }
   
   public void showRoom(){
