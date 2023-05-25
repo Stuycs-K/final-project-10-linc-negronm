@@ -2,7 +2,7 @@ class Room{
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
-  private int ySize, xSize;
+  public int ySize, xSize;
   public int heroX, heroY;
   
   public Room(int xsize, int ysize){
@@ -81,6 +81,8 @@ class Room{
     map = new Tile[xSize][ySize];
     int space = xSize/4-1;
     int[] walls = new int[]{space*1-1, space*2-1, space*3-1, space*4-1};
+    heroX = 1;
+    heroY = ySize/2;
     
     for (int y = 0; y < ySize; y++){
       if (isIn(walls, y)){

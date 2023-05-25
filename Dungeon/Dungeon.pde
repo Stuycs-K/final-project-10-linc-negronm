@@ -10,10 +10,14 @@ void setup(){
   fill(0);
   text("Press WASD to move", 670, 30);
   keyboardInput = new Controller();
+  countdown =0;
 }
 
 void keyPressed() {
   keyboardInput.press(keyCode);
+  if (key == 'r'){
+    room.generateRoom();
+  }
 }
 
 void keyReleased() {
@@ -24,32 +28,35 @@ void draw(){
   if(countdown == 0){
     countdown+=45;
   if (keyboardInput.isPressed(Controller.C_LEFT)){
-    room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
-    room.heroX -= 1;
+    if(!(room.map[room.heroY][room.heroX-1].isWall())){
+      room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
+      room.heroX -= 1;
+    }
   }
   if (keyboardInput.isPressed(Controller.C_UP)) {
-    room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
-    room.heroY -= 1;
+    if(!(room.map[room.heroY-1][room.heroX].isWall())){
+      room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
+      room.heroY -= 1;
+    }
   }
   if (keyboardInput.isPressed(Controller.C_DOWN)) {
-    room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
-    room.heroY += 1;
+    if(!(room.map[room.heroY+1][room.heroX].isWall())){
+      room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
+      room.heroY += 1;
+    }
   }
   if (keyboardInput.isPressed(Controller.C_RIGHT)) {
-    room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
-    room.heroX += 1;
+    if(!(room.map[room.heroY][room.heroX+1].isWall())){
+      room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
+      room.heroX += 1;
+    }
   }
 }
 if(countdown > 0){
     countdown --;
   }
+if(!keyPressed){
+  countdown = 0;
+}
 
-/*void keyPressed(){
-  if (key == 'r'){
-    room.generateRoom();
-  }
-  if (key == 'w'){
-    room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
-    room.heroY -= 1;
-  }*/
 }
