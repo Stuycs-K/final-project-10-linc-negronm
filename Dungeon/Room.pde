@@ -16,21 +16,6 @@ class Room{
     enemiesKilled = 0;
   }
   
-  private boolean checkWalls(int x, int y){
-    if (y-1 >= 0 && map[y-1][x] != null && map[y-1][x].isWall() == true){
-      return true;
-    }else if (y+1 < map.length && map[y+1][x] != null && map[y+1][x].isWall() == true){
-      return true;
-    }else if (x-1 >= 0 && map[y][x-1] != null && map[y][x-1].isWall() == true){
-      return false;
-    }else if (x+1 < map[0].length && map[y][x+1] != null && map[y][x+1].isWall() == true){
-      return false;
-    }else{
-      return false;
-    }
-    
-  }
-  
   public void rotateMap(){
     Tile[][] newMap = new Tile[ySize][xSize];
     for(int y = 0; y < ySize; y++){
