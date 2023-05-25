@@ -1,22 +1,37 @@
 # Work Log
 
-## GROUP MEMBER 1
+## Marcus Negron
 
-### date x
+### 5/22
+
+Created room generation and display.
+
+### 5/23
+
+Added wall and enemy generation.
+
+### 5/24
+
+Created fundamental movement method swap().
+
+### 5/25
 
 info
 
-### date y
+## Curt Lin
+
+### 5/22
 
 info
 
-
-## GROUP MEMBER 2
-
-### date x
+### 5/23
 
 info
 
-### date y
+### 5/24
+
+info
+
+### 5/25
 
 info
