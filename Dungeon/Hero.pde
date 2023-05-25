@@ -1,8 +1,11 @@
 class Hero extends Character{
+  boolean heroTurn;
+  boolean enemyTurn;
   
   public Hero(int maxHP){
     maxHealth = maxHP;
     health = maxHP;
+    moveCap = 7;
   }
   
   public String getType(){
@@ -32,5 +35,21 @@ class Hero extends Character{
      }else{
       return false;
     }
+  }
+  public void heroturn(){
+    heroTurn = true;
+    moveCap = 7;
+  }
+  
+  public void heroTurnEnd(){
+    heroTurn = false;
+    enemyTurn();
+  }
+  
+  public void enemyTurn(){
+    enemyTurn = true;
+  }
+  public void enemyTurnEnd(){
+    enemyTurn = false;
   }
 }

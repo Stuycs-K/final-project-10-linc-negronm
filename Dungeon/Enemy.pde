@@ -3,6 +3,7 @@ class Enemy extends Character{
   public Enemy(int maxHP){
     maxHealth = maxHP;
     health = maxHP;
+    moveCap = 5
   }
   
   public String getType(){
