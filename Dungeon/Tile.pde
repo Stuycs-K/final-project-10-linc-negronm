@@ -25,6 +25,14 @@ class Tile {
     return chara;
   }
   
+  public void target(){
+    isTargeted = true;
+  }
+  
+  public void untarget(){
+    isTargeted = false;
+  }
+  
   
   public void changePos(int x, int y){
   this.x =x;

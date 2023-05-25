@@ -25,30 +25,40 @@ void keyReleased() {
 }
 void draw(){
   room.showRoom();
-  if(countdown == 0){
-    countdown+=45;
-  if (keyboardInput.isPressed(Controller.C_LEFT)){
-    if(!(room.map[room.heroY][room.heroX-1].isWall())){
-      room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
-      room.heroX -= 1;
-    }
+  if (keyboardInput.isPressed(Controller.C_Target)){
+    if (room.targeting)
+      room.targeting = false;
+    else
+      room.targeting = true;
   }
-  if (keyboardInput.isPressed(Controller.C_UP)) {
-    if(!(room.map[room.heroY-1][room.heroX].isWall())){
-      room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
-      room.heroY -= 1;
+  if (room.targeting){
+    
+  }else{
+    if(countdown == 0){
+      countdown+=45;
+    if (keyboardInput.isPressed(Controller.C_LEFT)){
+      if(!(room.map[room.heroY][room.heroX-1].isWall())){
+        room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
+        room.heroX -= 1;
+      }
     }
-  }
-  if (keyboardInput.isPressed(Controller.C_DOWN)) {
-    if(!(room.map[room.heroY+1][room.heroX].isWall())){
-      room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
-      room.heroY += 1;
+    if (keyboardInput.isPressed(Controller.C_UP)) {
+      if(!(room.map[room.heroY-1][room.heroX].isWall())){
+        room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
+        room.heroY -= 1;
+      }
     }
-  }
-  if (keyboardInput.isPressed(Controller.C_RIGHT)) {
-    if(!(room.map[room.heroY][room.heroX+1].isWall())){
-      room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
-      room.heroX += 1;
+    if (keyboardInput.isPressed(Controller.C_DOWN)) {
+      if(!(room.map[room.heroY+1][room.heroX].isWall())){
+        room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
+        room.heroY += 1;
+      }
+    }
+    if (keyboardInput.isPressed(Controller.C_RIGHT)) {
+      if(!(room.map[room.heroY][room.heroX+1].isWall())){
+        room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
+        room.heroX += 1;
+      }
     }
   }
 }

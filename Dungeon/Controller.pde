@@ -6,10 +6,11 @@ class Controller {
   static final int C_BasicAttack =4;
   static final int C_Ability1 =5;
   static final int C_Ability2 =6;
+  static final int C_Target =7;
   boolean [] inputs;
 
   public Controller() {
-    inputs = new boolean[6];//2 valid buttons
+    inputs = new boolean[8];//2 valid buttons
   }
 
   
@@ -31,6 +32,8 @@ class Controller {
       inputs[C_Ability1] = true;
     if(code == '3')
       inputs[C_Ability2] = true;
+    if(code == 'T')
+      inputs[C_Target] = true;
   }
   void release(int code) {
     if(code == 'A')
@@ -47,6 +50,8 @@ class Controller {
       inputs[C_Ability1] = false;
     if(code == '3')
       inputs[C_Ability2] = false;
+    if(code == 'T')
+      inputs[C_Target] = false;
   }
   
   
