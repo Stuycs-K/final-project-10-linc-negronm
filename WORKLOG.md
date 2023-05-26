@@ -34,4 +34,4 @@ Wrote a controller class using the Konstantinnovich model as a base, then implem
 
 ### 5/25
 
-info
+Wrote methods to switch between enemy and hero turns, also implemented a move cap for the hero and enemy.
