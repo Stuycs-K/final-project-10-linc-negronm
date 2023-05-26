@@ -1,9 +1,11 @@
 class Hero extends Character{
   
-  public Hero(int maxHP){
+  public Hero(int maxHP, int X, int Y){
     maxHealth = maxHP;
     health = maxHP;
     moveCap = 7;
+    x = X;
+    y = Y;
   }
   
   public String getType(){
