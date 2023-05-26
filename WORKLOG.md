@@ -16,7 +16,7 @@ Created fundamental movement method swap().
 
 ### 5/25
 
-Worked on a targeting system
+Implemented a targeting system that starts on hero and can be toggled. Also added various GUI debug texts to the interface.
 
 ## Curt Lin
 
