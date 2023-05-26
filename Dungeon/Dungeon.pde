@@ -27,7 +27,7 @@ void setup(){
   room.showRoom();
   textSize(24);
   fill(0);
-  text("Press WASD to move", 670, 30);
+  
   keyboardInput = new Controller();
   countdown =0;
   heroTurn();
@@ -39,12 +39,16 @@ void keyPressed() {
     room.generateRoom();
     heroMoved =0;
   }
+  if (key == 't'){
+  room.targeting = !room.targeting;
+}
 }
 
 void keyReleased() {
   keyboardInput.release(keyCode);
 }
 void draw(){
+  background(255);
   room.showRoom();
   if(heroTurn){
     if(countdown == 0 && heroMoved <= 7){
@@ -88,6 +92,7 @@ if(key == ENTER || key == RETURN){
     heroTurnEnd();
     enemyTurn();
   }
+
   }
  if(enemyTurn){
  

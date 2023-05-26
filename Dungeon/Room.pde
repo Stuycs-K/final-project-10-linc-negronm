@@ -149,5 +149,9 @@ class Room{
     x++;
     y = 0;
     }
+    textSize(24);
+    fill(0);
+    text("Press WASD to move", 670, 30);
+    text("Targeting: "+targeting, 670, 60);
   }
 }
