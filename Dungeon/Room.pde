@@ -62,6 +62,13 @@ class Room{
     map[desY][desX].setChar(character);
   }
   
+  public void swapTarget(int x, int y){
+    map[targY][targX].untarget();
+    map[y][x].target();
+    targY = y;
+    targX = x;
+  }
+  
   public void generateRoom(){
     enemyCount = 0;
     enemiesKilled = 0;

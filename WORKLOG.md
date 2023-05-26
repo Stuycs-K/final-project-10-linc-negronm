@@ -16,7 +16,7 @@ Created fundamental movement method swap().
 
 ### 5/25
 
-info
+Worked on a targeting system
 
 ## Curt Lin
 
@@ -30,7 +30,7 @@ Wrote randomly generated wall code
 
 ### 5/24
 
-Wrote a controller class using the Konstantinnovich model as a base, then implemented movement for the hero such that it can go in all the cardinal directions and won't run into walls.
+Wrote a controller class using the Konstantinovich model as a base, then implemented movement for the hero such that it can go in all the cardinal directions and won't run into walls.
 
 ### 5/25
 

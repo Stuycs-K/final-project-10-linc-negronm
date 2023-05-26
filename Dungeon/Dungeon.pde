@@ -40,8 +40,8 @@ void keyPressed() {
     heroMoved =0;
   }
   if (key == 't'){
-  room.targeting = !room.targeting;
-}
+    room.targeting = !room.targeting;
+  }
 }
 
 void keyReleased() {
@@ -54,27 +54,39 @@ void draw(){
     if(countdown == 0 && heroMoved <= 7){
     countdown+=30;
   if (keyboardInput.isPressed(Controller.C_LEFT)){
-    if(!(room.map[room.heroY][room.heroX-1].isWall())){
+    if (room.targeting){
+      room.swapTarget(room.targX-1, room.targY);
+    }
+    else if(!(room.map[room.heroY][room.heroX-1].isWall())){
       room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
       room.heroX -= 1;
       heroMoved +=1;
     }
   }
   if (keyboardInput.isPressed(Controller.C_UP)) {
-    if(!(room.map[room.heroY-1][room.heroX].isWall())){
+    if (room.targeting){
+      room.swapTarget(room.targX, room.targY-1);
+    }
+    else if(!(room.map[room.heroY-1][room.heroX].isWall())){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
       room.heroY -= 1;
       heroMoved +=1;
     }
   }
   if (keyboardInput.isPressed(Controller.C_DOWN)) {
-    if(!(room.map[room.heroY+1][room.heroX].isWall())){
+    if (room.targeting){
+      room.swapTarget(room.targX, room.targY+1);
+    }
+    else if(!(room.map[room.heroY+1][room.heroX].isWall())){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
       room.heroY += 1;
       heroMoved +=1;
     }
   }
   if (keyboardInput.isPressed(Controller.C_RIGHT)) {
+    if (room.targeting){
+      room.swapTarget(room.targX+1, room.targY);
+    }
     if(!(room.map[room.heroY][room.heroX+1].isWall())){
       room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
       room.heroX += 1;
