@@ -4,6 +4,8 @@ class Room{
   private int enemiesKilled, enemyCount;
   public int ySize, xSize;
   public int heroX, heroY;
+  public boolean targeting;
+  public int targX, targY;
   
   public Room(int xsize, int ysize){
     map = new Tile[ysize][xsize];
@@ -14,21 +16,9 @@ class Room{
     heroX = 1;
     heroY = ysize/2;
     enemiesKilled = 0;
-  }
-  
-  private boolean checkWalls(int x, int y){
-    if (y-1 >= 0 && map[y-1][x] != null && map[y-1][x].isWall() == true){
-      return true;
-    }else if (y+1 < map.length && map[y+1][x] != null && map[y+1][x].isWall() == true){
-      return true;
-    }else if (x-1 >= 0 && map[y][x-1] != null && map[y][x-1].isWall() == true){
-      return false;
-    }else if (x+1 < map[0].length && map[y][x+1] != null && map[y][x+1].isWall() == true){
-      return false;
-    }else{
-      return false;
-    }
-    
+    targeting = false;
+    targX = heroX;
+    targY = heroY;
   }
   
   public void rotateMap(){
@@ -146,6 +136,14 @@ class Room{
         fill(255);
         textSize(8);
         text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
+        if (targeting && y == targY && x == targX){
+          noFill();
+          stroke(255, 255, 0);
+          rectMode(CENTER);
+          rect(x*20+10, y*20+10, 10, 10);
+          rectMode(CORNER);
+          stroke(255);
+        }
         y++;
       }
     x++;
