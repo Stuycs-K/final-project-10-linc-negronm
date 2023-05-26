@@ -40,7 +40,7 @@ void keyPressed() {
     heroMoved =0;
   }
   if (key == 't'){
-    room.targeting = !room.targeting;
+    room.targetMode();
   }
 }
 
@@ -50,6 +50,14 @@ void keyReleased() {
 void draw(){
   background(255);
   room.showRoom();
+  textSize(24);
+  fill(0);
+  text("Hero moves left: "+(8-heroMoved), 670, 150);
+  if (heroMoved > 7){
+    textSize(27);
+    fill(255, 0, 0);
+    text("MOVE LIMIT REACHED!\nPRESS ENTER TO\nEND TURN", 670, 540);
+  }
   if(heroTurn){
     if(countdown == 0 && heroMoved <= 7){
     countdown+=30;
@@ -87,7 +95,7 @@ void draw(){
     if (room.targeting){
       room.swapTarget(room.targX+1, room.targY);
     }
-    if(!(room.map[room.heroY][room.heroX+1].isWall())){
+    else if(!(room.map[room.heroY][room.heroX+1].isWall())){
       room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
       room.heroX += 1;
       heroMoved +=1;

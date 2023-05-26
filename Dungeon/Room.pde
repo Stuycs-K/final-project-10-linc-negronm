@@ -69,6 +69,11 @@ class Room{
     targX = x;
   }
   
+  public void targetMode(){
+    targeting = !targeting;
+    swapTarget(heroX, heroY);
+  }
+  
   public void generateRoom(){
     enemyCount = 0;
     enemiesKilled = 0;
@@ -160,5 +165,7 @@ class Room{
     fill(0);
     text("Press WASD to move", 670, 30);
     text("Targeting: "+targeting, 670, 60);
+    text("Hero position: "+heroX+", "+heroY, 670, 90);
+    text("Targeting position: "+targX+", "+targY, 670, 120);
   }
 }
