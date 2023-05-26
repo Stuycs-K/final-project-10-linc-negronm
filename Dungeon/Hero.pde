@@ -3,6 +3,7 @@ class Hero extends Character{
   public Hero(int maxHP){
     maxHealth = maxHP;
     health = maxHP;
+    moveCap = 7;
   }
   
   public String getType(){
@@ -33,4 +34,5 @@ class Hero extends Character{
       return false;
     }
   }
+  
 }

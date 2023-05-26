@@ -22,16 +22,16 @@ info
 
 ### 5/22
 
-info
+Created a shell of each of the classes (Tile, Character, Hero, Enemy, and Wall). Also did some of the easier methods in those classes.
 
 ### 5/23
 
-info
+Wrote randomly generated wall code
 
 ### 5/24
 
-info
+Wrote a controller class using the Konstantinnovich model as a base, then implemented movement for the hero such that it can go in all the cardinal directions and won't run into walls.
 
 ### 5/25
 
-info
+Wrote methods to switch between enemy and hero turns, also implemented a move cap for the hero and enemy.
