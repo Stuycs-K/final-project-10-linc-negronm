@@ -1,6 +1,25 @@
 Room room = new Room(33, 33);
 Controller keyboardInput;
 int countdown;
+boolean heroTurn =false;
+boolean enemyTurn =false;
+int heroMoved = 0;
+
+public void heroTurn(){
+  heroMoved =0;
+  heroTurn = true;
+}
+public void heroTurnEnd(){
+  heroTurn = false;
+  enemyTurn();
+} 
+public void enemyTurn(){
+  enemyTurn = true;
+}
+public void enemyTurnEnd(){
+  enemyTurn = false;
+  heroTurn();
+}
 void setup(){
   background(255);
   size(960,660);
@@ -25,7 +44,7 @@ void keyReleased() {
 }
 void draw(){
   room.showRoom();
-  if(countdown == 0){
+  if(countdown == 0 && heroMoved <=7){
     countdown+=45;
   if (keyboardInput.isPressed(Controller.C_LEFT)){
     if(!(room.map[room.heroY][room.heroX-1].isWall())){
