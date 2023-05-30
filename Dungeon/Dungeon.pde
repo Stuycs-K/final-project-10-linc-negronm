@@ -165,6 +165,18 @@ if(key == ENTER || key == RETURN){
          room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x -1,room.enemies[i].y);
          room.enemies[i].x -=1;
        }
+       else if (room.enemies[i].x < room.heroX && !(room.map[room.enemies[i].y][room.enemies[i].x +1].isWall())){
+         room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x +1,room.enemies[i].y);
+         room.enemies[i].x +=1;
+       }
+       else if(room.enemies[i].y > room.heroY && !(room.map[room.enemies[i].y -1][room.enemies[i].x ].isWall())){
+         room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x ,room.enemies[i].y -1);
+         room.enemies[i].y -=1;
+       }
+       else if(room.enemies[i].y < room.heroY && !(room.map[room.enemies[i].y +1][room.enemies[i].x ].isWall())){
+         room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x ,room.enemies[i].y +1);
+         room.enemies[i].y +=1;
+       }
      }
      else{
      
