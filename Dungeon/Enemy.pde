@@ -1,13 +1,13 @@
 class Enemy extends Character{
-  float distHero;
+  int moved;
   public Enemy(int maxHP, int X, int Y){
     maxHealth = maxHP;
     health = maxHP;
     moveCap = 4;
     x = X;
     y = Y;
+    moved =0;
   }
-  
   public String getType(){
     return "enemy";
   }

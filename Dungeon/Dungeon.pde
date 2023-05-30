@@ -160,9 +160,10 @@ if(key == ENTER || key == RETURN){
  if(enemyTurn){
    for (int i =0; i< room.enemyDist.length; i++){
      room.enemyDist[i]= room.map[room.heroY][room.heroX].calcDis(room.map[room.enemies[i].y][room.enemies[i].x]);
-     if(room.enemyDist[i] >4){
-       if(room.enemies[i].x > room.heroX){
-       
+     if(room.enemyDist[i] >4 && (room.enemies[i].moved < 4)){
+       if(room.enemies[i].x > room.heroX && !(room.map[room.enemies[i].y][room.enemies[i].x -1].isWall())){
+         room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x -1,room.enemies[i].y);
+         room.enemies[i].x -=1;
        }
      }
      else{
