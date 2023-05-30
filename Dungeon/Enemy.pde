@@ -32,8 +32,8 @@ class Enemy extends Character{
   
   public void move(){
   }
-  public void basicAttack(){
-    int x =2;
+  public void basicAttack(Hero h){
+    h.takeDmg(5);
   }
   
   public void takeDmg(int x){

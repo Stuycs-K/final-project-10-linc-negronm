@@ -83,8 +83,11 @@ class Room{
   
   public void basicAttack(){
     for (int i = 0; i < enemies.length; i++){
-      if (map[enemies[i].getY()][enemies[i].getX()].isTargeted){
+      if (map[enemies[i].getY()][enemies[i].getX()].isTargeted && enemies[i].getHealth() > 0){
         hero.basicAttack(enemies[i]);
+        if (enemies[i].getHealth() <= 0){
+          enemiesKilled++;
+        }
       }
       map[enemies[i].getY()][enemies[i].getX()].untarget();
     }
@@ -145,6 +148,13 @@ class Room{
   }
   
   public void showRoom(){
+    if (hero.getHealth() <= 0){
+      background(0);
+      fill(255, 0, 0);
+      textAlign(CENTER);
+      text("GAME OVER! \n PRESS R TO RESTART.", width/2, height/2);
+    }else{
+    textAlign(LEFT);
     int x = 0;
     int y = 0;
     stroke(255);
@@ -201,6 +211,8 @@ class Room{
     text("Targeting: "+targeting, 670, 60);
     text("Hero position: "+heroX+", "+heroY, 670, 90);
     text("Targeting position: "+targX+", "+targY, 670, 120);
+    text("Enemies killed: " + enemiesKilled, 670, 180);
+    }
   }
   
   private void printEnemies(){

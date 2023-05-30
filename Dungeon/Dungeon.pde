@@ -39,6 +39,7 @@ void setup(){
 void keyPressed() {
   keyboardInput.press(keyCode);
   if (key == 'r'){
+    room = new Room(33, 33);
     room.generateRoom();
     heroMoved =0;
   }
@@ -141,7 +142,7 @@ void draw(){
     }
   }
   if (keyboardInput.isPressed(Controller.C_BasicAttack)){
-    abilityRange = 8;
+    abilityRange = 5;
     room.targetMode();
   }
 }
