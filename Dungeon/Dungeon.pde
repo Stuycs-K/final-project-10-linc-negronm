@@ -136,7 +136,6 @@ void draw(){
   }
   if (keyboardInput.isPressed(Controller.C_Confirm)){
     if (room.targeting){
-      println("confirmed attack");
       room.basicAttack();
       room.targetMode();
     }

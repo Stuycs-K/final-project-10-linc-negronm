@@ -38,8 +38,7 @@ class Tile {
   this.x =x;
   this.y =y;
   }
-  public float calcDis(Tile other){ //broken
-    println("DIST BETWEEN: (" + x + ", " + y + ") AND (" + other.getX() + "," + other.getY() + ")");
+  public float calcDis(Tile other){
     return dist(x, y, other.getX(), other.getY());
   }
   public int getX(){

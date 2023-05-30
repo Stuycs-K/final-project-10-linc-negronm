@@ -82,15 +82,12 @@ class Room{
   }
   
   public void basicAttack(){
-    printEnemies();
     for (int i = 0; i < enemies.length; i++){
       if (map[enemies[i].getY()][enemies[i].getX()].isTargeted){
-        println("targeting successful");
         hero.basicAttack(enemies[i]);
       }
       map[enemies[i].getY()][enemies[i].getX()].untarget();
     }
-    printEnemies();
   }
   
   public void generateRoom(){
