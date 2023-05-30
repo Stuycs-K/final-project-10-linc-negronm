@@ -16,6 +16,7 @@ class Hero extends Character{
   }
   public void basicAttack(Enemy e){
     e.takeDmg(10);
+    takeDmg(5);
   }
   public void takeDmg(int x){
     health -= x;
@@ -25,6 +26,8 @@ class Hero extends Character{
     return health;
   }
   public void ability1(Enemy e){
+      e.takeDmg(3);
+      heal(5);
   }
   public void ability2(Enemy e){
   }

@@ -81,10 +81,16 @@ class Room{
     swapTarget(heroX, heroY);
   }
   
-  public void basicAttack(){
+  public void attack(int ability){
     for (int i = 0; i < enemies.length; i++){
       if (map[enemies[i].getY()][enemies[i].getX()].isTargeted && enemies[i].getHealth() > 0){
-        hero.basicAttack(enemies[i]);
+        if (ability == Dungeon.BASICATTACK){
+          hero.basicAttack(enemies[i]);
+        }else if (ability == Dungeon.ABILITY1){
+          hero.ability1(enemies[i]);
+        }else{
+          println("invalid ability");
+        }
         if (enemies[i].getHealth() <= 0){
           enemiesKilled++;
         }

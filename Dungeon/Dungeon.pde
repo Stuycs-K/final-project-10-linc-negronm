@@ -5,6 +5,10 @@ boolean heroTurn =false;
 boolean enemyTurn =false;
 int heroMoved = 0;
 int abilityRange;
+int ability;
+final static int BASICATTACK = 0;
+final static int ABILITY1 = 1;
+final static int ABILITY2 = 2;
 Tile left, right, up, down;
 
 public void heroTurn(){
@@ -137,12 +141,23 @@ void draw(){
   }
   if (keyboardInput.isPressed(Controller.C_Confirm)){
     if (room.targeting){
-      room.basicAttack();
+      if (ability == BASICATTACK){
+        room.attack(BASICATTACK);
+      }else if (ability == ABILITY1){
+        room.attack(ABILITY1);
+      }
+      
       room.targetMode();
     }
   }
   if (keyboardInput.isPressed(Controller.C_BasicAttack)){
+    ability = 0;
     abilityRange = 5;
+    room.targetMode();
+  }
+  if (keyboardInput.isPressed(Controller.C_Ability1)){
+    ability = 1;
+    abilityRange = 3;
     room.targetMode();
   }
 }
