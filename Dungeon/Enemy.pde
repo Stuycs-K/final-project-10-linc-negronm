@@ -24,6 +24,8 @@ class Enemy extends Character{
     return health;
   }
   
+
+  
   public String toString(){
     return "Enemy: HP " + health + "(" + getX() + "," + getY() + ")";
   }
@@ -38,9 +40,8 @@ class Enemy extends Character{
     health -= x;
   }
   public void ability(){
-  
+    
   }
-  public void die(){
   
-  }
+  
 }

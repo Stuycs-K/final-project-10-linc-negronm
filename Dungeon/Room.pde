@@ -60,8 +60,13 @@ class Room{
   
   public void swap(int x, int y, int desX, int desY){
     Tile oldTile = map[desY][desX];
-    map[desY][desX] = map[y][x];
+    Tile moved = map[y][x];
+    map[desY][desX] = moved;
     map[y][x] = oldTile;
+    moved.setX(desX);
+    moved.setY(desY);
+    oldTile.setX(x);
+    oldTile.setY(y);
   }
   
   public void swapTarget(int x, int y){
@@ -160,7 +165,11 @@ class Room{
             fill(0, 0, 255);
             rect(x*20, y*20, 20, 20);
           }else if (map[y][x].getChar().getType().equals("enemy")){
-            fill(255, 0, 0);
+            if (map[y][x].getChar().getHealth() <= 0){
+              fill(145, 105, 105);
+            }else{
+              fill(255, 0, 0);
+            }
             rect(x*20, y*20, 20, 20);
           }
           fill(0);

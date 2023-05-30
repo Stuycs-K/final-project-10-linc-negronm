@@ -22,6 +22,9 @@ class Hero extends Character{
     health -= x;
     
   }
+  public int getHealth(){
+    return health;
+  }
   public void ability1(Enemy e){
   }
   public void ability2(Enemy e){

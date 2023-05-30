@@ -22,6 +22,7 @@ public void enemyTurnEnd(){
   enemyTurn = false;
   heroTurn();
 }
+
 void setup(){
   background(255);
   size(960,660);
@@ -84,6 +85,7 @@ void draw(){
     else if(!(room.map[room.heroY][room.heroX-1].isWall() || left.getChar() != null && left.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
       room.heroX -= 1;
+      room.hero.x--;
       heroMoved +=1;
     }
   }
@@ -98,6 +100,7 @@ void draw(){
     else if(!(room.map[room.heroY-1][room.heroX].isWall() || up.getChar() != null && up.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
       room.heroY -= 1;
+      room.hero.y--;
       heroMoved +=1;
     }
   }
@@ -112,14 +115,12 @@ void draw(){
     else if(!(room.map[room.heroY+1][room.heroX].isWall() || down.getChar() != null && down.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
       room.heroY += 1;
+      room.hero.y++;
       heroMoved +=1;
     }
   }
   if (keyboardInput.isPressed(Controller.C_RIGHT)) {
     if (room.targeting){
-      println("HERO: " + room.heroX + ", " + room.heroY);
-      println("TARG: " + room.targX + ", " + room.targY);
-      println(room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]));
       if (room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange){
         room.swapTarget(room.targX+1, room.targY);
       }else{
@@ -129,6 +130,7 @@ void draw(){
     else if(!(room.map[room.heroY][room.heroX+1].isWall() || right.getChar() != null && right.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
       room.heroX += 1;
+      room.hero.x++;
       heroMoved +=1;
     }
   }

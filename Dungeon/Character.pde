@@ -5,8 +5,10 @@ abstract class Character {
   int moveCap;
   
   abstract String getType();
+  abstract int getHealth();
   abstract void move();
   void takeDmg(int x){
     health -= x;
   }
+ 
 }
