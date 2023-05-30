@@ -18,6 +18,10 @@ Created fundamental movement method swap().
 
 Implemented a targeting system that starts on hero and can be toggled. Also added various GUI debug texts to the interface.
 
+## 5/30
+
+Finished targeting system. Added basic attack with a working attack range, as well as a death system for enemies.
+
 ## Curt Lin
 
 ### 5/22
