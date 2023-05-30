@@ -6,6 +6,8 @@ class Room{
   public int heroX, heroY;
   public boolean targeting;
   public int targX, targY;
+  public Enemy[] enemies;
+  public Hero hero;
   
   public Room(int xsize, int ysize){
     map = new Tile[ysize][xsize];
@@ -19,6 +21,7 @@ class Room{
     targeting = false;
     targX = heroX;
     targY = heroY;
+    hero = new Hero(50, heroX, heroY);
   }
   
   public void rotateMap(){
@@ -104,14 +107,18 @@ class Room{
     if(map[ySize/2][1].isWall()){
       map[ySize/2][1] = new Tile(1, ySize/2);
     }
-    map[ySize/2][1].setChar(new Hero(50));
+    map[ySize/2][1].setChar(hero);
     // PLACING ENEMIES
-    while (enemyCount <= 5){
+    enemies = new Enemy[6];
+    Enemy e;
+    while (enemyCount < 6){
       for (int y = 1; y < ySize-1; y++){
         for (int x = xSize/2; x < xSize-1; x++){
           r = random(0, 100);
           if(r < 0.01 && map[y][x].isWall() == false){
-            map[y][x] = new Tile(x, y, new Enemy(25));
+            e = new Enemy(25);
+            map[y][x] = new Tile(x, y, e);
+            enemies[enemyCount] = e;
             enemyCount++;
             if (enemyCount >= 5){
               x = xSize+1;
@@ -132,19 +139,26 @@ class Room{
       while (y < map.length){
         if (map[y][x].isWall() == true){
           fill(0);
+          rect(x*20, y*20, 20, 20);
         }else if (x == exitX && y == exitY){
           fill (255, 0, 255);
+          rect(x*20, y*20, 20, 20);
         }else if (map[y][x].getChar() != null){
           if (map[y][x].getChar().getType().equals("hero")){
             fill(0, 0, 255);
+            rect(x*20, y*20, 20, 20);
           }else if (map[y][x].getChar().getType().equals("enemy")){
             fill(255, 0, 0);
+            rect(x*20, y*20, 20, 20);
           }
-          
+          fill(0);
+          textSize(14);
+          text(map[y][x].getChar().health, x*20+3, y*20);
         }else{
           fill(200);
+          rect(x*20, y*20, 20, 20);
         }
-        rect(x*20, y*20, 20, 20);
+        
         fill(255);
         textSize(8);
         text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
