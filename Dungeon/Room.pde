@@ -171,7 +171,9 @@ class Room{
           }
           fill(0);
           textSize(14);
-          text(map[y][x].getChar().health, x*20+3, y*20);
+          if (map[y][x].getChar().health > 0){
+            text(map[y][x].getChar().health, x*20+3, y*20);
+          }
         }else{
           fill(200);
           rect(x*20, y*20, 20, 20);
