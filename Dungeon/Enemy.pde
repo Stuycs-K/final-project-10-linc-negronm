@@ -1,9 +1,9 @@
 class Enemy extends Character{
-  
+  float distHero;
   public Enemy(int maxHP, int X, int Y){
     maxHealth = maxHP;
     health = maxHP;
-    moveCap = 5;
+    moveCap = 4;
     x = X;
     y = Y;
   }
@@ -42,6 +42,7 @@ class Enemy extends Character{
   public void ability(){
     
   }
+  
   
   
 }

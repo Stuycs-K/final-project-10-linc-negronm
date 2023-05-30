@@ -148,6 +148,7 @@ void draw(){
 if(countdown > 0){
     countdown --;
   }
+ 
 if(!keyPressed){
   countdown = 0;
 }
@@ -158,20 +159,7 @@ if(key == ENTER || key == RETURN){
 
   }
  if(enemyTurn){
-   for (int i =0; i< room.enemyDist.length; i++){
-     room.enemyDist[i]= room.map[room.heroY][room.heroX].calcDis(room.map[room.enemies[i].y][room.enemies[i].x]);
-     if(room.enemyDist[i] >4){
-       if(room.enemies[i].x > room.heroX){
-       
-       }
-     }
-     else{
-     
-     }
-   }
-   
-   
-   
+ 
    enemyTurnEnd();
  }
 
