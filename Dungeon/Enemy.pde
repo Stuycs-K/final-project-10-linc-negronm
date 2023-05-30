@@ -1,5 +1,6 @@
 class Enemy extends Character{
-  int moved;
+  int moved; 
+  boolean attacked;
   public Enemy(int maxHP, int X, int Y){
     maxHealth = maxHP;
     health = maxHP;
@@ -7,6 +8,7 @@ class Enemy extends Character{
     x = X;
     y = Y;
     moved =0;
+    attacked = false;
   }
   public String getType(){
     return "enemy";
@@ -32,8 +34,8 @@ class Enemy extends Character{
   
   public void move(){
   }
-  public void basicAttack(){
-    int x =2;
+  public void basicAttack(Hero h){
+    h.takeDmg(5);
   }
   
   public void takeDmg(int x){

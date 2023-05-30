@@ -17,6 +17,9 @@ public void heroTurnEnd(){
 } 
 public void enemyTurn(){
   enemyTurn = true;
+  for (int i =0; i< room.enemies.length; i++){
+    room.enemies[i].attacked = false;
+  }
 }
 public void enemyTurnEnd(){
   enemyTurn = false;
@@ -164,25 +167,32 @@ if(key == ENTER || key == RETURN){
        if(room.enemies[i].x > room.heroX && !(room.map[room.enemies[i].y][room.enemies[i].x -1].isWall())){
          room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x -1,room.enemies[i].y);
          room.enemies[i].x -=1;
+         countdown += 30;
        }
        else if (room.enemies[i].x < room.heroX && !(room.map[room.enemies[i].y][room.enemies[i].x +1].isWall())){
          room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x +1,room.enemies[i].y);
          room.enemies[i].x +=1;
+         countdown += 30;
        }
        else if(room.enemies[i].y > room.heroY && !(room.map[room.enemies[i].y -1][room.enemies[i].x ].isWall())){
          room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x ,room.enemies[i].y -1);
          room.enemies[i].y -=1;
+         countdown += 30;
        }
        else if(room.enemies[i].y < room.heroY && !(room.map[room.enemies[i].y +1][room.enemies[i].x ].isWall())){
          room.swap(room.enemies[i].x, room.enemies[i].y, room.enemies[i].x ,room.enemies[i].y +1);
          room.enemies[i].y +=1;
+         countdown += 30;
        }
      }
      else{
-     
+       if (!(room.enemies[i].attacked) && room.enemyDist[i] <4){
+         room.enemies[i].basicAttack(room.hero);
+         room.enemies[i].attacked = true;
+         countdown += 30;
+       }
      }
    }
-   
    
    
    enemyTurnEnd();
