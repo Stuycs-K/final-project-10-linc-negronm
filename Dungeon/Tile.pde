@@ -38,8 +38,8 @@ class Tile {
   this.x =x;
   this.y =y;
   }
-  public int calcDis(Tile other){
-    return 0;
+  public float calcDis(Tile other){
+    return dist(x, y, other.getX(), other.getY());
   }
   public int getX(){
     return x;

@@ -4,6 +4,7 @@ int countdown;
 boolean heroTurn =false;
 boolean enemyTurn =false;
 int heroMoved = 0;
+int abilityRange;
 Tile left, right, up, down;
 
 public void heroTurn(){
@@ -51,6 +52,12 @@ void keyReleased() {
 void draw(){
   background(255);
   room.showRoom();
+  if (room.targeting){
+    noFill();
+    stroke(0, 255, 255);
+    strokeWeight(5);
+    circle(room.heroX*20+10, room.heroY*20+10, abilityRange*40);
+  }
   textSize(24);
   fill(0);
   text("Hero moves left: "+(8-heroMoved), 670, 150);
@@ -68,7 +75,11 @@ void draw(){
     countdown+=30;
   if (keyboardInput.isPressed(Controller.C_LEFT)){
     if (room.targeting){
-      room.swapTarget(room.targX-1, room.targY);
+      if (room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange){
+        room.swapTarget(room.targX-1, room.targY);
+      }else{
+        println("Out of ability range!");
+      }
     }
     else if(!(room.map[room.heroY][room.heroX-1].isWall() || left.getChar() != null && left.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
@@ -78,7 +89,11 @@ void draw(){
   }
   if (keyboardInput.isPressed(Controller.C_UP)) {
     if (room.targeting){
-      room.swapTarget(room.targX, room.targY-1);
+      if (room.map[room.targY-1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange){
+        room.swapTarget(room.targX, room.targY-1);
+      }else{
+        println("Out of ability range!");
+      }
     }
     else if(!(room.map[room.heroY-1][room.heroX].isWall() || up.getChar() != null && up.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
@@ -88,7 +103,11 @@ void draw(){
   }
   if (keyboardInput.isPressed(Controller.C_DOWN)) {
     if (room.targeting){
-      room.swapTarget(room.targX, room.targY+1);
+      if (room.map[room.targY+1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange){
+        room.swapTarget(room.targX, room.targY+1);
+      }else{
+        println("Out of ability range!");
+      }
     }
     else if(!(room.map[room.heroY+1][room.heroX].isWall() || down.getChar() != null && down.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
@@ -98,7 +117,14 @@ void draw(){
   }
   if (keyboardInput.isPressed(Controller.C_RIGHT)) {
     if (room.targeting){
-      room.swapTarget(room.targX+1, room.targY);
+      println("HERO: " + room.heroX + ", " + room.heroY);
+      println("TARG: " + room.targX + ", " + room.targY);
+      println(room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]));
+      if (room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange){
+        room.swapTarget(room.targX+1, room.targY);
+      }else{
+        println("Out of ability range!");
+      }
     }
     else if(!(room.map[room.heroY][room.heroX+1].isWall() || right.getChar() != null && right.getChar().getType().equals("enemy"))){
       room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
@@ -112,6 +138,10 @@ void draw(){
       room.basicAttack();
       room.targetMode();
     }
+  }
+  if (keyboardInput.isPressed(Controller.C_BasicAttack)){
+    abilityRange = 8;
+    room.targetMode();
   }
 }
 if(countdown > 0){

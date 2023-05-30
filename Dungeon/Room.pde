@@ -146,6 +146,7 @@ class Room{
     int x = 0;
     int y = 0;
     stroke(255);
+    strokeWeight(1);
     while (x < map[0].length){
       while (y < map.length){
         if (map[y][x].isWall() == true){
