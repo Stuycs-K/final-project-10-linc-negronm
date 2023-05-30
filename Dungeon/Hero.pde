@@ -15,9 +15,12 @@ class Hero extends Character{
   public void move(){
   }
   public void basicAttack(Enemy e){
+    e.takeDmg(10);
+    println(e.getHealth());
   }
   public void takeDmg(int x){
     health -= x;
+    
   }
   public void ability1(Enemy e){
   }

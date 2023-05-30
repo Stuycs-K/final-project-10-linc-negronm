@@ -7,10 +7,11 @@ class Controller {
   static final int C_Ability1 =5;
   static final int C_Ability2 =6;
   static final int C_Target =7;
+  static final int C_Confirm=8;
   boolean [] inputs;
 
   public Controller() {
-    inputs = new boolean[8];//2 valid buttons
+    inputs = new boolean[9];//2 valid buttons
   }
 
   
@@ -34,6 +35,8 @@ class Controller {
       inputs[C_Ability2] = true;
     if(code == 'T')
       inputs[C_Target] = true;
+    if(code == ' ')
+      inputs[C_Confirm] = true;
   }
   void release(int code) {
     if(code == 'A')
@@ -52,6 +55,8 @@ class Controller {
       inputs[C_Ability2] = false;
     if(code == 'T')
       inputs[C_Target] = false;
+    if(code == ' ')
+      inputs[C_Confirm] = false;
   }
   
   

@@ -59,10 +59,9 @@ class Room{
   }
   
   public void swap(int x, int y, int desX, int desY){
-    Character character = map[y][x].getChar();
-    Character desChar = map[desX][desY].getChar();
-    map[y][x].setChar(desChar);
-    map[desY][desX].setChar(character);
+    Tile oldTile = map[desY][desX];
+    map[desY][desX] = map[y][x];
+    map[y][x] = oldTile;
   }
   
   public void swapTarget(int x, int y){
@@ -75,6 +74,18 @@ class Room{
   public void targetMode(){
     targeting = !targeting;
     swapTarget(heroX, heroY);
+  }
+  
+  public void basicAttack(){
+    printEnemies();
+    for (int i = 0; i < enemies.length; i++){
+      if (map[enemies[i].getY()][enemies[i].getX()].isTargeted){
+        println("targeting successful");
+        hero.basicAttack(enemies[i]);
+      }
+      map[enemies[i].getY()][enemies[i].getX()].untarget();
+    }
+    printEnemies();
   }
   
   public void generateRoom(){
@@ -116,11 +127,11 @@ class Room{
         for (int x = xSize/2; x < xSize-1; x++){
           r = random(0, 100);
           if(r < 0.01 && map[y][x].isWall() == false){
-            e = new Enemy(25);
+            e = new Enemy(25, x, y);
             map[y][x] = new Tile(x, y, e);
             enemies[enemyCount] = e;
             enemyCount++;
-            if (enemyCount >= 5){
+            if (enemyCount > 6){
               x = xSize+1;
               y = ySize+1;
             }
@@ -162,7 +173,7 @@ class Room{
         fill(255);
         textSize(8);
         text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
-        if (targeting && y == targY && x == targX){
+        if (targeting && map[y][x].isTargeted){
           noFill();
           stroke(255, 255, 0);
           rectMode(CENTER);
@@ -181,5 +192,14 @@ class Room{
     text("Targeting: "+targeting, 670, 60);
     text("Hero position: "+heroX+", "+heroY, 670, 90);
     text("Targeting position: "+targX+", "+targY, 670, 120);
+  }
+  
+  private void printEnemies(){
+    String result = "[";
+    for (int i = 0; i < enemies.length-1; i++){
+      result += enemies[i].toString() + ", ";
+    }
+    result += enemies[enemies.length-1].toString() + "]";
+    println(result);
   }
 }
