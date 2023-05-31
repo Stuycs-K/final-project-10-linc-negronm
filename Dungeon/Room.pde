@@ -7,6 +7,7 @@ class Room{
   public boolean targeting;
   public int targX, targY;
   public Enemy[] enemies;
+  public float[] enemyDist;
   public Hero hero;
   
   public Room(int xsize, int ysize){
@@ -132,6 +133,7 @@ class Room{
     map[ySize/2][1].setChar(hero);
     // PLACING ENEMIES
     enemies = new Enemy[6];
+    enemyDist = new float[6];
     Enemy e;
     while (enemyCount < 6){
       for (int y = 1; y < ySize-1; y++){

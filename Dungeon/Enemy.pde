@@ -1,13 +1,15 @@
 class Enemy extends Character{
-  
+  int moved; 
+  boolean attacked;
   public Enemy(int maxHP, int X, int Y){
     maxHealth = maxHP;
     health = maxHP;
-    moveCap = 5;
+    moveCap = 4;
     x = X;
     y = Y;
+    moved =0;
+    attacked = false;
   }
-  
   public String getType(){
     return "enemy";
   }
@@ -42,6 +44,7 @@ class Enemy extends Character{
   public void ability(){
     
   }
+  
   
   
 }
