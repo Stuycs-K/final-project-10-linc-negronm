@@ -22,6 +22,10 @@ Implemented a targeting system that starts on hero and can be toggled. Also adde
 
 Finished targeting system. Added basic attack with a working attack range, as well as a death system for enemies.
 
+## 5/31
+
+Added rudimentary pathfinding system. Enemies will move left towards the hero horizontally until encountering a wall, after which they will move up or down to clear it. Also added an ability cap of 2 per hero turn.
+
 ## Curt Lin
 
 ### 5/22
