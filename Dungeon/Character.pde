@@ -10,4 +10,11 @@ abstract class Character {
   void takeDmg(int x) {
     health-= x;
   }
+  void setY(int Y) {
+    y = Y;
+  }
+
+  void setX(int X) {
+    x = X;
+  }
 }

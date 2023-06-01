@@ -25,6 +25,8 @@ class Enemy extends Character {
   public int getHealth() {
     return health;
   }
+  
+  
 
 
 

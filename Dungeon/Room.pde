@@ -22,7 +22,7 @@ class Room {
     targeting = false;
     targX = heroX;
     targY = heroY;
-    hero = new Hero(50, heroX, heroY);
+    hero = new Hero(500, heroX, heroY);
   }
 
   public void rotateMap() {
@@ -60,6 +60,7 @@ class Room {
   }
 
   public void swap(int x, int y, int desX, int desY) {
+    println("tile at (" + x + "," + y + ") now at (" + desX + "," + desY + ")");
     Tile oldTile = map[desY][desX];
     Tile moved = map[y][x];
     map[desY][desX] = moved;
@@ -68,6 +69,11 @@ class Room {
     moved.setY(desY);
     oldTile.setX(x);
     oldTile.setY(y);
+    if (moved.getChar() != null){
+      moved.getChar().setX(desX);
+      moved.getChar().setY(desY);
+    }
+    println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
   }
 
   public void swapTarget(int x, int y) {

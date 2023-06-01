@@ -6,37 +6,55 @@ boolean enemyTurn =false;
 int heroMoved = 0;
 int abilityRange;
 int ability;
+int abilitiesUsed;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
 Tile left, right, up, down;
 
 public void heroTurn() {
+  println("hero turn start");
   heroMoved =0;
+  abilitiesUsed = 0;
   heroTurn = true;
 }
 public void heroTurnEnd() {
+  println("hero turn end");
   heroTurn = false;
   enemyTurn();
 }
 public void enemyTurn() {
+  println("enemy turn start");
+  resetEnemyStates();
   enemyTurn = true;
-  for (int i =0; i< room.enemies.length; i++) {
-    room.enemies[i].attacked = false;
-  }
 }
 
 public void pathFind(Enemy e, Hero h) {
   // keep moving x towards hero, then move y
-  if (e.x < h.x && room.map[e.y][e.x+1].isWall() == false) { // enemy to the left and no wall
-    room.swap(e.x, e.y, e.x+1, e.y);
-  } else if (e.x > h.x && room.map[e.y][e.x-1].isWall() == false) { // enemy to the right and no wall
-    room.swap(e.x, e.y, e.x-1, e.y);
-  } else if (e.y > h.y && room.map[e.y-1][e.x].isWall() == false) { // enemy below and no wall
-    room.swap(e.x, e.y, e.x, e.y-1);
-  } else if (e.y < h.y && room.map[e.y+1][e.x].isWall() == false) { // enemy above and no wall
-    room.swap(e.x, e.y, e.x, e.y+1);
+  if (e.getX() < h.x && (room.map[e.getY()][e.getX()+1].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy to the left and no wall
+    println(e.toString() + " moving right");
+    room.swap(e.getX(), e.getY(), e.getX()+1, e.getY());
+  } else if (e.getX() > h.x && (room.map[e.getY()][e.getX()-1].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy to the right and no wall
+    println(e.toString() + " moving left");
+    room.swap(e.getX(), e.getY(), e.getX()-1, e.getY());
+  } else if (e.getY() > h.y && (room.map[e.getY()-1][e.getX()].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy below and no wall
+    println(e.toString() + " moving up");
+    room.swap(e.getX(), e.getY(), e.getX(), e.getY()-1);
+  } else if (e.getY() < h.y && (room.map[e.getY()+1][e.getX()].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy above and no wall
+    println(e.toString() + " moving down");
+    room.swap(e.getX(), e.getY(), e.getX(), e.getY()+1);
+  } else {
+    println("couldn't move");
   }
+  println("ENEMY AT: (" + e.getX() + "," + e.getY() + ")");
+}
+
+public void resetEnemyStates() {
+  for (int i = 0; i < 6; i++) {
+    room.enemies[i].attacked = false;
+    room.enemies[i].moved = 0;
+  }
+  println("----------------------------------------------------------------------------------------FINISHED LOOP");
 }
 
 public float enemyDistToHero(Enemy e, Hero h) {
@@ -44,6 +62,7 @@ public float enemyDistToHero(Enemy e, Hero h) {
 }
 
 public void enemyTurnEnd() {
+  println("enemy turn end");
   enemyTurn = false;
   heroTurn();
 }
@@ -88,6 +107,7 @@ void draw() {
   textSize(24);
   fill(0);
   text("Hero moves left: "+(8-heroMoved), 670, 150);
+  text("Hero abilities left: "+(2-abilitiesUsed), 670, 210);
   if (heroMoved > 7) {
     textSize(27);
     fill(255, 0, 0);
@@ -112,6 +132,7 @@ void draw() {
           room.heroX -= 1;
           room.hero.x--;
           heroMoved +=1;
+          println(heroMoved);
         }
       }
       if (keyboardInput.isPressed(Controller.C_UP)) {
@@ -158,10 +179,15 @@ void draw() {
       }
       if (keyboardInput.isPressed(Controller.C_Confirm)) {
         if (room.targeting) {
-          if (ability == BASICATTACK) {
+          if (abilitiesUsed >= 2){
+            println("CANNOT USE MORE ABILITIES!");
+          }
+          else if (ability == BASICATTACK) {
             room.attack(BASICATTACK);
+            abilitiesUsed++;
           } else if (ability == ABILITY1) {
             room.attack(ABILITY1);
+            abilitiesUsed++;
           }
 
           room.targetMode();
@@ -178,31 +204,37 @@ void draw() {
         room.targetMode();
       }
     }
+    
     if (countdown > 0) {
       countdown --;
     }
     if (!keyPressed) {
       countdown = 0;
     }
-    if (key == ENTER || key == RETURN) {
+    if (keyboardInput.isPressed(Controller.C_EndTurn)) {
       heroTurnEnd();
-      enemyTurn();
     }
-  }
-  if (enemyTurn) {
-    for (int i = 0; i < room.enemies.length; i++) {
-      while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
-        if (enemyDistToHero(room.enemies[i], room.hero) >= 4) {// if enemy out of range
-          pathFind(room.enemies[i], room.hero);
-          room.enemies[i].moved++;
-        } else { // hero in range
-          room.enemies[i].basicAttack(room.hero);
-          room.enemies[i].attacked = true;
+    if (enemyTurn) {
+
+      for (int i = 0; i < room.enemies.length; i++) {
+        countdown = 0;
+        while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
+          println("MOVED: " + room.enemies[i].moved);
+          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0) {// if enemy out of range
+            println(i + " " + room.enemies[i].toString() + " attempting to move");
+            pathFind(room.enemies[i], room.hero);
+            countdown += 2000;
+            room.enemies[i].moved++;
+          } else if (countdown  == 0) { // hero in range
+            println(room.enemies[i].toString() + " attacking");
+            room.enemies[i].basicAttack(room.hero);
+            room.enemies[i].attacked = true;
+          }else{
+            countdown--;
+          }
         }
       }
+      enemyTurnEnd();
     }
   }
-
-
-  enemyTurnEnd();
 }
