@@ -1,6 +1,6 @@
 Room room = new Room(33, 33);
 Controller keyboardInput;
-int countdown;
+int countdown; //timer variable
 boolean heroTurn =false;
 boolean enemyTurn =false;
 int heroMoved = 0;
@@ -12,6 +12,7 @@ final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
 Tile left, right, up, down;
 
+//turns methods
 public void heroTurn() {
   println("hero turn start");
   heroMoved =0;
@@ -99,7 +100,7 @@ void keyReleased() {
 void draw() {
   background(255);
   room.showRoom();
-  if (room.targeting) {
+  if (room.targeting) { //targetting mode
     noFill();
     stroke(0, 255, 255);
     strokeWeight(5);
@@ -119,17 +120,24 @@ void draw() {
   up = room.map[room.heroY-1][room.heroX];
   down = room.map[room.heroY+1][room.heroX];
   if (heroTurn) {
-    if (countdown == 0 && heroMoved <= 7) {
+    if( room.heroX == room.exitX && room.heroY == room.exitY){ //if hero is at the exit, make a new room, reset the hero moves but keep health
+      int damageTaken = room.hero.maxHealth - room.hero.health;
+      room = new Room(33, 33);
+      room.generateRoom();
+      heroMoved =0;
+      room.hero.takeDmg(damageTaken);
+    }
+    else if (countdown == 0 && heroMoved <= 7) {
       countdown+=30;
-      if (keyboardInput.isPressed(Controller.C_LEFT)) {
-        if (room.targeting) {
+      if (keyboardInput.isPressed(Controller.C_LEFT)) { 
+        if (room.targeting) { //for a direction does targetting to check range
           if (room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
             room.swapTarget(room.targX-1, room.targY);
           } else {
             println("Out of ability range!");
           }
         } else if (!(room.map[room.heroY][room.heroX-1].isWall() || left.getChar() != null && left.getChar().getType().equals("enemy"))) {
-          room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY);
+          room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY); // movement in a direction
           room.heroX -= 1;
           room.hero.x--;
           heroMoved +=1;
