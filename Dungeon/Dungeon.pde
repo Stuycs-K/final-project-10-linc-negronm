@@ -48,6 +48,44 @@ public void pathFind(Enemy e, Hero h) {
   }
   println("ENEMY AT: (" + e.getX() + "," + e.getY() + ")");
 }
+/*
+void traceBack(Enemy e) {
+  if (y >= 0 && y < room.map.length && x >= 0 && x < COLS) {
+
+    int dist = m.map[r][c];
+    if (dist > 0) {
+      m.map[r][c]= m.PATH;
+      int up = nextValue(m, r-1, c, dist-1);
+      int down = nextValue(m, r+1, c, dist-1);
+      int left = nextValue(m, r, c - 1, dist-1);
+      int right = nextValue(m, r, c + 1, dist-1);
+      int min = Math.min(up,Math.min(down,Math.min(left,right)));
+      if ( up == min ) {
+        traceBack(m, r-1, c);
+      } else if ( down == min ) {
+        traceBack(m, r+1, c);
+      } else if ( left == min ) {
+        traceBack(m, r, c-1);
+      } else if ( right == min ) {
+        traceBack(m, r, c+1);
+      }
+    }
+  }
+}
+
+int nextValue(int r, int c, int dist) {
+  try {
+    int value = m.map[r][c];
+    if(value >= 0){
+     return value; 
+    }
+  }
+  catch ( ArrayIndexOutOfBoundsException e) {
+    
+  }
+  return Integer.MAX_VALUE;
+}
+*/
 
 public void resetEnemyStates() {
   for (int i = 0; i < 6; i++) {
@@ -223,7 +261,7 @@ void draw() {
           if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0) {// if enemy out of range
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
-            countdown += 2000;
+            countdown += 1000;
             room.enemies[i].moved++;
           } else if (countdown  == 0) { // hero in range
             println(room.enemies[i].toString() + " attacking");
