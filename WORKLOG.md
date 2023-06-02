@@ -26,6 +26,10 @@ Finished targeting system. Added basic attack with a working attack range, as we
 
 Added rudimentary pathfinding system. Enemies will move left towards the hero horizontally until encountering a wall, after which they will move up or down to clear it. Also added an ability cap of 2 per hero turn.
 
+## 6/1
+
+Polished up pathfinding system, removed bugs that would cause enemies to get stuck on each other and phase thru walls.
+
 ## Curt Lin
 
 ### 5/22
