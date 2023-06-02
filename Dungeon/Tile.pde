@@ -1,59 +1,59 @@
 class Tile {
-  int x,y;
+  int x, y;
   Character chara;
   boolean isTargeted;
-  
-  public Tile(int xpos, int ypos){
+
+  public Tile(int xpos, int ypos) {
     x = xpos;
     y = ypos;
     chara = null;
     isTargeted = false;
   }
-  
-  public Tile(int xpos, int ypos, Character character){
+
+  public Tile(int xpos, int ypos, Character character) {
     x = xpos;
     y = ypos;
     chara = character;
     isTargeted = false;
   }
-  
-  public void setChar(Character character){
+
+  public void setChar(Character character) {
     chara = character;
   }
-  
-  public Character getChar(){
+
+  public Character getChar() {
     return chara;
   }
-  
-  public void target(){
+
+  public void target() {
     isTargeted = true;
   }
-  
-  public void untarget(){
+
+  public void untarget() {
     isTargeted = false;
   }
-  
-  
-  public void changePos(int x, int y){
-  this.x =x;
-  this.y =y;
+
+
+  public void changePos(int x, int y) {
+    this.x =x;
+    this.y =y;
   }
-  public float calcDis(Tile other){
+  public float calcDis(Tile other) {
     return dist(x, y, other.getX(), other.getY());
   }
-  public int getX(){
+  public int getX() {
     return x;
   }
-  public int getY(){
+  public int getY() {
     return y;
   }
-  public void setX(int X){
+  public void setX(int X) {
     x = X;
   }
-  public void setY(int Y){
+  public void setY(int Y) {
     y = Y;
   }
-  public boolean isWall(){
+  public boolean isWall() {
     return false;
   }
 }

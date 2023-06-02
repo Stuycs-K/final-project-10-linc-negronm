@@ -8,56 +8,59 @@ class Controller {
   static final int C_Ability2 =6;
   static final int C_Target =7;
   static final int C_Confirm=8;
+  static final int C_EndTurn=9;
   boolean [] inputs;
 
   public Controller() {
-    inputs = new boolean[9];//2 valid buttons
+    inputs = new boolean[10];//2 valid buttons
   }
 
-  
+
   boolean isPressed(int code) {
     return inputs[code];
   }
   void press(int code) {
-    if(code == 'A')
+    if (code == 'A')
       inputs[C_LEFT] = true;
-    if(code == 'D')
+    if (code == 'D')
       inputs[C_RIGHT] = true;
-    if(code == 'W')
+    if (code == 'W')
       inputs[C_UP] = true;
-    if(code == 'S')
+    if (code == 'S')
       inputs[C_DOWN] = true;
-    if(code == '1')
+    if (code == '1')
       inputs[C_BasicAttack] = true;
-    if(code == '2')
+    if (code == '2')
       inputs[C_Ability1] = true;
-    if(code == '3')
+    if (code == '3')
       inputs[C_Ability2] = true;
-    if(code == 'T')
+    if (code == 'T')
       inputs[C_Target] = true;
-    if(code == ' ')
+    if (code == ' ')
       inputs[C_Confirm] = true;
+    if (code == ENTER || code == RETURN)
+      inputs[C_EndTurn] = true;
   }
   void release(int code) {
-    if(code == 'A')
-    inputs[C_LEFT] = false;
-    if(code == 'D')
-    inputs[C_RIGHT] = false;
-    if(code == 'W')
+    if (code == 'A')
+      inputs[C_LEFT] = false;
+    if (code == 'D')
+      inputs[C_RIGHT] = false;
+    if (code == 'W')
       inputs[C_UP] = false;
-    if(code == 'S')
+    if (code == 'S')
       inputs[C_DOWN] = false;
-    if(code == '1')
+    if (code == '1')
       inputs[C_BasicAttack] = false;
-    if(code == '2')
+    if (code == '2')
       inputs[C_Ability1] = false;
-    if(code == '3')
+    if (code == '3')
       inputs[C_Ability2] = false;
-    if(code == 'T')
+    if (code == 'T')
       inputs[C_Target] = false;
-    if(code == ' ')
+    if (code == ' ')
       inputs[C_Confirm] = false;
+    if (code == ENTER || code == RETURN)
+      inputs[C_EndTurn] = false;
   }
-  
-  
 }

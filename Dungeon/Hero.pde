@@ -1,48 +1,46 @@
-class Hero extends Character{
-  
-  public Hero(int maxHP, int X, int Y){
+class Hero extends Character {
+
+  public Hero(int maxHP, int X, int Y) {
     maxHealth = maxHP;
     health = maxHP;
     moveCap = 7;
     x = X;
     y = Y;
   }
-  
-  public String getType(){
+
+  public String getType() {
     return "hero";
   }
-  
-  public void move(){
+
+  public void move() {
   }
-  public void basicAttack(Enemy e){
+  public void basicAttack(Enemy e) {
     e.takeDmg(10);
     takeDmg(5);
   }
-  public void takeDmg(int x){
+  public void takeDmg(int x) {
     health -= x;
-    
   }
-  public int getHealth(){
+  public int getHealth() {
     return health;
   }
-  public void ability1(Enemy e){
-      e.takeDmg(3);
-      heal(5);
+  public void ability1(Enemy e) {
+    e.takeDmg(3);
+    heal(5);
   }
-  public void ability2(Enemy e){
+  public void ability2(Enemy e) {
   }
-  public void heal(int x){
+  public void heal(int x) {
     health += x;
-    if(health > maxHealth){
+    if (health > maxHealth) {
       health = maxHealth;
     }
   }
-  public boolean isDead(){
-    if( health > 0){
+  public boolean isDead() {
+    if ( health > 0) {
       return true;
-     }else{
+    } else {
       return false;
     }
   }
-  
 }

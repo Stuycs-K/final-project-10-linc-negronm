@@ -1,7 +1,7 @@
-class Enemy extends Character{
-  int moved; 
+class Enemy extends Character {
+  int moved;
   boolean attacked;
-  public Enemy(int maxHP, int X, int Y){
+  public Enemy(int maxHP, int X, int Y) {
     maxHealth = maxHP;
     health = maxHP;
     moveCap = 4;
@@ -10,41 +10,39 @@ class Enemy extends Character{
     moved =0;
     attacked = false;
   }
-  public String getType(){
+  public String getType() {
     return "enemy";
   }
-  
-  public int getY(){
+
+  public int getY() {
     return y;
   }
-  
-  public int getX(){
+
+  public int getX() {
     return x;
   }
-  
-  public int getHealth(){
+
+  public int getHealth() {
     return health;
   }
   
-
   
-  public String toString(){
+
+
+
+  public String toString() {
     return "Enemy: HP " + health + "(" + getX() + "," + getY() + ")";
   }
-  
-  public void move(){
+
+  public void move() {
   }
-  public void basicAttack(Hero h){
+  public void basicAttack(Hero h) {
     h.takeDmg(5);
   }
-  
-  public void takeDmg(int x){
+
+  public void takeDmg(int x) {
     health -= x;
   }
-  public void ability(){
-    
+  public void ability() {
   }
-  
-  
-  
 }
