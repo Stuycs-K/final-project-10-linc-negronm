@@ -31,16 +31,16 @@ public void enemyTurn() {
 
 public void pathFind(Enemy e, Hero h) {
   // keep moving x towards hero, then move y
-  if (e.getX() < h.x && (room.map[e.getY()][e.getX()+1].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy to the left and no wall
+  if (e.getX() < h.x && (room.map[e.getY()][e.getX()+1].isWall() == false && room.map[e.getY()][e.getX()+1].getChar() == null)) { // if enemy is left of hero and tile to right is not a wall or a character
     println(e.toString() + " moving right");
     room.swap(e.getX(), e.getY(), e.getX()+1, e.getY());
-  } else if (e.getX() > h.x && (room.map[e.getY()][e.getX()-1].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy to the right and no wall
+  } else if (e.getX() > h.x && (room.map[e.getY()][e.getX()-1].isWall() == false && room.map[e.getY()][e.getX()-1].getChar() == null)) { // enemy to the right and no wall
     println(e.toString() + " moving left");
     room.swap(e.getX(), e.getY(), e.getX()-1, e.getY());
-  } else if (e.getY() > h.y && (room.map[e.getY()-1][e.getX()].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy below and no wall
+  } else if (e.getY() > h.y && (room.map[e.getY()-1][e.getX()].isWall() == false && room.map[e.getY()-1][e.getX()].getChar() == null)) { // enemy below and no wall
     println(e.toString() + " moving up");
     room.swap(e.getX(), e.getY(), e.getX(), e.getY()-1);
-  } else if (e.getY() < h.y && (room.map[e.getY()+1][e.getX()].isWall() == false || room.map[e.getY()][e.getX()+1].getChar() != null)) { // enemy above and no wall
+  } else if (e.getY() < h.y && (room.map[e.getY()+1][e.getX()].isWall() == false && room.map[e.getY()+1][e.getX()].getChar() == null)) { // enemy above and no wall
     println(e.toString() + " moving down");
     room.swap(e.getX(), e.getY(), e.getX(), e.getY()+1);
   } else {
@@ -48,44 +48,7 @@ public void pathFind(Enemy e, Hero h) {
   }
   println("ENEMY AT: (" + e.getX() + "," + e.getY() + ")");
 }
-/*
-void traceBack(Enemy e) {
-  if (y >= 0 && y < room.map.length && x >= 0 && x < COLS) {
 
-    int dist = m.map[r][c];
-    if (dist > 0) {
-      m.map[r][c]= m.PATH;
-      int up = nextValue(m, r-1, c, dist-1);
-      int down = nextValue(m, r+1, c, dist-1);
-      int left = nextValue(m, r, c - 1, dist-1);
-      int right = nextValue(m, r, c + 1, dist-1);
-      int min = Math.min(up,Math.min(down,Math.min(left,right)));
-      if ( up == min ) {
-        traceBack(m, r-1, c);
-      } else if ( down == min ) {
-        traceBack(m, r+1, c);
-      } else if ( left == min ) {
-        traceBack(m, r, c-1);
-      } else if ( right == min ) {
-        traceBack(m, r, c+1);
-      }
-    }
-  }
-}
-
-int nextValue(int r, int c, int dist) {
-  try {
-    int value = m.map[r][c];
-    if(value >= 0){
-     return value; 
-    }
-  }
-  catch ( ArrayIndexOutOfBoundsException e) {
-    
-  }
-  return Integer.MAX_VALUE;
-}
-*/
 
 public void resetEnemyStates() {
   for (int i = 0; i < 6; i++) {
@@ -258,7 +221,7 @@ void draw() {
         countdown = 0;
         while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
           println("MOVED: " + room.enemies[i].moved);
-          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0) {// if enemy out of range
+          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
             countdown += 1000;

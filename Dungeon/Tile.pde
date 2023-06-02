@@ -2,12 +2,14 @@ class Tile {
   int x, y;
   Character chara;
   boolean isTargeted;
+  boolean isPath;
 
   public Tile(int xpos, int ypos) {
     x = xpos;
     y = ypos;
     chara = null;
     isTargeted = false;
+    isPath = false;
   }
 
   public Tile(int xpos, int ypos, Character character) {

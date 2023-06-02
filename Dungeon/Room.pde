@@ -69,11 +69,21 @@ class Room {
     moved.setY(desY);
     oldTile.setX(x);
     oldTile.setY(y);
-    if (moved.getChar() != null){
+    if (moved.getChar() != null) {
       moved.getChar().setX(desX);
       moved.getChar().setY(desY);
     }
     println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
+  }
+
+  public void dePath() {
+    for (int y = 0; y < map.length; y++) {
+      for (int x = 0; x < map[y].length; x++){
+        if (map[y][x].isPath){
+          map[y][x].isPath = false;
+        }
+      }
+    }
   }
 
   public void swapTarget(int x, int y) {
