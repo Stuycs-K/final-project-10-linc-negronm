@@ -153,21 +153,17 @@ class Room {
     enemies = new Enemy[6];
     enemyDist = new float[6];
     Enemy e;
+    int randx, randy;
+    int i = 0;
     while (enemyCount < 6) {
-      for (int y = 1; y < ySize-1; y++) {
-        for (int x = xSize/2; x < xSize-1; x++) {
-          r = random(0, 100);
-          if (r < 0.01 && map[y][x].isWall() == false) {
-            e = new Enemy(25, x, y);
-            map[y][x] = new Tile(x, y, e);
-            enemies[enemyCount] = e;
-            enemyCount++;
-            if (enemyCount > 6) {
-              x = xSize+1;
-              y = ySize+1;
-            }
-          }
-        }
+      randx = int(random(xSize/2, xSize));
+      randy = int(random(1, ySize-1));
+      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null){
+        e = new Enemy(25, randx, randy);
+        map[randy][randx].setChar(e);
+        enemyCount++;
+        enemies[i] = e;
+        i++;
       }
     }
   }
