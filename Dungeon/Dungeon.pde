@@ -101,6 +101,11 @@ void keyReleased() {
 void draw() {
   background(255);
   room.showRoom();
+  if(!(room.gameStarted)){
+    if (key == 'z') {
+      room.gameStarted = true;
+    }
+  }
   if (room.targeting) { //targetting mode
     noFill();
     stroke(0, 255, 255);
