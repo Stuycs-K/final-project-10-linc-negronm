@@ -216,10 +216,15 @@ class Room {
               fill(0, 0, 255);
               rect(x*20, y*20, 20, 20);
             } else if (map[y][x].getChar().getType().equals("enemy")) {
-              if (map[y][x].getChar().getHealth() <= 0) {
+              Character e = map[y][x].getChar();
+              if (e.getHealth() <= 0) {
                 fill(145, 105, 105);
-              } else {
+              } else if (e.getClassif().equals("skeleton")) {
                 fill(255, 0, 0);
+              } else if (e.getClassif().equals("warlock")) {
+                fill(150, 0, 255);
+              } else { 
+                fill (255, 0, 0);
               }
               rect(x*20, y*20, 20, 20);
             }

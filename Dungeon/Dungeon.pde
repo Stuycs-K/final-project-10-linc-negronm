@@ -259,7 +259,7 @@ void draw() {
             room.enemies[i].moved++;
           } else if (countdown  == 0) { // hero in range
             println(room.enemies[i].toString() + " attacking");
-            room.enemies[i].attack(room.hero);
+            room.enemies[i].attack(room);
             room.enemies[i].attacked = true;
           } else {
             countdown--;

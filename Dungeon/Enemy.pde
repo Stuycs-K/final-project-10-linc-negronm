@@ -1,5 +1,7 @@
 class Enemy extends Character {
+  public int abilityCounter;
   int moved;
+  int stunCounter;
   boolean attacked;
   public Enemy(int maxHP, int X, int Y) {
     maxHealth = maxHP;
@@ -9,12 +11,13 @@ class Enemy extends Character {
     y = Y;
     moved =0;
     attacked = false;
+    abilityCounter = 0;
   }
   public String getType() {
     return "enemy";
   }
-  
-  public String getClassif(){
+
+  public String getClassif() {
     return "enemy";
   }
 
@@ -29,8 +32,16 @@ class Enemy extends Character {
   public int getHealth() {
     return health;
   }
+
+  public int getMaxHealth() {
+    return maxHealth;
+  }
   
-  
+  public void setHealth(int x){
+    health = x;
+  }
+
+
 
 
 
@@ -50,11 +61,11 @@ class Enemy extends Character {
   public void ability() {
     takeDmg(-2);
   }
-  
-  public void attack(Hero h){
-    if (random(1) > .5){
-      basicAttack(h);
-    }else{
+
+  public void attack(Room r) {
+    if (random(1) > .5) {
+      basicAttack(r.hero);
+    } else {
       ability();
     }
   }
