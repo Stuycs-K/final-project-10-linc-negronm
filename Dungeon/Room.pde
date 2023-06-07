@@ -9,6 +9,7 @@ class Room {
   public Enemy[] enemies;
   public float[] enemyDist;
   public Hero hero;
+  public boolean gameStarted;
 
   public Room(int xsize, int ysize) {
     map = new Tile[ysize][xsize];
@@ -23,6 +24,7 @@ class Room {
     targX = heroX;
     targY = heroY;
     hero = new Hero(500, heroX, heroY);
+    gameStarted = false;
   }
 
   public void rotateMap() {
@@ -171,7 +173,18 @@ class Room {
   }
 
   public void showRoom() {
-    if (hero.getHealth() <= 0) {
+    if(!(gameStarted)){
+       background(0);
+      fill(255, 0, 0);
+      textAlign(CENTER);
+      text("DUNGEON", width/2, height/4);
+      text("Character Select", width/2, height/2);
+      fill(0, 0, 255);
+      rect(width/2 -40, 460,80, 80);
+      fill(255,255,255);
+      text("z", width/2, 510);
+    }
+    else if (hero.getHealth() <= 0) {
       background(0);
       fill(255, 0, 0);
       textAlign(CENTER);

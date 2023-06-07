@@ -7,6 +7,7 @@ int heroMoved = 0;
 int abilityRange;
 int ability;
 int abilitiesUsed;
+int enemiesKilled =0;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -100,6 +101,11 @@ void keyReleased() {
 void draw() {
   background(255);
   room.showRoom();
+  if(!(room.gameStarted)){
+    if (key == 'z') {
+      room.gameStarted = true;
+    }
+  }
   if (room.targeting) { //targetting mode
     noFill();
     stroke(0, 255, 255);
@@ -110,6 +116,7 @@ void draw() {
   fill(0);
   text("Hero moves left: "+(8-heroMoved), 670, 150);
   text("Hero abilities left: "+(2-abilitiesUsed), 670, 210);
+  text("Kills needed: "+ (4-enemiesKilled), 670, 240);
   if (heroMoved > 7) {
     textSize(27);
     fill(255, 0, 0);
@@ -120,7 +127,14 @@ void draw() {
   up = room.map[room.heroY-1][room.heroX];
   down = room.map[room.heroY+1][room.heroX];
   if (heroTurn) {
-    if( room.heroX == room.exitX && room.heroY == room.exitY){ //if hero is at the exit, make a new room, reset the hero moves but keep health
+    int deadCounter =0;
+    for(int i =0; i< room.enemies.length; i++){
+      if(room.enemies[i].health <= 0){
+        deadCounter +=1;
+      }
+    }
+    enemiesKilled =deadCounter;
+    if( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4){ //if hero is at the exit, make a new room, reset the hero moves but keep health
       int damageTaken = room.hero.maxHealth - room.hero.health;
       room = new Room(33, 33);
       room.generateRoom();

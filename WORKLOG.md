@@ -47,3 +47,15 @@ Wrote a controller class using the Konstantinovich model as a base, then impleme
 ### 5/25
 
 Wrote methods to switch between enemy and hero turns, also implemented a move cap for the hero and enemy.
+
+## 5/30
+
+Wrote code during an enemies turn to simulate the enemies movement and attacks, made the enemies try to move towards the hero
+
+## 6/1
+
+Wrote code to check if the hero is at the exit and as such will enter the next room with the same amount of hp
+
+## 6/5
+
+Made a minimum requirement for enemies killed to advance to the next room, created the basics of a TreasureTile class to give random buffs to the player, write code for a character select screen.
