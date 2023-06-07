@@ -2,6 +2,7 @@ class Room {
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
+  private String[] enemyClasses = new String[]{"skeleton"};
   public int ySize, xSize;
   public int heroX, heroY;
   public boolean targeting;
@@ -59,6 +60,16 @@ class Room {
       }
     }
     return wall;
+  }
+  
+  private Enemy chooseEnemy(int i, int X, int Y){
+    Enemy e;
+    if (i == 0){
+      e = new Skeleton(X, Y);
+    }else{
+      e = new Enemy(10, X, Y);
+    }
+    return e;
   }
 
   public void swap(int x, int y, int desX, int desY) {
@@ -153,13 +164,14 @@ class Room {
     enemies = new Enemy[6];
     enemyDist = new float[6];
     Enemy e;
-    int randx, randy;
+    int randx, randy, randClass;
     int i = 0;
     while (enemyCount < 6) {
       randx = int(random(xSize/2, xSize));
       randy = int(random(1, ySize-1));
       if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null){
-        e = new Enemy(25, randx, randy);
+        randClass = int(random(0,enemyClasses.length));
+        e = chooseEnemy(randClass, randx, randy);
         map[randy][randx].setChar(e);
         enemyCount++;
         enemies[i] = e;

@@ -13,6 +13,10 @@ class Enemy extends Character {
   public String getType() {
     return "enemy";
   }
+  
+  public String getClassif(){
+    return "enemy";
+  }
 
   public int getY() {
     return y;
@@ -44,5 +48,14 @@ class Enemy extends Character {
     health -= x;
   }
   public void ability() {
+    takeDmg(-2);
+  }
+  
+  public void attack(Hero h){
+    if (random(1) > .5){
+      basicAttack(h);
+    }else{
+      ability();
+    }
   }
 }
