@@ -30,6 +30,10 @@ Added rudimentary pathfinding system. Enemies will move left towards the hero ho
 
 Polished up pathfinding system, removed bugs that would cause enemies to get stuck on each other and phase thru walls.
 
+## 6/6
+
+Added skeleton code for future enemy subclasses, fixed enter spamming
+
 ## Curt Lin
 
 ### 5/22
