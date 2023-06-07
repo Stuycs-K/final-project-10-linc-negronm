@@ -1,5 +1,8 @@
 class Hero extends Character {
   float damageBuff;
+  int[] basicStats; //for each move index 0 is the range of the attack, index 1 is the cooldown of the move, index 2 is the last move count that the move was used
+  int[] ability1Stats;
+  int[] ability2Stats;
   public Hero(int maxHP, int X, int Y) {
     maxHealth = maxHP;
     health = maxHP;
@@ -7,6 +10,9 @@ class Hero extends Character {
     x = X;
     y = Y;
     damageBuff =1.0;
+    basicStats = new int[3];
+    ability1Stats = new int[3];
+    ability2Stats = new int[3];
   }
 
   public String getType() {
