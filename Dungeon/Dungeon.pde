@@ -2,9 +2,9 @@ Room room;
 Controller keyboardInput;
 int countdown; //timer variable
 boolean heroTurn =false;
-String heroType;
 boolean enemyTurn =false;
 int heroMoved = 0;
+String heroType;
 int abilityRange;
 int ability;
 int abilitiesUsed;
@@ -72,7 +72,7 @@ public float enemyDistToHero(Enemy e, Hero h) {
   return dist(e.x * 20, e.y*20, h.x *20, h.y *20);
 }
 public float enemyDistToHero(Enemy e, int x, int y) {
-  return dist(e.x * 20, e.y*20 , x *20, y *20);
+  return dist(e.x * 20, e.y*20, x *20, y *20);
 }
 
 public void enemyTurnEnd() {
@@ -108,9 +108,9 @@ void setup() {
 void keyPressed() {
   keyboardInput.press(keyCode);
   if (key == 'r') {
-    room.generateRoom();
+    room = new Room(33, 33, heroType);
     gameStarted = false;
-    room.gameStarted = false;
+    room.generateRoom();
     roomNum = 0;
     heroMoved =0;
     turnNum = 0;
@@ -124,6 +124,7 @@ void keyPressed() {
   if (key == 'z' && gameStarted == false) {
     heroType = "mage";
     room = new Room(33, 33, heroType);
+    println("gamestart");
     gameStarted = true;
     room.gameStarted = true;
     room.generateRoom();
@@ -145,6 +146,7 @@ void draw() {
   background(255);
   room.showRoom();
   if (gameStarted) {
+    println("GAME ON!!!");
     if (room.targeting) { //targeting mode
       noFill();
       stroke(0, 255, 255);
@@ -155,91 +157,6 @@ void draw() {
     if (room.gameStarted) {
       printStats();
     }
-<<<<<<< HEAD
-    enemiesKilled =deadCounter;
-    if ( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4) { //if hero is at the exit, make a new room, reset the hero moves but keep health
-      int damageTaken = room.hero.maxHealth - room.hero.health;
-      room = new Room(33, 33);
-      room.generateRoom();
-      roomNum++;
-      heroMoved =0;
-      room.hero.takeDmg(damageTaken);
-    } else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
-      countdown+=30;
-      if (keyboardInput.isPressed(Controller.C_LEFT)) {
-        if (room.targeting) { //for a direction does targetting to check range
-          if (room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
-            room.swapTarget(room.targX-1, room.targY);
-          } else {
-            println("Out of ability range!");
-          }
-        } else if (!(room.map[room.heroY][room.heroX-1].isWall() || left.getChar() != null && left.getChar().getType().equals("enemy"))) {
-          room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY); // movement in a direction
-          room.heroX -= 1;
-          room.hero.x--;
-          heroMoved +=1;
-          println(heroMoved);
-        }
-      }
-      if (keyboardInput.isPressed(Controller.C_UP)) {
-        if (room.targeting) {
-          if (room.map[room.targY-1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
-            room.swapTarget(room.targX, room.targY-1);
-          } else {
-            println("Out of ability range!");
-          }
-        } else if (!(room.map[room.heroY-1][room.heroX].isWall() || up.getChar() != null && up.getChar().getType().equals("enemy"))) {
-          room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);
-          room.heroY -= 1;
-          room.hero.y--;
-          heroMoved +=1;
-        }
-      }
-      if (keyboardInput.isPressed(Controller.C_DOWN)) {
-        if (room.targeting) {
-          if (room.map[room.targY+1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
-            room.swapTarget(room.targX, room.targY+1);
-          } else {
-            println("Out of ability range!");
-          }
-        } else if (!(room.map[room.heroY+1][room.heroX].isWall() || down.getChar() != null && down.getChar().getType().equals("enemy"))) {
-          room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1);
-          room.heroY += 1;
-          room.hero.y++;
-          heroMoved +=1;
-        }
-      }
-      if (keyboardInput.isPressed(Controller.C_RIGHT)) {
-        if (room.targeting) {
-          if (room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
-            room.swapTarget(room.targX+1, room.targY);
-          } else {
-            println("Out of ability range!");
-          }
-        } else if (!(room.map[room.heroY][room.heroX+1].isWall() || right.getChar() != null && right.getChar().getType().equals("enemy"))) {
-          room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY);
-          room.heroX += 1;
-          room.hero.x++;
-          heroMoved +=1;
-        }
-      }
-      if (keyboardInput.isPressed(Controller.C_Confirm)) {
-        if (room.targeting) {
-          if (abilitiesUsed >= 2) {
-            println("CANNOT USE MORE ABILITIES!");
-          } else if (ability == BASICATTACK) {
-            room.attack(BASICATTACK);
-            abilitiesUsed++;
-          } else if (ability == ABILITY1) {
-            room.attack(ABILITY1);
-            abilitiesUsed++;
-          }
-          else if (ability == ABILITY2) {
-            room.attack(ABILITY2);
-            abilitiesUsed++;
-          }
-=======
->>>>>>> marcus
 
     if (heroMoved > 7) {
       textSize(27);
@@ -261,7 +178,6 @@ void draw() {
       enemiesKilled =deadCounter;
       if ( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4) { //if hero is at the exit, make a new room, reset the hero moves but keep health
         int damageTaken = room.hero.maxHealth - room.hero.health;
-        room = new Room(33, 33, heroType);
         room.generateRoom();
         roomNum++;
         heroMoved =0;
@@ -335,43 +251,30 @@ void draw() {
             } else if (ability == ABILITY1) {
               room.attack(ABILITY1);
               abilitiesUsed++;
+            } else if (ability == ABILITY2) {
+              room.attack(ABILITY2);
+              abilitiesUsed++;
             }
 
             room.targetMode();
           }
         }
-        if (keyboardInput.isPressed(Controller.C_BasicAttack)) {
+        if (keyboardInput.isPressed(Controller.C_BasicAttack) && (turnNum >= room.hero.basicStats[1] + room.hero.basicStats[2])) {
           ability = 0;
-          abilityRange = 5;
+          abilityRange = room.hero.basicStats[0];
+          room.hero.basicStats[2] = turnNum;
           room.targetMode();
         }
-<<<<<<< HEAD
-      }
-      if (keyboardInput.isPressed(Controller.C_BasicAttack) && (turnNum >= room.hero.basicStats[1] + room.hero.basicStats[2])){
-        ability = 0;
-        abilityRange = room.hero.basicStats[0];
-        room.hero.basicStats[2] = turnNum;
-        room.targetMode();
-      }
-      if (keyboardInput.isPressed(Controller.C_Ability1)&& (turnNum >= room.hero.ability1Stats[1] + room.hero.ability1Stats[2])){
-        ability = 1;
-        abilityRange = room.hero.ability1Stats[0];
-        room.hero.ability1Stats[2] = turnNum;
-        room.targetMode();
-      }
-      if (keyboardInput.isPressed(Controller.C_Ability2)&& (turnNum >= room.hero.ability2Stats[1] + room.hero.ability2Stats[2])){
-        ability = 2;
-        abilityRange = room.hero.ability2Stats[0];
-        room.hero.ability2Stats[2] = turnNum;
-        room.targetMode();
-      }
-      if (keyboardInput.isPressed(Controller.C_EndTurn)) {
-        if (room.targeting){
-=======
-        if (keyboardInput.isPressed(Controller.C_Ability1)) {
+        if (keyboardInput.isPressed(Controller.C_Ability1)&& (turnNum >= room.hero.ability1Stats[1] + room.hero.ability1Stats[2])) {
           ability = 1;
-          abilityRange = 3;
->>>>>>> marcus
+          abilityRange = room.hero.ability1Stats[0];
+          room.hero.ability1Stats[2] = turnNum;
+          room.targetMode();
+        }
+        if (keyboardInput.isPressed(Controller.C_Ability2)&& (turnNum >= room.hero.ability2Stats[1] + room.hero.ability2Stats[2])) {
+          ability = 2;
+          abilityRange = room.hero.ability2Stats[0];
+          room.hero.ability2Stats[2] = turnNum;
           room.targetMode();
         }
         if (keyboardInput.isPressed(Controller.C_EndTurn)) {
@@ -401,12 +304,11 @@ void draw() {
             println("MOVED: " + room.enemies[i].moved);
             float eDist = enemyDistToHero(room.enemies[i], room.hero);
             if (eDist >= 80 && room.enemies[i].getHealth() > 0) {// if enemy out of range
-              println(eDist + "pixels away");
+              println(eDist + "tiles away");
               println(i + " " + room.enemies[i].toString() + " attempting to move");
               pathFind(room.enemies[i], room.hero);
               room.enemies[i].moved++;
             } else { // hero in range
-              println(eDist + "pixels away");
               println(room.enemies[i].toString() + " attacking");
               room.enemies[i].attack(room);
               room.enemies[i].attacked = true;
