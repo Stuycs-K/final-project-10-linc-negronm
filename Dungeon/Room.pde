@@ -267,4 +267,110 @@ class Room {
     result += enemies[enemies.length-1].toString() + "]";
     println(result);
   }
+  
+  public boolean isWallBetween(int X, int Y, int desX, int desY){ //checks if a wall Tile exists between two tiles
+    boolean result = false;
+    if(desX > X){
+      if(desY > Y){
+      for(int i =X; i <=desX; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+          if(map[i][desY].isWall()){
+          result = true;
+          }
+        }
+        for(int i =Y; i <=desY; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+          if(map[desX][i].isWall()){
+          result = true;
+          }
+        }
+      }else if( desY == Y){
+        for(int i =X; i <=desX; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+        }
+      } else{
+        for(int i =X; i <=desX; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+          if(map[i][desY].isWall()){
+          result = true;
+          }
+        }
+        for(int i =desY; i <=Y; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+          if(map[desX][i].isWall()){
+          result = true;
+          }
+        }
+      }
+    }else if( desX == X){
+      if(desY > Y){
+        for(int i =Y; i <=desY; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+        }
+      }else if( desY == Y){
+        result =map[X][Y].isWall();
+      } else{
+        for(int i =desY; i <=Y; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+        }
+      }
+    } else{
+      if(desY > Y){
+      for(int i =desX; i <=X; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+          if(map[i][desY].isWall()){
+          result = true;
+          }
+        }
+        for(int i =Y; i <=desY; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+          if(map[desX][i].isWall()){
+          result = true;
+          }
+        }
+      }else if( desY == Y){
+        for(int i =desX; i <=X; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+        }
+      } else{
+        for(int i =desX; i <=X; i++){
+          if(map[i][Y].isWall()){
+          result = true;
+          }
+          if(map[i][desY].isWall()){
+          result = true;
+          }
+        }
+        for(int i =desY; i <=Y; i++){
+          if(map[X][i].isWall()){
+          result = true;
+          }
+          if(map[desX][i].isWall()){
+          result = true;
+          }
+        }
+      }
+    }
+    return result;
+  }
 }
