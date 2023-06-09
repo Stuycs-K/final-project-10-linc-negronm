@@ -8,7 +8,10 @@ int abilityRange;
 int ability;
 int abilitiesUsed;
 int turnNum;
+int roomNum = 0;
 int enemiesKilled =0;
+int cash = 0;
+PImage bg;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -71,7 +74,19 @@ public void enemyTurnEnd() {
   heroTurn();
 }
 
+public void printStats() {
+  textAlign(CORNER);
+  textSize(24);
+  fill(0);
+  text("Coins: " + cash, 670, 30);
+  text("Hero moves left: "+(8-heroMoved), 670, 60);
+  text("Hero abilities left: "+(2-abilitiesUsed), 670, 90);
+  text("Kills needed: "+ (4-enemiesKilled), 670, 120);
+  text("Turn Number: " + turnNum, 670, 150);
+}
+
 void setup() {
+  bg = loadImage("bg.png");
   background(255);
   size(960, 660);
   room.generateRoom();
@@ -89,6 +104,7 @@ void keyPressed() {
   if (key == 'r') {
     room = new Room(33, 33);
     room.generateRoom();
+    roomNum = 0;
     heroMoved =0;
     turnNum = 0;
   }
@@ -113,14 +129,12 @@ void draw() {
     stroke(0, 255, 255);
     strokeWeight(5);
     circle(room.heroX*20+10, room.heroY*20+10, abilityRange*40);
+    strokeWeight(1);
   }
-  textSize(24);
-  fill(0);
-  text("Hero moves left: "+(8-heroMoved), 670, 150);
-  text("Hero abilities left: "+(2-abilitiesUsed), 670, 210);
-  text("Kills needed: "+ (4-enemiesKilled), 670, 240);
-  text("Turn Number: " + turnNum, 670, 270);
-  text("countdown: " + countdown, 670, 300);
+  if (room.gameStarted) {
+    printStats();
+  }
+
   if (heroMoved > 7) {
     textSize(27);
     fill(255, 0, 0);
@@ -130,7 +144,7 @@ void draw() {
   right = room.map[room.heroY][room.heroX+1];
   up = room.map[room.heroY-1][room.heroX];
   down = room.map[room.heroY+1][room.heroX];
-  
+
   if (heroTurn) {
     int deadCounter =0;
     for (int i =0; i< room.enemies.length; i++) {
@@ -143,6 +157,7 @@ void draw() {
       int damageTaken = room.hero.maxHealth - room.hero.health;
       room = new Room(33, 33);
       room.generateRoom();
+      roomNum++;
       heroMoved =0;
       room.hero.takeDmg(damageTaken);
     } else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
@@ -230,44 +245,48 @@ void draw() {
         room.targetMode();
       }
       if (keyboardInput.isPressed(Controller.C_EndTurn)) {
+        if (room.targeting){
+          room.targetMode();
+        }
         turnNum++;
         heroTurnEnd();
       }
-      
     }
-    
-    
-      
+
+
+
     if (countdown > 0) {
       countdown --;
     }
     if (!keyPressed) {
       countdown = 0;
     }
-    
- 
+
+
     if (enemyTurn) {
 
       for (int i = 0; i < room.enemies.length; i++) {
         countdown = 0;
         while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
           println("MOVED: " + room.enemies[i].moved);
-          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+          float eDist = enemyDistToHero(room.enemies[i], room.hero);
+          if (eDist >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+            println(eDist + "tiles away");
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
-            countdown += 1000;
+            countdown += 500;
             room.enemies[i].moved++;
           } else if (countdown  == 0) { // hero in range
             println(room.enemies[i].toString() + " attacking");
-            room.enemies[i].attack(room.hero);
+            room.enemies[i].attack(room);
             room.enemies[i].attacked = true;
           } else {
             countdown--;
           }
+          
         }
       }
       enemyTurnEnd();
     }
   }
-  
 }

@@ -18,6 +18,10 @@ class Hero extends Character {
   public String getType() {
     return "hero";
   }
+  
+  public String getClassif(){
+    return "hero";
+  }
 
   public void move() {
   }

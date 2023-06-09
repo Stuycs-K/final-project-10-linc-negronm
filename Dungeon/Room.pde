@@ -2,15 +2,18 @@ class Room {
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
-  private String[] enemyClasses = new String[]{"skeleton"};
+  private String[] enemyClasses = new String[]{"skeleton", "warlock"};
   public int ySize, xSize;
   public int heroX, heroY;
   public boolean targeting;
   public int targX, targY;
+  public int warlockCt;
   public Enemy[] enemies;
   public float[] enemyDist;
   public Hero hero;
   public boolean gameStarted;
+  
+  
 
   public Room(int xsize, int ysize) {
     map = new Tile[ysize][xsize];
@@ -24,7 +27,8 @@ class Room {
     targeting = false;
     targX = heroX;
     targY = heroY;
-    hero = new Hero(500, heroX, heroY);
+    hero = new Hero(150, heroX, heroY);
+    warlockCt = 0;
     gameStarted = false;
   }
 
@@ -61,12 +65,14 @@ class Room {
     }
     return wall;
   }
-  
-  private Enemy chooseEnemy(int i, int X, int Y){
+
+  private Enemy chooseEnemy(int i, int X, int Y) {
     Enemy e;
-    if (i == 0){
+    if (i == 0) {
       e = new Skeleton(X, Y);
-    }else{
+    } else if (i == 1) {
+      e = new Warlock(X, Y);
+    } else {
       e = new Enemy(10, X, Y);
     }
     return e;
@@ -91,8 +97,8 @@ class Room {
 
   public void dePath() {
     for (int y = 0; y < map.length; y++) {
-      for (int x = 0; x < map[y].length; x++){
-        if (map[y][x].isPath){
+      for (int x = 0; x < map[y].length; x++) {
+        if (map[y][x].isPath) {
           map[y][x].isPath = false;
         }
       }
@@ -169,8 +175,14 @@ class Room {
     while (enemyCount < 6) {
       randx = int(random(xSize/2, xSize));
       randy = int(random(1, ySize-1));
-      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null){
-        randClass = int(random(0,enemyClasses.length));
+      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
+        randClass = int(random(0, enemyClasses.length));
+        while (randClass == 1 && warlockCt >= 2){
+          randClass = int(random(0, enemyClasses.length));
+        }
+        if (randClass == 1){
+          warlockCt++;
+        }
         e = chooseEnemy(randClass, randx, randy);
         map[randy][randx].setChar(e);
         enemyCount++;
@@ -181,22 +193,40 @@ class Room {
   }
 
   public void showRoom() {
-    if(!(gameStarted)){
-       background(0);
+    if (!(gameStarted)) {
+      background(0);
+      image(bg, 0, 0);
       fill(255, 0, 0);
       textAlign(CENTER);
-      text("DUNGEON", width/2, height/4);
-      text("Character Select", width/2, height/2);
+      textSize(48);
+      text("CALIGINOUS CELLAR", width/2, 80);
+      textSize(24);
+      text("How far can you get?", width/2, 110);
+      textSize(32);
+      textAlign(CORNER);
+      text("Select a character to continue:", 20, 3*height/4);
       fill(0, 0, 255);
-      rect(width/2 -40, 460,80, 80);
-      fill(255,255,255);
-      text("z", width/2, 510);
-    }
-    else if (hero.getHealth() <= 0) {
+      stroke(255);
+      rect(20, 510, 80, 80);
+      fill(255);
+      textAlign(CENTER);
+      text("Z", 60, 560);
+      text("Mage", 60, 620);
+      textSize(24);
+      text("WASD to move/target", width/2, 160);
+      text("1, 2, 3 to select/deselect abilities", width/2, 190);
+      text("SPACE to confirm a hit", width/2, 220);
+      text("ENTER to end a turn", width/2, 250);
+    } else if (hero.getHealth() <= 0) {
       background(0);
       fill(255, 0, 0);
       textAlign(CENTER);
-      text("GAME OVER! \n PRESS R TO RESTART.", width/2, height/2);
+      textSize(48);
+      text("GAME OVER!", width/2, height/4);
+      fill(255);
+      textSize(24);
+      text("You made it " + roomNum + " rooms.", width/2, height/4 + 50);
+      text("Press 'R' to restart.", width/2, height/4 + 80);
     } else {
       textAlign(LEFT);
       int x = 0;
@@ -216,17 +246,23 @@ class Room {
               fill(0, 0, 255);
               rect(x*20, y*20, 20, 20);
             } else if (map[y][x].getChar().getType().equals("enemy")) {
-              if (map[y][x].getChar().getHealth() <= 0) {
+              Character e = map[y][x].getChar();
+              if (e.getHealth() <= 0) {
                 fill(145, 105, 105);
-              } else {
+              } else if (e.getClassif().equals("skeleton")) {
                 fill(255, 0, 0);
+              } else if (e.getClassif().equals("warlock")) {
+                fill(150, 0, 255);
+              } else {
+                fill (255, 0, 0);
               }
               rect(x*20, y*20, 20, 20);
             }
             fill(0);
             textSize(14);
             if (map[y][x].getChar().health > 0) {
-              text(map[y][x].getChar().health, x*20+3, y*20);
+              textAlign(CENTER);
+              text(map[y][x].getChar().health, x*20+10, y*20);
             }
           } else {
             fill(200);
@@ -235,6 +271,7 @@ class Room {
 
           fill(255);
           textSize(8);
+          textAlign(CORNER);
           text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
           if (targeting && map[y][x].isTargeted) {
             noFill();
@@ -251,11 +288,6 @@ class Room {
       }
       textSize(24);
       fill(0);
-      text("Press WASD to move", 670, 30);
-      text("Targeting: "+targeting, 670, 60);
-      text("Hero position: "+heroX+", "+heroY, 670, 90);
-      text("Targeting position: "+targX+", "+targY, 670, 120);
-      text("Enemies killed: " + enemiesKilled, 670, 180);
     }
   }
 
