@@ -19,12 +19,21 @@ class Warlock extends Enemy {
       }
     }
     stunCounter = 2;
+    isStunned = true;
     abilityCounter = 0;
   }
 
   public void attack(Room r) {
+    if (health <= 0){
+      return;
+    }
     if (stunCounter > 0) {
       stunCounter--;
+      println("i am stunned");
+      if (stunCounter <= 0){
+        isStunned = false;
+      }
+      return;
     } else {
       if (abilityCounter >= 10 && random(1) > 0.5) {
         ability(r.enemies);

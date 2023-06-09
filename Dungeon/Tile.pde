@@ -18,8 +18,8 @@ class Tile {
     chara = character;
     isTargeted = false;
   }
-  
-  public String toString(){
+
+  public String toString() {
     return "Tile at: " + x + ", " + y;
   }
 
@@ -29,6 +29,23 @@ class Tile {
 
   public Character getChar() {
     return chara;
+  }
+
+  public boolean hasChar() {
+    if (chara == null) {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean hasEnemy() {
+    if (chara == null) {
+      return false;
+    } else if (chara.getType().equals("enemy")) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void target() {

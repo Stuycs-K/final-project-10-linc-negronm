@@ -27,8 +27,8 @@ class Room {
     targeting = false;
     targX = heroX;
     targY = heroY;
-    if (HERO.equals("mage")){
-      hero = new Mage(150, heroX, heroY);
+    if (HERO.equals("mage")) {
+      hero = new Mage(500, heroX, heroY);
     } else {
       hero = new Hero(150, heroX, heroY);
     }
@@ -83,7 +83,7 @@ class Room {
   }
 
   public void swap(int x, int y, int desX, int desY) {
-    println("tile at (" + x + "," + y + ") now at (" + desX + "," + desY + ")");
+    //println("tile at (" + x + "," + y + ") now at (" + desX + "," + desY + ")");
     Tile oldTile = map[desY][desX];
     Tile moved = map[y][x];
     map[desY][desX] = moved;
@@ -96,7 +96,7 @@ class Room {
       moved.getChar().setX(desX);
       moved.getChar().setY(desY);
     }
-    println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
+    //println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
   }
 
   public void dePath() {
@@ -126,16 +126,19 @@ class Room {
       if (map[enemies[i].getY()][enemies[i].getX()].isTargeted && enemies[i].getHealth() > 0) {
         if (ability == Dungeon.BASICATTACK) {
           hero.basicAttack(enemies[i]);
+          abilitiesUsed++;
         } else if (ability == Dungeon.ABILITY1) {
-          if(hero.isMage()){
-          hero.ability1(this);
-          }else{
-          hero.ability1(enemies[i]);
+          if (hero.isMage()) {
+            hero.ability1(this);
+            abilitiesUsed++;
+          } else {
+            hero.ability1(enemies[i]);
+            abilitiesUsed++;
           }
-        } 
-        else if (ability == Dungeon.ABILITY2) {
+        } else if (ability == Dungeon.ABILITY2) {
           hero.ability2(enemies[i]);
-        }else {
+          abilitiesUsed++;
+        } else {
           println("invalid ability");
         }
         if (enemies[i].getHealth() <= 0) {
@@ -289,9 +292,18 @@ class Room {
             stroke(255, 255, 0);
             rectMode(CENTER);
             rect(x*20+10, y*20+10, 10, 10);
-            rectMode(CORNER);
-            stroke(255);
           }
+          if (map[y][x].hasEnemy() && map[y][x].getChar().isStunned()) {
+            println("stunned");
+            noFill();
+            stroke(255, 255, 0);
+            rectMode(CENTER);
+            strokeWeight(4);
+            rect(x*20+10, y*20+10, 18, 18);
+            strokeWeight(1);
+          }
+          rectMode(CORNER);
+          stroke(255);
           y++;
         }
         x++;
@@ -484,7 +496,9 @@ class Room {
         textSize(18);
         textAlign(CORNER);
         text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-        text(" - A skeleton! Your basic trash mob.", width/2-30, height/2-95); //Description
+        text(" - A skeleton! Your basic trash mob.\n" +
+          " - Can attack you, or use a\n" +
+          " devastating special attack", width/2-30, height/2-95); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       } else if (tchar.getClassif().equals("warlock")) {

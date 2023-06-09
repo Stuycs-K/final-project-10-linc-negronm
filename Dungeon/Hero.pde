@@ -19,6 +19,10 @@ class Hero extends Character {
     return "hero";
   }
   
+  public boolean isStunned() {
+    return false;
+  }
+  
   public String getClassif(){
     return "hero";
   }

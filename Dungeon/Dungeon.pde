@@ -23,18 +23,18 @@ Tile left, right, up, down;
 
 //turns methods
 public void heroTurn() {
-  println("hero turn start");
+  //println("hero turn start");
   heroMoved =0;
   abilitiesUsed = 0;
   heroTurn = true;
 }
 public void heroTurnEnd() {
-  println("hero turn end");
+  //println("hero turn end");
   heroTurn = false;
   enemyTurn();
 }
 public void enemyTurn() {
-  println("enemy turn start");
+  //println("enemy turn start");
   resetEnemyStates();
   enemyTurn = true;
 }
@@ -42,21 +42,21 @@ public void enemyTurn() {
 public void pathFind(Enemy e, Hero h) {
   // keep moving x towards hero, then move y
   if (e.getX() < h.x && (room.map[e.getY()][e.getX()+1].isWall() == false && room.map[e.getY()][e.getX()+1].getChar() == null)) { // if enemy is left of hero and tile to right is not a wall or a character
-    println(e.toString() + " moving right");
+    //println(e.toString() + " moving right");
     room.swap(e.getX(), e.getY(), e.getX()+1, e.getY());
   } else if (e.getX() > h.x && (room.map[e.getY()][e.getX()-1].isWall() == false && room.map[e.getY()][e.getX()-1].getChar() == null)) { // enemy to the right and no wall
-    println(e.toString() + " moving left");
+    //println(e.toString() + " moving left");
     room.swap(e.getX(), e.getY(), e.getX()-1, e.getY());
   } else if (e.getY() > h.y && (room.map[e.getY()-1][e.getX()].isWall() == false && room.map[e.getY()-1][e.getX()].getChar() == null)) { // enemy below and no wall
-    println(e.toString() + " moving up");
+    //println(e.toString() + " moving up");
     room.swap(e.getX(), e.getY(), e.getX(), e.getY()-1);
   } else if (e.getY() < h.y && (room.map[e.getY()+1][e.getX()].isWall() == false && room.map[e.getY()+1][e.getX()].getChar() == null)) { // enemy above and no wall
-    println(e.toString() + " moving down");
+    //println(e.toString() + " moving down");
     room.swap(e.getX(), e.getY(), e.getX(), e.getY()+1);
   } else {
-    println("couldn't move");
+    //println("couldn't move");
   }
-  println("ENEMY AT: (" + e.getX() + "," + e.getY() + ")");
+  //println("ENEMY AT: (" + e.getX() + "," + e.getY() + ")");
 }
 
 
@@ -65,7 +65,7 @@ public void resetEnemyStates() {
     room.enemies[i].attacked = false;
     room.enemies[i].moved = 0;
   }
-  println("----------------------------------------------------------------------------------------FINISHED LOOP");
+  //println("----------------------------------------------------------------------------------------FINISHED LOOP");
 }
 
 public float enemyDistToHero(Enemy e, Hero h) {
@@ -76,7 +76,7 @@ public float enemyDistToHero(Enemy e, int x, int y) {
 }
 
 public void enemyTurnEnd() {
-  println("enemy turn end");
+  //println("enemy turn end");
   enemyTurn = false;
   heroTurn();
 }
@@ -89,7 +89,8 @@ public void printStats() {
   text("Hero moves left: "+(8-heroMoved), 670, 60);
   text("Hero abilities left: "+(2-abilitiesUsed), 670, 90);
   text("Kills needed: "+ (4-enemiesKilled), 670, 120);
-  text("Turn Number: " + turnNum, 670, 150);
+  text("Turn number: " + turnNum, 670, 150);
+  text("Room number: " + roomNum, 670, 180);
 }
 
 void setup() {
@@ -124,7 +125,7 @@ void keyPressed() {
   if (key == 'z' && gameStarted == false) {
     heroType = "mage";
     room = new Room(33, 33, heroType);
-    println("gamestart");
+    //println("gamestart");
     gameStarted = true;
     room.gameStarted = true;
     room.generateRoom();
@@ -146,7 +147,7 @@ void draw() {
   background(255);
   room.showRoom();
   if (gameStarted) {
-    println("GAME ON!!!");
+    //println("GAME ON!!!");
     if (room.targeting) { //targeting mode
       noFill();
       stroke(0, 255, 255);
@@ -196,7 +197,7 @@ void draw() {
             room.heroX -= 1;
             room.hero.x--;
             heroMoved +=1;
-            println(heroMoved);
+            //println(heroMoved);
           }
         }
         if (keyboardInput.isPressed(Controller.C_UP)) {
@@ -247,13 +248,10 @@ void draw() {
               println("CANNOT USE MORE ABILITIES!");
             } else if (ability == BASICATTACK) {
               room.attack(BASICATTACK);
-              abilitiesUsed++;
             } else if (ability == ABILITY1) {
               room.attack(ABILITY1);
-              abilitiesUsed++;
             } else if (ability == ABILITY2) {
               room.attack(ABILITY2);
-              abilitiesUsed++;
             }
 
             room.targetMode();
@@ -301,15 +299,15 @@ void draw() {
 
         for (int i = 0; i < room.enemies.length; i++) {
           while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
-            println("MOVED: " + room.enemies[i].moved);
+            //println("MOVED: " + room.enemies[i].moved);
             float eDist = enemyDistToHero(room.enemies[i], room.hero);
             if (eDist >= 80 && room.enemies[i].getHealth() > 0) {// if enemy out of range
-              println(eDist + "tiles away");
-              println(i + " " + room.enemies[i].toString() + " attempting to move");
+              //println(eDist + "tiles away");
+              //println(i + " " + room.enemies[i].toString() + " attempting to move");
               pathFind(room.enemies[i], room.hero);
               room.enemies[i].moved++;
             } else { // hero in range
-              println(room.enemies[i].toString() + " attacking");
+              //println(room.enemies[i].toString() + " attacking");
               room.enemies[i].attack(room);
               room.enemies[i].attacked = true;
             }

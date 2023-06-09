@@ -1,4 +1,6 @@
 abstract class Character {
+  int stunCounter;
+  boolean isStunned;
   int health;
   int maxHealth;
   int x, y;
@@ -18,4 +20,6 @@ abstract class Character {
   void setX(int X) {
     x = X;
   }
+  
+  abstract boolean isStunned();
 }

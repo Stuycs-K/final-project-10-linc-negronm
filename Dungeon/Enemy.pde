@@ -12,6 +12,7 @@ class Enemy extends Character {
     moved =0;
     attacked = false;
     abilityCounter = 0;
+    isStunned = false;
   }
   public String getType() {
     return "enemy";
@@ -19,6 +20,10 @@ class Enemy extends Character {
 
   public String getClassif() {
     return "enemy";
+  }
+  
+  public boolean isStunned(){
+    return isStunned;
   }
 
   public int getY() {
