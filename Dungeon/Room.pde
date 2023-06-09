@@ -27,7 +27,7 @@ class Room {
     targeting = false;
     targX = heroX;
     targY = heroY;
-    hero = new Hero(500, heroX, heroY);
+    hero = new Hero(150, heroX, heroY);
     warlockCt = 0;
     gameStarted = false;
   }
@@ -221,7 +221,12 @@ class Room {
       background(0);
       fill(255, 0, 0);
       textAlign(CENTER);
-      text("GAME OVER! \n PRESS R TO RESTART.", width/2, height/2);
+      textSize(48);
+      text("GAME OVER!", width/2, height/4);
+      fill(255);
+      textSize(24);
+      text("You made it " + roomNum + " rooms.", width/2, height/4 + 50);
+      text("Press 'R' to restart.", width/2, height/4 + 80);
     } else {
       textAlign(LEFT);
       int x = 0;
@@ -256,7 +261,8 @@ class Room {
             fill(0);
             textSize(14);
             if (map[y][x].getChar().health > 0) {
-              text(map[y][x].getChar().health, x*20+3, y*20);
+              textAlign(CENTER);
+              text(map[y][x].getChar().health, x*20+10, y*20);
             }
           } else {
             fill(200);
@@ -265,6 +271,7 @@ class Room {
 
           fill(255);
           textSize(8);
+          textAlign(CORNER);
           text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
           if (targeting && map[y][x].isTargeted) {
             noFill();

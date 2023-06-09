@@ -8,6 +8,7 @@ int abilityRange;
 int ability;
 int abilitiesUsed;
 int turnNum;
+int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
 PImage bg;
@@ -73,7 +74,7 @@ public void enemyTurnEnd() {
   heroTurn();
 }
 
-public void printStats(){
+public void printStats() {
   textAlign(CORNER);
   textSize(24);
   fill(0);
@@ -103,6 +104,7 @@ void keyPressed() {
   if (key == 'r') {
     room = new Room(33, 33);
     room.generateRoom();
+    roomNum = 0;
     heroMoved =0;
     turnNum = 0;
   }
@@ -127,11 +129,12 @@ void draw() {
     stroke(0, 255, 255);
     strokeWeight(5);
     circle(room.heroX*20+10, room.heroY*20+10, abilityRange*40);
+    strokeWeight(1);
   }
-  if (room.gameStarted){
+  if (room.gameStarted) {
     printStats();
   }
-  
+
   if (heroMoved > 7) {
     textSize(27);
     fill(255, 0, 0);
@@ -141,7 +144,7 @@ void draw() {
   right = room.map[room.heroY][room.heroX+1];
   up = room.map[room.heroY-1][room.heroX];
   down = room.map[room.heroY+1][room.heroX];
-  
+
   if (heroTurn) {
     int deadCounter =0;
     for (int i =0; i< room.enemies.length; i++) {
@@ -154,6 +157,7 @@ void draw() {
       int damageTaken = room.hero.maxHealth - room.hero.health;
       room = new Room(33, 33);
       room.generateRoom();
+      roomNum++;
       heroMoved =0;
       room.hero.takeDmg(damageTaken);
     } else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
@@ -241,32 +245,36 @@ void draw() {
         room.targetMode();
       }
       if (keyboardInput.isPressed(Controller.C_EndTurn)) {
+        if (room.targeting){
+          room.targetMode();
+        }
         turnNum++;
         heroTurnEnd();
       }
-      
     }
-    
-    
-      
+
+
+
     if (countdown > 0) {
       countdown --;
     }
     if (!keyPressed) {
       countdown = 0;
     }
-    
- 
+
+
     if (enemyTurn) {
 
       for (int i = 0; i < room.enemies.length; i++) {
         countdown = 0;
         while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
           println("MOVED: " + room.enemies[i].moved);
-          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+          float eDist = enemyDistToHero(room.enemies[i], room.hero);
+          if (eDist >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+            println(eDist + "tiles away");
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
-            countdown += 1000;
+            countdown += 500;
             room.enemies[i].moved++;
           } else if (countdown  == 0) { // hero in range
             println(room.enemies[i].toString() + " attacking");
@@ -275,10 +283,10 @@ void draw() {
           } else {
             countdown--;
           }
+          
         }
       }
       enemyTurnEnd();
     }
   }
-  
 }
