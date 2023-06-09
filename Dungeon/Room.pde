@@ -440,10 +440,10 @@ class Room {
   }
 
   public void showTileInfo(Tile t) {
-    Character tchar = t.getChar();
     if (t == null) {
       return;
     }
+    Character tchar = t.getChar();
     //top left corner of popup is 240, 165);
     fill(0, 50);
     rect(0, 0, 960, 660);
@@ -465,7 +465,7 @@ class Room {
       textSize(18);
       textAlign(CORNER);
       text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-      text(" - It's a wall. ", width/2-30, height/2-95); //Description
+      text(" - It's a wall. ", width/2-100, height/2-95); //Description
       textAlign(CENTER);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
     } else if (tchar == null) {
@@ -480,7 +480,7 @@ class Room {
       textSize(18);
       textAlign(CORNER);
       text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-      text(" - It's the floor. ", width/2-30, height/2-95); //Description
+      text(" - It's the floor. ", width/2-100, height/2-95); //Description
       textAlign(CENTER);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
     } else if (tchar.getType().equals("enemy")) { // an enemy
@@ -496,12 +496,28 @@ class Room {
         textSize(18);
         textAlign(CORNER);
         text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-        text(" - A skeleton! Your basic trash mob.\n" +
-          " - Can attack you, or use a\n" +
-          " devastating special attack", width/2-30, height/2-95); //Description
+        text(" - A skeleton! Your basic trash mob." +
+          " \n - Can attack you, or use a devastating special attack." +
+          " \n - He needs a moment to catch his breath after, however.", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       } else if (tchar.getClassif().equals("warlock")) {
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("WARLOCK", width/2, height/2-125); // tile name
+        fill(150, 0, 255); // pic color
+        rect(260, 185, 80, 80, 15); // tile pic
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+        text(" - A powerful warlock with the power to raise the dead!" +
+          " \n - Every 10 turns, he will attempt to resurrect an ally." +
+          " \n - Using the dark arts is draining, so he will be temporarily stunned after.", width/2-100, height/2-95, 330, 230); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
     }
   }

@@ -16,10 +16,10 @@ class Warlock extends Enemy {
     for (int i = 0; i < es.length; i++) {
       if (es[i].getHealth() <= 0) {
         es[i].setHealth(es[i].getMaxHealth() / 2);
+        stunCounter = 2;
+        isStunned = true;
       }
     }
-    stunCounter = 2;
-    isStunned = true;
     abilityCounter = 0;
   }
 
