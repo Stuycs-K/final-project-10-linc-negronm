@@ -69,6 +69,9 @@ public void resetEnemyStates() {
 public float enemyDistToHero(Enemy e, Hero h) {
   return dist(e.x * 20, e.y*20 , h.x *20, h.y *20);
 }
+public float enemyDistToHero(Enemy e, int x, int y) {
+  return dist(e.x * 20, e.y*20 , x *20, y *20);
+}
 
 public void enemyTurnEnd() {
   println("enemy turn end");
@@ -240,18 +243,30 @@ void draw() {
             room.attack(ABILITY1);
             abilitiesUsed++;
           }
+          else if (ability == ABILITY2) {
+            room.attack(ABILITY2);
+            abilitiesUsed++;
+          }
 
           room.targetMode();
         }
       }
-      if (keyboardInput.isPressed(Controller.C_BasicAttack)) {
+      if (keyboardInput.isPressed(Controller.C_BasicAttack) && (turnNum >= room.hero.basicStats[1] + room.hero.basicStats[2])){
         ability = 0;
-        abilityRange = 5;
+        abilityRange = room.hero.basicStats[0];
+        room.hero.basicStats[2] = turnNum;
         room.targetMode();
       }
-      if (keyboardInput.isPressed(Controller.C_Ability1)) {
+      if (keyboardInput.isPressed(Controller.C_Ability1)&& (turnNum >= room.hero.ability1Stats[1] + room.hero.ability1Stats[2])){
         ability = 1;
-        abilityRange = 3;
+        abilityRange = room.hero.ability1Stats[0];
+        room.hero.ability1Stats[2] = turnNum;
+        room.targetMode();
+      }
+      if (keyboardInput.isPressed(Controller.C_Ability2)&& (turnNum >= room.hero.ability2Stats[1] + room.hero.ability2Stats[2])){
+        ability = 2;
+        abilityRange = room.hero.ability2Stats[0];
+        room.hero.ability2Stats[2] = turnNum;
         room.targetMode();
       }
       if (keyboardInput.isPressed(Controller.C_EndTurn)) {

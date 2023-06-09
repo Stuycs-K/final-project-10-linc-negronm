@@ -123,8 +123,15 @@ class Room {
         if (ability == Dungeon.BASICATTACK) {
           hero.basicAttack(enemies[i]);
         } else if (ability == Dungeon.ABILITY1) {
+          if(hero.isMage()){
+          hero.ability1(this);
+          }else{
           hero.ability1(enemies[i]);
-        } else {
+          }
+        } 
+        else if (ability == Dungeon.ABILITY2) {
+          hero.ability2(enemies[i]);
+        }else {
           println("invalid ability");
         }
         if (enemies[i].getHealth() <= 0) {
