@@ -15,7 +15,7 @@ class Room {
 
 
 
-  public Room(int xsize, int ysize) {
+  public Room(int xsize, int ysize, String HERO) {
     map = new Tile[ysize][xsize];
     ySize = ysize;
     xSize = xsize;
@@ -27,7 +27,11 @@ class Room {
     targeting = false;
     targX = heroX;
     targY = heroY;
-    hero = new Hero(150, heroX, heroY);
+    if (HERO.equals("mage")){
+      hero = new Mage(150, heroX, heroY);
+    } else {
+      hero = new Hero(150, heroX, heroY);
+    }
     warlockCt = 0;
     gameStarted = false;
   }
