@@ -62,7 +62,7 @@ public void resetEnemyStates() {
 }
 
 public float enemyDistToHero(Enemy e, Hero h) {
-  return dist(e.x * 20, e.y*20 , h.x *20, h.y *20);
+  return dist(e.x, e.y, h.x, h.y);
 }
 
 public void enemyTurnEnd() {
@@ -231,7 +231,7 @@ void draw() {
       }
       if (keyboardInput.isPressed(Controller.C_EndTurn)) {
         turnNum++;
-        keyboardInput.inputs[Controller.C_EndTurn] = false;
+        countdown += 60;
         heroTurnEnd();
       }
       
@@ -253,14 +253,16 @@ void draw() {
         countdown = 0;
         while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
           println("MOVED: " + room.enemies[i].moved);
-          if (enemyDistToHero(room.enemies[i], room.hero) >= 80 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+          if (enemyDistToHero(room.enemies[i], room.hero) >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
             room.enemies[i].moved++;
-          } else { // hero in range
+          } else if (countdown  == 0) { // hero in range
             println(room.enemies[i].toString() + " attacking");
             room.enemies[i].attack(room.hero);
             room.enemies[i].attacked = true;
+          } else {
+            countdown--;
           }
         }
       }
