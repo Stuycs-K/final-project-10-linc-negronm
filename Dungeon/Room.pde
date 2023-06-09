@@ -2,11 +2,12 @@ class Room {
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
-  private String[] enemyClasses = new String[]{"skeleton"};
+  private String[] enemyClasses = new String[]{"skeleton", "warlock"};
   public int ySize, xSize;
   public int heroX, heroY;
   public boolean targeting;
   public int targX, targY;
+  public int warlockCt;
   public Enemy[] enemies;
   public float[] enemyDist;
   public Hero hero;
@@ -25,6 +26,7 @@ class Room {
     targX = heroX;
     targY = heroY;
     hero = new Hero(500, heroX, heroY);
+    warlockCt = 0;
     gameStarted = false;
   }
 
@@ -61,12 +63,14 @@ class Room {
     }
     return wall;
   }
-  
-  private Enemy chooseEnemy(int i, int X, int Y){
+
+  private Enemy chooseEnemy(int i, int X, int Y) {
     Enemy e;
-    if (i == 0){
+    if (i == 0) {
       e = new Skeleton(X, Y);
-    }else{
+    } else if (i == 1) {
+      e = new Warlock(X, Y);
+    } else {
       e = new Enemy(10, X, Y);
     }
     return e;
@@ -91,8 +95,8 @@ class Room {
 
   public void dePath() {
     for (int y = 0; y < map.length; y++) {
-      for (int x = 0; x < map[y].length; x++){
-        if (map[y][x].isPath){
+      for (int x = 0; x < map[y].length; x++) {
+        if (map[y][x].isPath) {
           map[y][x].isPath = false;
         }
       }
@@ -169,8 +173,14 @@ class Room {
     while (enemyCount < 6) {
       randx = int(random(xSize/2, xSize));
       randy = int(random(1, ySize-1));
-      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null){
-        randClass = int(random(0,enemyClasses.length));
+      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
+        randClass = int(random(0, enemyClasses.length));
+        while (randClass == 1 && warlockCt >= 2){
+          randClass = int(random(0, enemyClasses.length));
+        }
+        if (randClass == 1){
+          warlockCt++;
+        }
         e = chooseEnemy(randClass, randx, randy);
         map[randy][randx].setChar(e);
         enemyCount++;
@@ -181,18 +191,17 @@ class Room {
   }
 
   public void showRoom() {
-    if(!(gameStarted)){
-       background(0);
+    if (!(gameStarted)) {
+      background(0);
       fill(255, 0, 0);
       textAlign(CENTER);
       text("DUNGEON", width/2, height/4);
       text("Character Select", width/2, height/2);
       fill(0, 0, 255);
-      rect(width/2 -40, 460,80, 80);
-      fill(255,255,255);
+      rect(width/2 -40, 460, 80, 80);
+      fill(255, 255, 255);
       text("z", width/2, 510);
-    }
-    else if (hero.getHealth() <= 0) {
+    } else if (hero.getHealth() <= 0) {
       background(0);
       fill(255, 0, 0);
       textAlign(CENTER);
@@ -223,7 +232,7 @@ class Room {
                 fill(255, 0, 0);
               } else if (e.getClassif().equals("warlock")) {
                 fill(150, 0, 255);
-              } else { 
+              } else {
                 fill (255, 0, 0);
               }
               rect(x*20, y*20, 20, 20);

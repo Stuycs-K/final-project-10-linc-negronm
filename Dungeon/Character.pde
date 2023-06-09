@@ -6,6 +6,7 @@ abstract class Character {
 
   abstract String getType();
   abstract int getHealth();
+  abstract String getClassif();
   abstract void move();
   void takeDmg(int x) {
     health-= x;
