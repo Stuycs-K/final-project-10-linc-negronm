@@ -9,6 +9,8 @@ int ability;
 int abilitiesUsed;
 int turnNum;
 int enemiesKilled =0;
+int cash = 0;
+PImage bg;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -71,7 +73,19 @@ public void enemyTurnEnd() {
   heroTurn();
 }
 
+public void printStats(){
+  textAlign(CORNER);
+  textSize(24);
+  fill(0);
+  text("Coins: " + cash, 670, 30);
+  text("Hero moves left: "+(8-heroMoved), 670, 60);
+  text("Hero abilities left: "+(2-abilitiesUsed), 670, 90);
+  text("Kills needed: "+ (4-enemiesKilled), 670, 120);
+  text("Turn Number: " + turnNum, 670, 150);
+}
+
 void setup() {
+  bg = loadImage("bg.png");
   background(255);
   size(960, 660);
   room.generateRoom();
@@ -114,13 +128,10 @@ void draw() {
     strokeWeight(5);
     circle(room.heroX*20+10, room.heroY*20+10, abilityRange*40);
   }
-  textSize(24);
-  fill(0);
-  text("Hero moves left: "+(8-heroMoved), 670, 150);
-  text("Hero abilities left: "+(2-abilitiesUsed), 670, 210);
-  text("Kills needed: "+ (4-enemiesKilled), 670, 240);
-  text("Turn Number: " + turnNum, 670, 270);
-  text("countdown: " + countdown, 670, 300);
+  if (room.gameStarted){
+    printStats();
+  }
+  
   if (heroMoved > 7) {
     textSize(27);
     fill(255, 0, 0);

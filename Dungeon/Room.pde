@@ -12,6 +12,8 @@ class Room {
   public float[] enemyDist;
   public Hero hero;
   public boolean gameStarted;
+  
+  
 
   public Room(int xsize, int ysize) {
     map = new Tile[ysize][xsize];
@@ -193,14 +195,28 @@ class Room {
   public void showRoom() {
     if (!(gameStarted)) {
       background(0);
+      image(bg, 0, 0);
       fill(255, 0, 0);
       textAlign(CENTER);
-      text("DUNGEON", width/2, height/4);
-      text("Character Select", width/2, height/2);
+      textSize(48);
+      text("CALIGINOUS CELLAR", width/2, 80);
+      textSize(24);
+      text("How far can you get?", width/2, 110);
+      textSize(32);
+      textAlign(CORNER);
+      text("Select a character to continue:", 20, 3*height/4);
       fill(0, 0, 255);
-      rect(width/2 -40, 460, 80, 80);
-      fill(255, 255, 255);
-      text("z", width/2, 510);
+      stroke(255);
+      rect(20, 510, 80, 80);
+      fill(255);
+      textAlign(CENTER);
+      text("Z", 60, 560);
+      text("Mage", 60, 620);
+      textSize(24);
+      text("WASD to move/target", width/2, 160);
+      text("1, 2, 3 to select/deselect abilities", width/2, 190);
+      text("SPACE to confirm a hit", width/2, 220);
+      text("ENTER to end a turn", width/2, 250);
     } else if (hero.getHealth() <= 0) {
       background(0);
       fill(255, 0, 0);
@@ -265,11 +281,6 @@ class Room {
       }
       textSize(24);
       fill(0);
-      text("Press WASD to move", 670, 30);
-      text("Targeting: "+targeting, 670, 60);
-      text("Hero position: "+heroX+", "+heroY, 670, 90);
-      text("Targeting position: "+targX+", "+targY, 670, 120);
-      text("Enemies killed: " + enemiesKilled, 670, 180);
     }
   }
 
