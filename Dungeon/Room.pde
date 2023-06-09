@@ -292,12 +292,14 @@ class Room {
   }
   
   public void showTileInfo(Tile t){
-    fill(0);
-    rect(0, 0, 960, 660, 50);
+    fill(0, 50);
+    rect(0, 0, 960, 660);
     stroke(255);
     strokeWeight(5);
     rectMode(CENTER);
+    fill(0);
     rect(width/2, height/2, 480, 330);
+    rectMode(CORNER);
   }
 
   private void printEnemies() {
