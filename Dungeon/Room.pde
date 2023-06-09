@@ -12,8 +12,8 @@ class Room {
   public float[] enemyDist;
   public Hero hero;
   public boolean gameStarted;
-  
-  
+
+
 
   public Room(int xsize, int ysize) {
     map = new Tile[ysize][xsize];
@@ -177,10 +177,10 @@ class Room {
       randy = int(random(1, ySize-1));
       if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
         randClass = int(random(0, enemyClasses.length));
-        while (randClass == 1 && warlockCt >= 2){
+        while (randClass == 1 && warlockCt >= 2) {
           randClass = int(random(0, enemyClasses.length));
         }
-        if (randClass == 1){
+        if (randClass == 1) {
           warlockCt++;
         }
         e = chooseEnemy(randClass, randx, randy);
@@ -290,17 +290,7 @@ class Room {
       fill(0);
     }
   }
-  
-  public void showTileInfo(Tile t){
-    fill(0, 50);
-    rect(0, 0, 960, 660);
-    stroke(255);
-    strokeWeight(5);
-    rectMode(CENTER);
-    fill(0);
-    rect(width/2, height/2, 480, 330);
-    rectMode(CORNER);
-  }
+
 
   private void printEnemies() {
     String result = "[";
@@ -310,119 +300,184 @@ class Room {
     result += enemies[enemies.length-1].toString() + "]";
     println(result);
   }
-  
-  public Tile tileFromCoords(int x, int y){
-    if(x > 660){
+
+  public Tile tileFromCoords(int x, int y) {
+    if (x > 660) {
       return null;
     }
     int tileCol = x/20;
     int tileRow = y/20;
     return map[tileRow][tileCol];
-   }
-  
-  public boolean isWallBetween(int X, int Y, int desX, int desY){ //checks if a wall Tile exists between two tiles
+  }
+
+  public boolean isWallBetween(int X, int Y, int desX, int desY) { //checks if a wall Tile exists between two tiles
     boolean result = false;
-    if(desX > X){
-      if(desY > Y){
-      for(int i =X; i <=desX; i++){
-          if(map[i][Y].isWall()){
-          result = true;
+    if (desX > X) {
+      if (desY > Y) {
+        for (int i =X; i <=desX; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
-          if(map[i][desY].isWall()){
-          result = true;
-          }
-        }
-        for(int i =Y; i <=desY; i++){
-          if(map[X][i].isWall()){
-          result = true;
-          }
-          if(map[desX][i].isWall()){
-          result = true;
+          if (map[i][desY].isWall()) {
+            result = true;
           }
         }
-      }else if( desY == Y){
-        for(int i =X; i <=desX; i++){
-          if(map[i][Y].isWall()){
-          result = true;
+        for (int i =Y; i <=desY; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
+          }
+          if (map[desX][i].isWall()) {
+            result = true;
           }
         }
-      } else{
-        for(int i =X; i <=desX; i++){
-          if(map[i][Y].isWall()){
-          result = true;
-          }
-          if(map[i][desY].isWall()){
-          result = true;
+      } else if ( desY == Y) {
+        for (int i =X; i <=desX; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
         }
-        for(int i =desY; i <=Y; i++){
-          if(map[X][i].isWall()){
-          result = true;
+      } else {
+        for (int i =X; i <=desX; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
-          if(map[desX][i].isWall()){
-          result = true;
+          if (map[i][desY].isWall()) {
+            result = true;
+          }
+        }
+        for (int i =desY; i <=Y; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
+          }
+          if (map[desX][i].isWall()) {
+            result = true;
           }
         }
       }
-    }else if( desX == X){
-      if(desY > Y){
-        for(int i =Y; i <=desY; i++){
-          if(map[X][i].isWall()){
-          result = true;
+    } else if ( desX == X) {
+      if (desY > Y) {
+        for (int i =Y; i <=desY; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
           }
         }
-      }else if( desY == Y){
+      } else if ( desY == Y) {
         result =map[X][Y].isWall();
-      } else{
-        for(int i =desY; i <=Y; i++){
-          if(map[X][i].isWall()){
-          result = true;
+      } else {
+        for (int i =desY; i <=Y; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
           }
         }
       }
-    } else{
-      if(desY > Y){
-      for(int i =desX; i <=X; i++){
-          if(map[i][Y].isWall()){
-          result = true;
+    } else {
+      if (desY > Y) {
+        for (int i =desX; i <=X; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
-          if(map[i][desY].isWall()){
-          result = true;
-          }
-        }
-        for(int i =Y; i <=desY; i++){
-          if(map[X][i].isWall()){
-          result = true;
-          }
-          if(map[desX][i].isWall()){
-          result = true;
+          if (map[i][desY].isWall()) {
+            result = true;
           }
         }
-      }else if( desY == Y){
-        for(int i =desX; i <=X; i++){
-          if(map[i][Y].isWall()){
-          result = true;
+        for (int i =Y; i <=desY; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
+          }
+          if (map[desX][i].isWall()) {
+            result = true;
           }
         }
-      } else{
-        for(int i =desX; i <=X; i++){
-          if(map[i][Y].isWall()){
-          result = true;
-          }
-          if(map[i][desY].isWall()){
-          result = true;
+      } else if ( desY == Y) {
+        for (int i =desX; i <=X; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
         }
-        for(int i =desY; i <=Y; i++){
-          if(map[X][i].isWall()){
-          result = true;
+      } else {
+        for (int i =desX; i <=X; i++) {
+          if (map[i][Y].isWall()) {
+            result = true;
           }
-          if(map[desX][i].isWall()){
-          result = true;
+          if (map[i][desY].isWall()) {
+            result = true;
+          }
+        }
+        for (int i =desY; i <=Y; i++) {
+          if (map[X][i].isWall()) {
+            result = true;
+          }
+          if (map[desX][i].isWall()) {
+            result = true;
           }
         }
       }
     }
     return result;
+  }
+
+  public void showTileInfo(Tile t) {
+    Character tchar = t.getChar();
+    if (t == null) {
+      return;
+    }
+    //top left corner of popup is 240, 165);
+    fill(0, 50);
+    rect(0, 0, 960, 660);
+    stroke(255);
+    strokeWeight(5);
+    rectMode(CENTER);
+    fill(0);
+    rect(width/2, height/2, 480, 330, 15);
+    rectMode(CORNER);
+    if (t.isWall()) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("WALL", width/2, height/2-125); // tile name
+      fill(0);
+      rect(260, 185, 80, 80, 15); // tile pic
+      fill(255);
+      textSize(18);
+      textAlign(CORNER);
+      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+      text(" - It's a wall. ", width/2-30, height/2-95); //Description
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    } else if (tchar == null) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("FLOOR", width/2, height/2-125); // tile name
+      fill(200);
+      rect(260, 185, 80, 80, 15); // tile pic
+      fill(255);
+      textSize(18);
+      textAlign(CORNER);
+      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+      text(" - It's the floor. ", width/2-30, height/2-95); //Description
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    } else if (tchar.getType().equals("enemy")) { // an enemy
+      if (tchar.getClassif().equals("skeleton")) {
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("SKELETON", width/2, height/2-125); // tile name
+        fill(255, 0, 0); // pic color
+        rect(260, 185, 80, 80, 15); // tile pic
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+        text(" - A skeleton! Your basic trash mob.", width/2-30, height/2-95); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      } else if (tchar.getClassif().equals("warlock")) {
+      }
+    }
   }
 }

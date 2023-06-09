@@ -114,13 +114,16 @@ void keyPressed() {
     room.targetMode();
   }
   if (key == 'i'){
-    popup = !popup;
+    popup = false;
   }
 }
 
 void mousePressed(){
   popupTile = room.tileFromCoords(mouseX, mouseY);
-  popup = true;
+  if (room.gameStarted && popupTile != null){
+    popup = true;
+  }
+  
 }
 
 void keyReleased() {
@@ -281,7 +284,7 @@ void draw() {
         while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
           println("MOVED: " + room.enemies[i].moved);
           float eDist = enemyDistToHero(room.enemies[i], room.hero);
-          if (eDist >= 4 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+          if (eDist >= 80 && countdown == 0 && room.enemies[i].getHealth() > 0) {// if enemy out of range
             println(eDist + "tiles away");
             println(i + " " + room.enemies[i].toString() + " attempting to move");
             pathFind(room.enemies[i], room.hero);
