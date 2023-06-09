@@ -14,8 +14,22 @@ class Mage extends Hero {
   public void basicAttack(Enemy e) {
     e.takeDmg((int)(10 *damageBuff));
   }
-  public void ability1(Room r) {
+  
+  public void ability1(Room r){
+    for(int i =0; i< r.enemies.length; i++){
+      float dist= enemyDistToHero(r.enemies[i], x, y);
+      if( dist < ability1Stats[0]){
+        r.enemies[i].takeDmg(20);
+      }
+    }
     
+  }
+  public void ability2(Enemy e) {
+    e.takeDmg((int)(10 *damageBuff));
+    heal((int)(10 *damageBuff));
+  }
+  public boolean isMage(){
+    return true;
   }
   
 }

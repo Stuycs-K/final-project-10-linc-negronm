@@ -39,6 +39,10 @@ class Hero extends Character {
     e.takeDmg((int)(3 *damageBuff));
     heal(5);
   }
+  
+  public void ability1(Room r){
+  }
+  
   public void ability2(Enemy e) {
   }
   public void heal(int x) {
@@ -53,5 +57,8 @@ class Hero extends Character {
     } else {
       return false;
     }
+  }
+  public boolean isMage(){
+    return false;
   }
 }
