@@ -32,7 +32,11 @@ Polished up pathfinding system, removed bugs that would cause enemies to get stu
 
 ## 6/6
 
-Added skeleton code for future enemy subclasses, fixed enter spamming
+Added skeleton code for future enemy subclasses, fixed enter spamming.
+
+# 6/7 and 6/9
+
+Fixed enter spam for real this time, added tile descriptions, a better start screen, stuns, some abstraction and created ability to be a mage.
 
 ## Curt Lin
 
@@ -63,3 +67,7 @@ Wrote code to check if the hero is at the exit and as such will enter the next r
 ## 6/5
 
 Made a minimum requirement for enemies killed to advance to the next room, created the basics of a TreasureTile class to give random buffs to the player, write code for a character select screen.
+
+## 6/9
+
+Created the mage class and its abilities.
