@@ -18,6 +18,10 @@ class Tile {
     chara = character;
     isTargeted = false;
   }
+  
+  public String toString(){
+    return "Tile at: " + x + ", " + y;
+  }
 
   public void setChar(Character character) {
     chara = character;

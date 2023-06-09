@@ -271,8 +271,8 @@ class Room {
 
           fill(255);
           textSize(8);
-          textAlign(CORNER);
-          text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+5, y*20+20/2);
+          textAlign(CENTER);
+          text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+10, y*20+10);
           if (targeting && map[y][x].isTargeted) {
             noFill();
             stroke(255, 255, 0);
@@ -290,6 +290,15 @@ class Room {
       fill(0);
     }
   }
+  
+  public void showTileInfo(Tile t){
+    fill(0);
+    rect(0, 0, 960, 660, 50);
+    stroke(255);
+    strokeWeight(5);
+    rectMode(CENTER);
+    rect(width/2, height/2, 480, 330);
+  }
 
   private void printEnemies() {
     String result = "[";
@@ -299,6 +308,15 @@ class Room {
     result += enemies[enemies.length-1].toString() + "]";
     println(result);
   }
+  
+  public Tile tileFromCoords(int x, int y){
+    if(x > 660){
+      return null;
+    }
+    int tileCol = x/20;
+    int tileRow = y/20;
+    return map[tileRow][tileCol];
+   }
   
   public boolean isWallBetween(int X, int Y, int desX, int desY){ //checks if a wall Tile exists between two tiles
     boolean result = false;

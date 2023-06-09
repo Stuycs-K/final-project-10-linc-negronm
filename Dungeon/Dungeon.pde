@@ -12,6 +12,8 @@ int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
 PImage bg;
+Tile popupTile;
+boolean popup = false;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -111,6 +113,14 @@ void keyPressed() {
   if (key == 't') {
     room.targetMode();
   }
+  if (key == 'i'){
+    popup = !popup;
+  }
+}
+
+void mousePressed(){
+  popupTile = room.tileFromCoords(mouseX, mouseY);
+  popup = true;
 }
 
 void keyReleased() {
@@ -288,5 +298,8 @@ void draw() {
       }
       enemyTurnEnd();
     }
+  }
+  if (popup){
+    room.showTileInfo(popupTile);
   }
 }
