@@ -49,6 +49,9 @@ class Hero extends Character {
   
   public void ability2(Enemy e) {
   }
+  
+  public void ability2(){};
+  
   public void heal(int x) {
     health += x;
     if (health > maxHealth) {

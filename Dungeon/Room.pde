@@ -28,9 +28,11 @@ class Room {
     targX = heroX;
     targY = heroY;
     if (HERO.equals("mage")) {
-      hero = new Mage(500, heroX, heroY);
+      hero = new Mage(heroX, heroY);
+    } else if (HERO.equals("knight")) {
+      hero = new Knight(heroX, heroY);
     } else {
-      hero = new Hero(150, heroX, heroY);
+      println("invalid");
     }
     warlockCt = 0;
     gameStarted = false;
@@ -99,15 +101,6 @@ class Room {
     //println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
   }
 
-  public void dePath() {
-    for (int y = 0; y < map.length; y++) {
-      for (int x = 0; x < map[y].length; x++) {
-        if (map[y][x].isPath) {
-          map[y][x].isPath = false;
-        }
-      }
-    }
-  }
 
   public void swapTarget(int x, int y) {
     map[targY][targX].untarget();
@@ -122,30 +115,57 @@ class Room {
   }
 
   public void attack(int ability) {
-    for (int i = 0; i < enemies.length; i++) {
-      if (map[enemies[i].getY()][enemies[i].getX()].isTargeted && enemies[i].getHealth() > 0) {
-        if (ability == Dungeon.BASICATTACK) {
-          hero.basicAttack(enemies[i]);
-          abilitiesUsed++;
-        } else if (ability == Dungeon.ABILITY1) {
-          if (hero.isMage()) {
-            hero.ability1(this);
-            abilitiesUsed++;
-          } else {
-            hero.ability1(enemies[i]);
-            abilitiesUsed++;
+    if (hero.getClassif().equals("knight")) { // knight
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
           }
-        } else if (ability == Dungeon.ABILITY2) {
-          hero.ability2(enemies[i]);
-          abilitiesUsed++;
-        } else {
-          println("invalid ability");
-        }
-        if (enemies[i].getHealth() <= 0) {
-          enemiesKilled++;
         }
       }
-      map[enemies[i].getY()][enemies[i].getX()].untarget();
+
+      if (ability == ABILITY1) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.ability1(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY2) {
+        hero.ability2();
+      }
+    }// end of knight
+
+
+    else if (hero.getClassif().equals("mage")) {
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+      
+      if (ability == ABILITY1) {
+        hero.ability1(this);
+      }
+      
+      if (ability == ABILITY2){
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.ability2(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
     }
   }
 
@@ -222,17 +242,23 @@ class Room {
       fill(0, 0, 255);
       stroke(255);
       rect(20, 510, 80, 80);
+      fill(120);
+      rect(120, 510, 80, 80);
       fill(255);
       textAlign(CENTER);
       text("Z", 60, 560);
       text("Mage", 60, 620);
+      text("X", 160, 560);
+      text("Knight", 160, 620);
       textSize(24);
       text("WASD to move/target", width/2, 160);
       text("1, 2, 3 to select/deselect abilities", width/2, 190);
       text("SPACE to confirm a hit", width/2, 220);
       text("ENTER to end a turn", width/2, 250);
+      text("Click on a tile/hero to learn more about it!", width/2, 280);
     } else if (hero.getHealth() <= 0) {
       background(0);
+      image(over, 0, 0);
       fill(255, 0, 0);
       textAlign(CENTER);
       textSize(48);
@@ -257,7 +283,11 @@ class Room {
             rect(x*20, y*20, 20, 20);
           } else if (map[y][x].getChar() != null) {
             if (map[y][x].getChar().getType().equals("hero")) {
-              fill(0, 0, 255);
+              if (map[y][x].getChar().getClassif().equals("mage")) {
+                fill(0, 0, 255);
+              } else if (map[y][x].getChar().getClassif().equals("knight")) {
+                fill (120);
+              }
               rect(x*20, y*20, 20, 20);
             } else if (map[y][x].getChar().getType().equals("enemy")) {
               Character e = map[y][x].getChar();
@@ -314,15 +344,6 @@ class Room {
     }
   }
 
-
-  private void printEnemies() {
-    String result = "[";
-    for (int i = 0; i < enemies.length-1; i++) {
-      result += enemies[i].toString() + ", ";
-    }
-    result += enemies[enemies.length-1].toString() + "]";
-    println(result);
-  }
 
   public Tile tileFromCoords(int x, int y) {
     if (x > 660) {
@@ -439,6 +460,36 @@ class Room {
     return result;
   }
 
+  public void showHeroInfo(String h) {
+    fill(0, 50);
+    strokeWeight(0);
+    rect(0, 0, 960, 660);
+    stroke(255);
+    strokeWeight(5);
+    rectMode(CENTER);
+    fill(0);
+    rect(width/2, height/2, 480, 330, 15);
+    rectMode(CORNER);
+    if (h.equals("mage")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("MAGE", width/2, height/2-125);
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    } else if (h.equals("knight")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("KNIGHT", width/2, height/2-125);
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    }
+    strokeWeight(1);
+  }
+
   public void showTileInfo(Tile t) {
     if (t == null) {
       return;
@@ -519,6 +570,8 @@ class Room {
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
+    } else if (tchar.getType().equals("hero")) {
+      showHeroInfo(tchar.getClassif());
     }
   }
 }

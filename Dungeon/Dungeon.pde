@@ -4,7 +4,7 @@ int countdown; //timer variable
 boolean heroTurn =false;
 boolean enemyTurn =false;
 int heroMoved = 0;
-String heroType;
+String heroType = "a";
 int abilityRange;
 int ability;
 int abilitiesUsed;
@@ -12,10 +12,11 @@ int turnNum;
 int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
-PImage bg;
+PImage bg, over, knight, mage;
 boolean gameStarted = false;
 Tile popupTile;
 boolean popup = false;
+String heroInQuestion;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -85,17 +86,25 @@ public void printStats() {
   textAlign(CORNER);
   textSize(24);
   fill(0);
-  text("Coins: " + cash, 670, 30);
-  text("Hero moves left: "+(8-heroMoved), 670, 60);
-  text("Hero abilities left: "+(2-abilitiesUsed), 670, 90);
-  text("Kills needed: "+ (4-enemiesKilled), 670, 120);
-  text("Turn number: " + turnNum, 670, 150);
-  text("Room number: " + roomNum, 670, 180);
+  text("Room number: " + roomNum, 670, 30);
+  text("Turn number: " + turnNum, 670, 60);
+  text("Room number: " + roomNum, 670, 90);
+  if (enemiesKilled >= 4) {
+    text("Kills needed: 0", 670, 120);
+  } else {
+    text("Kills needed: "+ (4-enemiesKilled), 670, 120);
+  }
+  text("Hero moves left: "+(8-heroMoved), 670, 150);
+  text("Hero abilities left: "+(2-abilitiesUsed), 670, 180);
+  text("Damage buff: " + (int((room.hero.damageBuff-1.0)*100)) + "%", 670, 210);
 }
 
 void setup() {
   room = new Room(33, 33, "a");
   bg = loadImage("bg.png");
+  over = loadImage("over.png");
+  knight = loadImage("knight.png");
+  mage = loadImage("mage.png");
   background(255);
   size(960, 660);
   textSize(24);
@@ -122,8 +131,13 @@ void keyPressed() {
   if (key == 'i') {
     popup = false;
   }
-  if (key == 'z' && gameStarted == false) {
-    heroType = "mage";
+  if (gameStarted == false && key == 'z' || key == 'x') {
+    if (key == 'z')
+      heroType = "mage";
+    if (key == 'x')
+      heroType = "knight";
+
+    heroInQuestion = heroType;
     room = new Room(33, 33, heroType);
     //println("gamestart");
     gameStarted = true;
@@ -134,9 +148,21 @@ void keyPressed() {
 }
 
 void mousePressed() {
-  popupTile = room.tileFromCoords(mouseX, mouseY);
-  if (room.gameStarted && popupTile != null) {
-    popup = true;
+  if (gameStarted) {
+    popupTile = room.tileFromCoords(mouseX, mouseY);
+    if (room.gameStarted && popupTile != null) {
+      popup = true;
+    }
+  } else {
+    if (mouseX >= 20 && mouseX <= 100 && mouseY >= 510 && mouseY <= 590) { // mage info
+      println("magfe into");
+      popup = true;
+      heroInQuestion = "mage";
+    } else if (mouseX >= 120 && mouseX <= 200 && mouseY >= 510 && mouseY <= 590) { // knight info
+      println("knight info");
+      popup = true;
+      heroInQuestion = "knight";
+    }
   }
 }
 
@@ -152,7 +178,7 @@ void draw() {
       noFill();
       stroke(0, 255, 255);
       strokeWeight(5);
-      circle(room.heroX*20+10, room.heroY*20+10, abilityRange*40);
+      circle(room.heroX*20+10, room.heroY*20+10, abilityRange*2);
       strokeWeight(1);
     }
     if (room.gameStarted) {
@@ -248,31 +274,31 @@ void draw() {
               println("CANNOT USE MORE ABILITIES!");
             } else if (ability == BASICATTACK) {
               room.attack(BASICATTACK);
+              room.hero.basicStats[2] = turnNum;
             } else if (ability == ABILITY1) {
               room.attack(ABILITY1);
+              room.hero.ability1Stats[2] = turnNum;
             } else if (ability == ABILITY2) {
               room.attack(ABILITY2);
+              room.hero.ability2Stats[2] = turnNum;
             }
 
             room.targetMode();
           }
         }
-        if (keyboardInput.isPressed(Controller.C_BasicAttack) && (turnNum >= room.hero.basicStats[1] + room.hero.basicStats[2])) {
-          ability = 0;
+        if (keyboardInput.isPressed(Controller.C_BasicAttack) && (turnNum >= room.hero.basicStats[1] + room.hero.basicStats[2])) { // turn num is greater than or equal to cooldown + turn last used
+          ability = BASICATTACK;
           abilityRange = room.hero.basicStats[0];
-          room.hero.basicStats[2] = turnNum;
           room.targetMode();
         }
         if (keyboardInput.isPressed(Controller.C_Ability1)&& (turnNum >= room.hero.ability1Stats[1] + room.hero.ability1Stats[2])) {
-          ability = 1;
+          ability = ABILITY1;
           abilityRange = room.hero.ability1Stats[0];
-          room.hero.ability1Stats[2] = turnNum;
           room.targetMode();
         }
         if (keyboardInput.isPressed(Controller.C_Ability2)&& (turnNum >= room.hero.ability2Stats[1] + room.hero.ability2Stats[2])) {
-          ability = 2;
+          ability = ABILITY2;
           abilityRange = room.hero.ability2Stats[0];
-          room.hero.ability2Stats[2] = turnNum;
           room.targetMode();
         }
         if (keyboardInput.isPressed(Controller.C_EndTurn)) {
@@ -319,5 +345,8 @@ void draw() {
     if (popup) {
       room.showTileInfo(popupTile);
     }
+  }
+  if (popup && !gameStarted) {
+    room.showHeroInfo(heroInQuestion);
   }
 }
