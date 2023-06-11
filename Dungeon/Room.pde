@@ -31,6 +31,8 @@ class Room {
       hero = new Mage(heroX, heroY);
     } else if (HERO.equals("knight")) {
       hero = new Knight(heroX, heroY);
+    } else if (HERO.equals("rogue")) {
+      hero = new Rogue(heroX, heroY);
     } else {
       println("invalid");
     }
@@ -152,12 +154,44 @@ class Room {
           }
         }
       }
-      
+
       if (ability == ABILITY1) {
         hero.ability1(this);
       }
-      
-      if (ability == ABILITY2){
+
+      if (ability == ABILITY2) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.ability2(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+    } // end of mage
+    
+    else if (hero.getClassif().equals("rogue")) {
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY1) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.ability1(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY2) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted) { // if targeted
@@ -244,12 +278,16 @@ class Room {
       rect(20, 510, 80, 80);
       fill(120);
       rect(120, 510, 80, 80);
+      fill(2, 48, 32);
+      rect(220, 510, 80, 80);
       fill(255);
       textAlign(CENTER);
       text("Z", 60, 560);
       text("Mage", 60, 620);
       text("X", 160, 560);
       text("Knight", 160, 620);
+      text("C", 260, 560);
+      text("Rogue", 260, 620);
       textSize(24);
       text("WASD to move/target", width/2, 160);
       text("1, 2, 3 to select/deselect abilities", width/2, 190);
@@ -287,6 +325,8 @@ class Room {
                 fill(0, 0, 255);
               } else if (map[y][x].getChar().getClassif().equals("knight")) {
                 fill (120);
+              } else if (map[y][x].getChar().getClassif().equals("rogue")) {
+                fill(2, 48, 32);
               }
               rect(x*20, y*20, 20, 20);
             } else if (map[y][x].getChar().getType().equals("enemy")) {
@@ -477,15 +517,42 @@ class Room {
       strokeWeight(3);
       text("MAGE", width/2, height/2-125);
       textAlign(CENTER);
+      image(mage, 260, 195, 141, 257);
+      textSize(18);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A mysterious man with knowledge of the occult. " +
+        " \n- Frail, but can target multiple enemies." +
+        " \n- Ability one: Abyssal Artillery: Do damage within 4 tiles." +
+        " \n- Ability two: Life Sap: Steals lifeforce from the enemy.", width/2-75, height/2-95, 310, 230);
     } else if (h.equals("knight")) {
       textAlign(CENTER);
       textSize(36);
       fill(255);
       strokeWeight(3);
       text("KNIGHT", width/2, height/2-125);
-      textAlign(CENTER);
+      image(knight, 260, 195, 141, 257);
+      textSize(18);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A helmeted man with a heavy handaxe. " +
+        " \n- Strong and can empower himself!" +
+        " \n- Ability one: Intimidate: Do less damage, but stun the enemy." +
+        " \n- Ability two: Inspiring Cry: Heal and buff yourself.", width/2-75, height/2-95, 330, 230);
+    } else if (h.equals("rogue")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("ROGUE", width/2, height/2-125);
+      image(rogue, 260, 195, 141, 257);
+      textSize(18);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A mysterious man who'll kill for coin. " +
+        " \n- Can dispatch foes near and far alike." +
+        " \n- Ability one: Point Blank Shot: Does massive damage but only up close." +
+        " \n- Ability two: Open vein: Slice the enemy and heal yourself.", width/2-75, height/2-95, 330, 230);
     }
     strokeWeight(1);
   }
@@ -504,7 +571,26 @@ class Room {
     fill(0);
     rect(width/2, height/2, 480, 330, 15);
     rectMode(CORNER);
-    if (t.isWall()) {
+    if (t.getX() == exitX && t.getY() == exitY) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("EXIT", width/2, height/2-125); // tile name
+      fill(255, 0, 255);
+      rect(260, 185, 80, 80, 15); // tile pic
+      fill(255);
+      textSize(18);
+      textAlign(CORNER);
+      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+      if (enemiesKilled >= 4) {
+        text(" - The door to the next Room! The seal seems to have broken! Head through the door to enter the next room.", width/2-100, height/2-95, 330, 230);
+      } else {
+        text(" - The door to the next Room! It seems to have a magical seal on it. Maybe if you kill enough enemies, the seal will break?", width/2-100, height/2-95, 330, 230); //Description
+      }
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    } else if (t.isWall()) {
       textAlign(CENTER);
       textSize(36);
       fill(255);

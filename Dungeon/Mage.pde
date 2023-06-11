@@ -1,7 +1,7 @@
 class Mage extends Hero {
   public Mage(int X, int Y) {
     super(150, X, Y);
-    basicStats[0]= 200;
+    basicStats[0]= 160;
     basicStats[1] =0;
     basicStats[2] =0;
     ability1Stats[0] =80;

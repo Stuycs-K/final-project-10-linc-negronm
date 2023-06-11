@@ -12,11 +12,12 @@ int turnNum;
 int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
-PImage bg, over, knight, mage;
+PImage bg, over, knight, mage, rogue;
 boolean gameStarted = false;
 Tile popupTile;
 boolean popup = false;
 String heroInQuestion;
+int totalEnemiesKilled = 0;
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -88,7 +89,7 @@ public void printStats() {
   fill(0);
   text("Room number: " + roomNum, 670, 30);
   text("Turn number: " + turnNum, 670, 60);
-  text("Room number: " + roomNum, 670, 90);
+  text("Enemies killed: " + 4, 670, 90);
   if (enemiesKilled >= 4) {
     text("Kills needed: 0", 670, 120);
   } else {
@@ -105,6 +106,7 @@ void setup() {
   over = loadImage("over.png");
   knight = loadImage("knight.png");
   mage = loadImage("mage.png");
+  rogue = loadImage("rogue.png");
   background(255);
   size(960, 660);
   textSize(24);
@@ -131,11 +133,13 @@ void keyPressed() {
   if (key == 'i') {
     popup = false;
   }
-  if (gameStarted == false && key == 'z' || key == 'x') {
+  if (gameStarted == false && key == 'z' || key == 'x' || key == 'c') {
     if (key == 'z')
       heroType = "mage";
     if (key == 'x')
       heroType = "knight";
+    if (key == 'c')
+      heroType = "rogue";
 
     heroInQuestion = heroType;
     room = new Room(33, 33, heroType);
@@ -155,13 +159,17 @@ void mousePressed() {
     }
   } else {
     if (mouseX >= 20 && mouseX <= 100 && mouseY >= 510 && mouseY <= 590) { // mage info
-      println("magfe into");
+      //println("magfe into");
       popup = true;
       heroInQuestion = "mage";
     } else if (mouseX >= 120 && mouseX <= 200 && mouseY >= 510 && mouseY <= 590) { // knight info
-      println("knight info");
+      //println("knight info");
       popup = true;
       heroInQuestion = "knight";
+    } else if (mouseX >= 220 && mouseX <= 300 && mouseY >= 510 && mouseY <= 590) { // knight info
+      //println("rogue info");
+      popup = true;
+      heroInQuestion = "rogue";
     }
   }
 }
@@ -196,13 +204,13 @@ void draw() {
     down = room.map[room.heroY+1][room.heroX];
 
     if (heroTurn) {
-      int deadCounter =0;
+      enemiesKilled =0;
       for (int i =0; i< room.enemies.length; i++) {
         if (room.enemies[i].health <= 0) {
-          deadCounter +=1;
+          enemiesKilled +=1;
         }
       }
-      enemiesKilled =deadCounter;
+      room.enemiesKilled = enemiesKilled;
       if ( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4) { //if hero is at the exit, make a new room, reset the hero moves but keep health
         int damageTaken = room.hero.maxHealth - room.hero.health;
         room.generateRoom();
@@ -274,15 +282,18 @@ void draw() {
               println("CANNOT USE MORE ABILITIES!");
             } else if (ability == BASICATTACK) {
               room.attack(BASICATTACK);
+              abilitiesUsed++;
               room.hero.basicStats[2] = turnNum;
             } else if (ability == ABILITY1) {
               room.attack(ABILITY1);
+              abilitiesUsed++;
               room.hero.ability1Stats[2] = turnNum;
             } else if (ability == ABILITY2) {
               room.attack(ABILITY2);
+              abilitiesUsed++;
               room.hero.ability2Stats[2] = turnNum;
             }
-
+            
             room.targetMode();
           }
         }

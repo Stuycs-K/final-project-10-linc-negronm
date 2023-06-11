@@ -26,7 +26,7 @@ class Skeleton extends Enemy {
     }
     if (stunCounter > 0) {
       stunCounter--;
-      println("i am stunned");
+      //println("i am stunned");
       if (stunCounter <= 0){
         isStunned = false;
       }

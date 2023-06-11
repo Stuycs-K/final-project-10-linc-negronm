@@ -66,6 +66,10 @@ class Enemy extends Character {
   public void ability() {
     takeDmg(-2);
   }
+  
+  public void stun(int c){
+    stunCounter = c;
+  }
 
   public void attack(Room r) {
     if (random(1) > .5) {
