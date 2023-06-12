@@ -18,6 +18,7 @@ Tile popupTile;
 boolean popup = false;
 String heroInQuestion;
 int totalEnemiesKilled = 0;
+ArrayList<String> console = new ArrayList<String>(6);
 final static int BASICATTACK = 0;
 final static int ABILITY1 = 1;
 final static int ABILITY2 = 2;
@@ -83,21 +84,41 @@ public void enemyTurnEnd() {
   heroTurn();
 }
 
+public void addToConsole(String s){
+  console.add(s);
+  if (console.size() > 6){
+    console.remove(0);
+  }
+}
+
 public void printStats() {
   textAlign(CORNER);
   textSize(24);
   fill(0);
   text("Room number: " + roomNum, 670, 30);
   text("Turn number: " + turnNum, 670, 60);
-  text("Enemies killed: " + 4, 670, 90);
   if (enemiesKilled >= 4) {
-    text("Kills needed: 0", 670, 120);
+    text("Kills needed: 0", 670, 90);
   } else {
-    text("Kills needed: "+ (4-enemiesKilled), 670, 120);
+    text("Kills needed: "+ (4-enemiesKilled), 670, 90);
   }
-  text("Hero moves left: "+(8-heroMoved), 670, 150);
-  text("Hero abilities left: "+(2-abilitiesUsed), 670, 180);
-  text("Damage buff: " + (int((room.hero.damageBuff-1.0)*100)) + "%", 670, 210);
+  text("Hero moves left: "+(8-heroMoved), 670, 120);
+  text("Hero abilities left: "+(2-abilitiesUsed), 670, 150);
+  text("Damage buff: " + (int((room.hero.damageBuff-1.0)*100)) + "%", 670, 180);
+}
+
+public void printConsole() {
+  int start = 240;
+  String cons = "";
+  for (int i = 0; i < console.size(); i++){
+    cons+= console.get(i) + "\n";
+  }
+  stroke(255);
+  fill(0);
+  rect(665, start-5, 290, 330);
+  fill(255);
+  textSize(18);
+  text(cons, 670, start, 285, 330);
 }
 
 void setup() {
@@ -196,14 +217,17 @@ void draw() {
       circle(room.heroX*20+10, room.heroY*20+10, abilityRange*2);
       strokeWeight(1);
     }
-    if (room.gameStarted) {
+    if (room.gameStarted && room.hero.getHealth() > 0) {
       printStats();
+      printConsole();
     }
 
     if (heroMoved > 7) {
       textSize(27);
       fill(255, 0, 0);
-      text("MOVE LIMIT REACHED!\nPRESS ENTER TO\nEND TURN", 670, 540);
+      text("MOVE LIMIT REACHED!", 670, 600);
+      textSize(24);
+      text("PRESS ENTER TO END TURN", 670, 630);
     }
     left = room.map[room.heroY][room.heroX-1];
     right = room.map[room.heroY][room.heroX+1];
@@ -218,12 +242,11 @@ void draw() {
         }
       }
       room.enemiesKilled = enemiesKilled;
-      if ( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4) { //if hero is at the exit, make a new room, reset the hero moves but keep health
-        int damageTaken = room.hero.maxHealth - room.hero.health;
+      if ( room.heroX == room.exitX && room.heroY == room.exitY && enemiesKilled >= 4) { //if hero is at the exit, make a new room, reset the hero moves but keep healthd
         room.generateRoom();
         roomNum++;
         heroMoved =0;
-        room.hero.takeDmg(damageTaken);
+        //room.hero.takeDmg(damageTaken);
         room.hero.damageBuff = 1.0;
       }else if(left.isTreasure() || right.isTreasure() || up.isTreasure() || down.isTreasure()){
         if(left.isTreasure()){
@@ -307,15 +330,12 @@ void draw() {
               println("CANNOT USE MORE ABILITIES!");
             } else if (ability == BASICATTACK) {
               room.attack(BASICATTACK);
-              abilitiesUsed++;
               room.hero.basicStats[2] = turnNum;
             } else if (ability == ABILITY1) {
               room.attack(ABILITY1);
-              abilitiesUsed++;
               room.hero.ability1Stats[2] = turnNum;
             } else if (ability == ABILITY2) {
               room.attack(ABILITY2);
-              abilitiesUsed++;
               room.hero.ability2Stats[2] = turnNum;
             }
             
@@ -363,14 +383,20 @@ void draw() {
           while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
             //println("MOVED: " + room.enemies[i].moved);
             float eDist = enemyDistToHero(room.enemies[i], room.hero);
-            if (eDist >= room.enemies[i].range && room.enemies[i].getHealth() > 0) {// if enemy out of range
+            if (room.enemies[i].isStunned){
+              room.enemies[i].attack(room);
+              room.enemies[i].attacked = true;
+            }
+            else if (eDist >= room.enemies[i].range && room.enemies[i].getHealth() > 0) {// if enemy out of range
               //println(eDist + "tiles away");
               //println(i + " " + room.enemies[i].toString() + " attempting to move");
               pathFind(room.enemies[i], room.hero);
               room.enemies[i].moved++;
-            } else { // hero in range
+            } else if (!room.isWallBetween(room.enemies[i].getX(), room.enemies[i].getY(), room.heroX, room.heroY)) { // hero in range and not behind wall
               //println(room.enemies[i].toString() + " attacking");
               room.enemies[i].attack(room);
+              room.enemies[i].attacked = true;
+            } else {
               room.enemies[i].attacked = true;
             }
           }

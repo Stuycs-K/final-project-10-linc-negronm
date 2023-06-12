@@ -4,6 +4,7 @@ class Enemy extends Character {
   int stunCounter;
   int range;
   boolean attacked;
+  String atkMsg, abMsg;
   public Enemy(int maxHP, int X, int Y) {
     maxHealth = maxHP;
     health = maxHP;

@@ -1,4 +1,5 @@
 class Warlock extends Enemy {
+  String resd;
   public Warlock(int X, int Y) {
     super(10, X, Y);
     range = 100;
@@ -19,6 +20,8 @@ class Warlock extends Enemy {
         es[i].setHealth(es[i].getMaxHealth() / 2);
         stunCounter = 2;
         isStunned = true;
+        resd = es[i].getClassif();
+        return;
       }
     }
     abilityCounter = 0;
@@ -38,8 +41,14 @@ class Warlock extends Enemy {
     } else {
       if (abilityCounter >= 5 && random(1) > 0.5) {
         ability(r.enemies);
+        if (resd != null){
+          abMsg = "Warlock raises a " + resd + " from the grave!";
+          addToConsole(abMsg);
+        }
       } else {
         basicAttack(r.hero);
+        atkMsg = "Warlock casts a fireball at you for 5 damage!";
+        addToConsole(atkMsg);
       }
     }
   }

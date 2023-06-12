@@ -122,23 +122,27 @@ class Room {
     swapTarget(heroX, heroY);
   }
 
-  public void attack(int ability) {
+  public void attack(int ability) { // hit
     if (hero.getClassif().equals("knight")) { // knight
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall
             hero.basicAttack(e);
+            addToConsole("You chopped a " + e.getClassif() + " with your battleaxe!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY1) {
+      if (ability == ABILITY1) { // stun
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall between
             hero.ability1(e);
+            addToConsole("You hit a " + e.getClassif() + " over the head and stunned it!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
@@ -146,6 +150,8 @@ class Room {
 
       if (ability == ABILITY2) {
         hero.ability2();
+        addToConsole("You unleashed a battlecry and inspired yourself!"); 
+        abilitiesUsed++;
       }
     }// end of knight
 
@@ -156,6 +162,8 @@ class Room {
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted) { // if targeted
             hero.basicAttack(e);
+            addToConsole("You cast a hex on a " + e.getClassif() + "!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
@@ -163,45 +171,55 @@ class Room {
 
       if (ability == ABILITY1) {
         hero.ability1(this);
+        addToConsole("You called upon the abyss to strike down nearby enemies!"); 
+        abilitiesUsed++;
       }
 
-      if (ability == ABILITY2) {
+      if (ability == ABILITY2) { // life steal
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted) { // if targeted
             hero.ability2(e);
+            addToConsole("You drained a " + e.getClassif() + " of its lifeforce!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
     } // end of mage
 
-    else if (hero.getClassif().equals("rogue")) {
+    else if (hero.getClassif().equals("rogue")) { //shot
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
             hero.basicAttack(e);
+            addToConsole("You took aim and shot a " + e.getClassif() + "!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY1) {
+      if (ability == ABILITY1) { // pbs
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
             hero.ability1(e);
+            addToConsole("You hit a " + e.getClassif() + " with a point blank shot!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY2) {
+      if (ability == ABILITY2) { // vein
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
           if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
             hero.ability2(e);
+            addToConsole("You sliced a " + e.getClassif() + " and healed!"); 
+            abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }

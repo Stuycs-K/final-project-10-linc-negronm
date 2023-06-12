@@ -25,16 +25,22 @@ class Arbalist extends Enemy{
     }
     if (stunCounter > 0) {
       stunCounter--;
+      addToConsole("Arbalist is stunned and cannot move!");
       //println("i am stunned");
       if (stunCounter <= 0){
         isStunned = false;
+        addToConsole("Arbalist recovers from his stun!");
       }
       return;
     } else {
       if (abilityCounter >= 4 && random(1) > 0.5) {
         ability(r.hero);
+        abMsg = "Arbalist fires a disorienting flare!";
+        addToConsole(abMsg);
       } else {
         basicAttack(r.hero);
+        atkMsg = "Arbalist shoots you for 5 damage!";
+        addToConsole(atkMsg);
       }
     }
   }

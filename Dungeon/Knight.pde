@@ -22,7 +22,7 @@ class Knight extends Hero{
   }
   
   public void ability2() { // give himself dmg buff and heal
-    damageBuff += 0.2;
+    damageBuff += 0.3;
     heal(30);
   }
     
