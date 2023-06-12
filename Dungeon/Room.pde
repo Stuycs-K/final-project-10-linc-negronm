@@ -1,22 +1,21 @@
 class Room {
-  private Tile[][] map;
-  private int exitX, exitY;
-  private int enemiesKilled, enemyCount;
-  private String[] enemyClasses = new String[]{"skeleton", "warlock", "arbalist"};
-  public int ySize, xSize;
-  public int heroX, heroY;
-  public boolean targeting;
-  public int targX, targY;
-  public int warlockCt, arbCt;
-  public Enemy[] enemies;
-  public float[] enemyDist;
-  public Hero hero;
-  public boolean gameStarted;
-  int fountainCt = 0;
+  private Tile[][] map; //  2d tile array
+  private int exitX, exitY; // exit coords
+  private int enemiesKilled, enemyCount; // enemy stats
+  private String[] enemyClasses = new String[]{"skeleton", "warlock", "arbalist"}; // different enemy types
+  public int ySize, xSize; // size of map
+  public int heroX, heroY; // hero coords
+  public boolean targeting; // targeting mode
+  public int targX, targY; // target coords
+  public int warlockCt, arbCt; // number of certain enemies
+  public Enemy[] enemies; // enemy list
+  public Hero hero; // the hero
+  public boolean gameStarted; // is game started
+  int fountainCt = 0; // number of treasure tiles
 
 
 
-  public Room(int xsize, int ysize, String HERO) {
+  public Room(int xsize, int ysize, String HERO) { // constructor
     map = new Tile[ysize][xsize];
     ySize = ysize;
     xSize = xsize;
@@ -41,7 +40,7 @@ class Room {
     gameStarted = false;
   }
 
-  public void rotateMap() {
+  public void rotateMap() { // rotates map 90 degrees, for generation purposes
     Tile[][] newMap = new Tile[ySize][xSize];
     for (int y = 0; y < ySize; y++) {
       for (int x = 0; x < xSize; x++) {
@@ -53,7 +52,7 @@ class Room {
     map = newMap;
   }
 
-  private boolean isIn(int[] arr, int num) {
+  private boolean isIn(int[] arr, int num) { // is a number in an array, generation helper
     for (int i = 0; i < arr.length; i++) {
       if (arr[i] == num) {
         return true;
@@ -62,7 +61,7 @@ class Room {
     return false;
   }
 
-  private Tile[] makeWall(int size, int y) {
+  private Tile[] makeWall(int size, int y) { // make a wall with a gap, for generation
     Tile[] wall = new Tile[size];
     int gapStart = int(random(1, size-10));
     for (int i = 0; i < size; i++) {
@@ -75,7 +74,7 @@ class Room {
     return wall;
   }
 
-  private Enemy chooseEnemy(int i, int X, int Y) {
+  private Enemy chooseEnemy(int i, int X, int Y) { // translates number into enemy, for generation
     Enemy e;
     if (i == 0) {
       e = new Skeleton(X, Y);
@@ -89,7 +88,7 @@ class Room {
     return e;
   }
 
-  public void swap(int x, int y, int desX, int desY) {
+  public void swap(int x, int y, int desX, int desY) { // swaps 2 tiles and changes their coords
     //println("tile at (" + x + "," + y + ") now at (" + desX + "," + desY + ")");
     Tile oldTile = map[desY][desX];
     Tile moved = map[y][x];
@@ -107,7 +106,7 @@ class Room {
   }
 
 
-  public void swapTarget(int x, int y) {
+  public void swapTarget(int x, int y) { // swaps targeted tile
     if (x < 0 || x >= xSize || y < 0 || y >= ySize) {
       return;
     }
@@ -117,70 +116,70 @@ class Room {
     targX = x;
   }
 
-  public void targetMode() {
+  public void targetMode() { // toggles target mode
     targeting = !targeting;
     swapTarget(heroX, heroY);
   }
 
-  public void attack(int ability) { // hit
+  public void attack(int ability) { // does attack based on ability and hero selection
     if (hero.getClassif().equals("knight")) { // knight
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted and no wall
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if healthy enemy targeted and no wall between
             hero.basicAttack(e);
-            addToConsole("You chopped a " + e.getClassif() + " with your battleaxe!"); 
+            addToConsole("You chopped a " + e.getClassif() + " with your battleaxe!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY1) { // stun
+      if (ability == ABILITY1) { // intimidate
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted and no wall between
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if healthy enemy targeted and no wall between
             hero.ability1(e);
-            addToConsole("You hit a " + e.getClassif() + " over the head and stunned it!"); 
+            addToConsole("You hit a " + e.getClassif() + " over the head and stunned it!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY2) {
+      if (ability == ABILITY2) { // inspire
         hero.ability2();
-        addToConsole("You unleashed a battlecry and inspired yourself!"); 
+        addToConsole("You unleashed a battlecry and inspired yourself!");
         abilitiesUsed++;
       }
     }// end of knight
 
 
-    else if (hero.getClassif().equals("mage")) {
-      if (ability == BASICATTACK) {
+    else if (hero.getClassif().equals("mage")) { // mage abs
+      if (ability == BASICATTACK) { // hex
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if healthy enemy targeted
             hero.basicAttack(e);
-            addToConsole("You cast a hex on a " + e.getClassif() + "!"); 
+            addToConsole("You cast a hex on a " + e.getClassif() + "!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY1) {
+      if (ability == ABILITY1) { // artillery
         hero.ability1(this);
-        addToConsole("You called upon the abyss to strike down nearby enemies!"); 
+        addToConsole("You called upon the abyss to strike down nearby enemies!");
         abilitiesUsed++;
       }
 
       if (ability == ABILITY2) { // life steal
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if healthy enemy
             hero.ability2(e);
-            addToConsole("You drained a " + e.getClassif() + " of its lifeforce!"); 
+            addToConsole("You drained a " + e.getClassif() + " of its lifeforce!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
@@ -188,13 +187,13 @@ class Room {
       }
     } // end of mage
 
-    else if (hero.getClassif().equals("rogue")) { //shot
+    else if (hero.getClassif().equals("rogue")) { //pistol shot
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if healthy enemy targeted and no wall between
             hero.basicAttack(e);
-            addToConsole("You took aim and shot a " + e.getClassif() + "!"); 
+            addToConsole("You took aim and shot a " + e.getClassif() + "!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
@@ -204,21 +203,21 @@ class Room {
       if (ability == ABILITY1) { // pbs
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if healthy enemy targeted and no wall between
             hero.ability1(e);
-            addToConsole("You hit a " + e.getClassif() + " with a point blank shot!"); 
+            addToConsole("You hit a " + e.getClassif() + " with a point blank shot!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
         }
       }
 
-      if (ability == ABILITY2) { // vein
+      if (ability == ABILITY2) { // open vein
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if healthy enemy targeted and no wall between
             hero.ability2(e);
-            addToConsole("You sliced a " + e.getClassif() + " and healed!"); 
+            addToConsole("You sliced a " + e.getClassif() + " and healed!");
             abilitiesUsed++;
             map[e.getY()][e.getX()].untarget();
           }
@@ -227,57 +226,53 @@ class Room {
     } // end of rogue
   }
 
-  public void generateRoom() {
+  public void generateRoom() { // randomly generates a room with walls, enemies, and treasure.
     enemyCount = 0;
     enemiesKilled = 0;
-    float r;
-    int maxY = map.length;
-    int maxX = map[0].length;
     map = new Tile[xSize][ySize];
     int space = xSize/4-1;
-    int[] walls = new int[]{space*1-1, space*2-1, space*3-1, space*4-1};
+    int[] walls = new int[]{space*1-1, space*2-1, space*3-1, space*4-1}; // makes walls at certain intervals
     heroX = 1;
     heroY = ySize/2;
 
     for (int y = 0; y < ySize; y++) {
-      if (isIn(walls, y)) {
-        map[y] = makeWall(xSize, y);
+      if (isIn(walls, y)) { // if row is selected for walling
+        map[y] = makeWall(xSize, y); // puts a wall there
       } else {
         for (int x = 0; x < xSize; x++) {
-          if (y == 0 || y == ySize-1 || x == 0 || x == xSize-1) {
+          if (y == 0 || y == ySize-1 || x == 0 || x == xSize-1) { // if edge
             map[y][x] = new Wall(x, y);
-          } else {
+          } else { // places treasure
             int chance = (int)random(0, 300);
             if ( chance == 0) {
               map[y][x] = new TreasureTile(x, y);
               fountainCt++;
             } else {
-              map[y][x] = new Tile(x, y);
+              map[y][x] = new Tile(x, y); // places floor
             }
           }
         }
       }
     }
 
-    rotateMap();
-    if (map[ySize/2][1].isWall()) {
+    rotateMap(); // rotates it 90 degrees, proper orientation
+    if (map[ySize/2][1].isWall()) { // if hero tile is a wall, remove it
       map[ySize/2][1] = new Tile(1, ySize/2);
     }
-    map[ySize/2][1].setChar(hero);
+    map[ySize/2][1].setChar(hero); // place the hero
     // PLACING ENEMIES
     enemies = new Enemy[6];
-    enemyDist = new float[6];
     Enemy e;
     int randx, randy, randClass;
     int i = 0;
     warlockCt = 0;
     arbCt = 0;
-    while (enemyCount < 6) {
+    while (enemyCount < 6) { // while there are less than 6 enemies, generate a random one and place it randomly
       randx = int(random(xSize/2, xSize));
       randy = int(random(1, ySize-1));
-      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
+      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) { // if its a valid spawning location
         randClass = int(random(0, enemyClasses.length));
-        while (randClass == 1 && warlockCt >= 2 || randClass == 2 && arbCt >= 1) {
+        while (randClass == 1 && warlockCt >= 2 || randClass == 2 && arbCt >= 1) { // if it tries to generate a warlock/arb with too many on screen
           randClass = int(random(0, enemyClasses.length));
         }
         if (randClass == 1) {
@@ -294,7 +289,7 @@ class Room {
       }
     }
 
-    while (fountainCt < 3) {
+    while (fountainCt < 3) { // ensures minimum 3 fountains
       randx = int(random(1, xSize-1));
       randy = int(random(1, ySize-1));
       if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
@@ -304,8 +299,8 @@ class Room {
     }
   }
 
-  public void showRoom() {
-    if (!(gameStarted)) {
+  public void showRoom() { // displays the room
+    if (!(gameStarted)) { // character select screen
       background(0);
       image(bg, 0, 0);
       fill(255, 0, 0);
@@ -338,7 +333,7 @@ class Room {
       text("SPACE to confirm a hit", width/2, 220);
       text("ENTER to end a turn", width/2, 250);
       text("Click on a tile/hero to learn more about it!", width/2, 280);
-    } else if (hero.getHealth() <= 0) {
+    } else if (hero.getHealth() <= 0) { // game over screen
       background(0);
       image(over, 0, 0);
       fill(255, 0, 0);
@@ -349,12 +344,13 @@ class Room {
       textSize(24);
       text("You made it " + roomNum + " rooms.", width/2, height/4 + 50);
       text("Press 'R' to restart.", width/2, height/4 + 80);
-    } else {
+    } else { // game
       textAlign(LEFT);
       int x = 0;
       int y = 0;
       stroke(255);
       strokeWeight(1);
+      // displays map
       while (x < map[0].length) {
         while (y < map.length) {
           if (map[y][x].isWall() == true) {
@@ -405,14 +401,14 @@ class Room {
           fill(255);
           textSize(8);
           textAlign(CENTER);
-          //text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+10, y*20+10);
-          if (targeting && map[y][x].isTargeted) {
+          //text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+10, y*20+10); // coordinates
+          if (targeting && map[y][x].isTargeted) { // displays target
             noFill();
             stroke(255, 255, 0);
             rectMode(CENTER);
             rect(x*20+10, y*20+10, 10, 10);
           }
-          if (map[y][x].hasEnemy() && map[y][x].getChar().isStunned()) {
+          if (map[y][x].hasEnemy() && map[y][x].getChar().isStunned()) { // displays stunned characters
             println("stunned");
             noFill();
             stroke(255, 255, 0);
@@ -434,7 +430,7 @@ class Room {
   }
 
 
-  public Tile tileFromCoords(int x, int y) {
+  public Tile tileFromCoords(int x, int y) { // returns tile given coords, helper for mouse click
     if (x > 660) {
       return null;
     }
@@ -552,7 +548,7 @@ class Room {
     return result;
   }
 
-  public void showHeroInfo(String h) {
+  public void showHeroInfo(String h) { // displays info for a hero
     fill(0, 50);
     strokeWeight(0);
     rect(0, 0, 960, 660);
@@ -562,7 +558,7 @@ class Room {
     fill(0);
     rect(width/2, height/2, 480, 330, 15);
     rectMode(CORNER);
-    if (h.equals("mage")) {
+    if (h.equals("mage")) { // mage
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -577,7 +573,7 @@ class Room {
         " \n- Frail, but can target multiple enemies." +
         " \n- Ability one: Abyssal Artillery: Do damage within 4 tiles." +
         " \n- Ability two: Life Sap: Steals lifeforce from the enemy.", width/2-75, height/2-95, 310, 230);
-    } else if (h.equals("knight")) {
+    } else if (h.equals("knight")) { // knight
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -591,7 +587,7 @@ class Room {
         " \n- Strong and can empower himself!" +
         " \n- Ability one: Intimidate: Do less damage, but stun the enemy." +
         " \n- Ability two: Inspiring Cry: Heal and buff yourself.", width/2-75, height/2-95, 330, 230);
-    } else if (h.equals("rogue")) {
+    } else if (h.equals("rogue")) { // rogue
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -609,8 +605,8 @@ class Room {
     strokeWeight(1);
   }
 
-  public void showTileInfo(Tile t) {
-    if (t == null) {
+  public void showTileInfo(Tile t) { // shows info for a tile
+    if (t == null) { // if no tile abort
       return;
     }
     Character tchar = t.getChar();
@@ -623,7 +619,7 @@ class Room {
     fill(0);
     rect(width/2, height/2, 480, 330, 15);
     rectMode(CORNER);
-    if (t.getX() == exitX && t.getY() == exitY) {
+    if (t.getX() == exitX && t.getY() == exitY) { // exit
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -642,7 +638,7 @@ class Room {
       }
       textAlign(CENTER);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-    } else if (t.isWall()) {
+    } else if (t.isWall()) { // wall
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -657,8 +653,8 @@ class Room {
       text(" - It's a wall. ", width/2-100, height/2-95); //Description
       textAlign(CENTER);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-    } else if (tchar == null) {
-      if ( t.isTreasure()) {
+    } else if (tchar == null) { // no character
+      if ( t.isTreasure()) { // is treasure
         image(treasureTile, 250, 195, 141, 257); // tile pic
         textAlign(CENTER);
         textSize(36);
@@ -674,7 +670,7 @@ class Room {
           " \n - Go near the fountain to recieve a buff or a heal", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-      } else {
+      } else { // the floor
         textAlign(CENTER);
         textSize(36);
         fill(255);
@@ -691,7 +687,7 @@ class Room {
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
     } else if (tchar.getType().equals("enemy")) { // an enemy
-      if (tchar.getClassif().equals("skeleton")) {
+      if (tchar.getClassif().equals("skeleton")) { // skelly
         textAlign(CENTER);
         textSize(36);
         fill(255);
@@ -711,7 +707,7 @@ class Room {
           " \n - He needs a moment to catch his breath after, however.", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-      } else if (tchar.getClassif().equals("warlock")) {
+      } else if (tchar.getClassif().equals("warlock")) { // warlock
         textAlign(CENTER);
         textSize(36);
         fill(255);
@@ -731,7 +727,7 @@ class Room {
           " \n - Using the dark arts is draining, so he will be temporarily stunned after.", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-      } else if (tchar.getClassif().equals("arbalist")) {
+      } else if (tchar.getClassif().equals("arbalist")) { // crossbow guy
         textAlign(CENTER);
         textSize(36);
         fill(255);
@@ -751,8 +747,8 @@ class Room {
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
-    } else if (tchar.getType().equals("hero")) {
-      showHeroInfo(tchar.getClassif());
+    } else if (tchar.getType().equals("hero")) { // if hero
+      showHeroInfo(tchar.getClassif()); // use hero info method
     }
   }
 }

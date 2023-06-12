@@ -28,8 +28,6 @@ class Hero extends Character {
     return "hero";
   }
 
-  public void move() {
-  }
   public void basicAttack(Enemy e) {
     e.takeDmg((int)(10 *damageBuff));
     takeDmg(5);

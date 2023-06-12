@@ -9,12 +9,12 @@ class Warlock extends Enemy {
     return "warlock";
   }
 
-  public void basicAttack(Hero h) {
+  public void basicAttack(Hero h) { // do small dmg and charge ability
     h.takeDmg(2);
     abilityCounter++;
   }
 
-  public void ability(Enemy[] es) {
+  public void ability(Enemy[] es) { // raise an enemy from the dead with 1/2 health
     for (int i = 0; i < es.length; i++) {
       if (es[i].getHealth() <= 0) {
         es[i].setHealth(es[i].getMaxHealth() / 2);
@@ -33,19 +33,20 @@ class Warlock extends Enemy {
     }
     if (stunCounter > 0) {
       stunCounter--;
-      println("i am stunned");
-      if (stunCounter <= 0){
+      addToConsole("Warlock is stunned and cannot move!");
+      if (stunCounter <= 0){ // remove stun when ready
         isStunned = false;
+        addToConsole("Warlock recovers from his stun!");
       }
       return;
     } else {
-      if (abilityCounter >= 5 && random(1) > 0.5) {
+      if (abilityCounter >= 5 && random(1) > 0.5) { // if ability ready, 1/2 chance to use it
         ability(r.enemies);
         if (resd != null){
           abMsg = "Warlock raises a " + resd + " from the grave!";
           addToConsole(abMsg);
         }
-      } else {
+      } else { // normal atk
         basicAttack(r.hero);
         atkMsg = "Warlock casts a fireball at you for 5 damage!";
         addToConsole(atkMsg);

@@ -11,7 +11,7 @@ class Mage extends Hero {
     ability2Stats[1] =3;
     ability2Stats[2] =-3;
   }
-  public void basicAttack(Enemy e) { // do damage
+  public void basicAttack(Enemy e) { // do moderate dmg
     e.takeDmg((int)(10 *damageBuff));
   }
 

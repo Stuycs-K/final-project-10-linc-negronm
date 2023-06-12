@@ -1,18 +1,16 @@
 class Tile {
-  int x, y;
-  Character chara;
-  boolean isTargeted;
-  boolean isPath;
+  int x, y; // coords
+  Character chara; // character on top
+  boolean isTargeted; // is it targeted?
 
   public Tile(int xpos, int ypos) {
     x = xpos;
     y = ypos;
     chara = null;
     isTargeted = false;
-    isPath = false;
   }
 
-  public Tile(int xpos, int ypos, Character character) {
+  public Tile(int xpos, int ypos, Character character) { // takes a character param
     x = xpos;
     y = ypos;
     chara = character;
@@ -23,22 +21,22 @@ class Tile {
     return "Tile at: " + x + ", " + y;
   }
 
-  public void setChar(Character character) {
+  public void setChar(Character character) { // sets char
     chara = character;
   }
 
-  public Character getChar() {
+  public Character getChar() { // returns char
     return chara;
   }
 
-  public boolean hasChar() {
+  public boolean hasChar() { // does it have a char?
     if (chara == null) {
       return false;
     }
     return true;
   }
 
-  public boolean hasEnemy() {
+  public boolean hasEnemy() { // does it have an enemy?;
     if (chara == null) {
       return false;
     } else if (chara.getType().equals("enemy")) {
@@ -48,20 +46,20 @@ class Tile {
     }
   }
 
-  public void target() {
+  public void target() { // sets target
     isTargeted = true;
   }
 
-  public void untarget() {
+  public void untarget() { // untargets
     isTargeted = false;
   }
 
 
-  public void changePos(int x, int y) {
+  public void changePos(int x, int y) { // changes the position of a tile
     this.x =x;
     this.y =y;
   }
-  public float calcDis(Tile other) {
+  public float calcDis(Tile other) { // calculates pixel distance btween 2 tiles
     return dist(x*20, y*20, other.getX()*20, other.getY()*20);
   }
   public int getX() {
@@ -82,6 +80,6 @@ class Tile {
   public boolean isTreasure() {
     return false;
   }
-  public void randomBuff(Hero h){
+  public void randomBuff(Hero h){ // abstract method for TreasureTile
   }
 }
