@@ -38,6 +38,10 @@ Added skeleton code for future enemy subclasses, fixed enter spamming.
 
 Fixed enter spam for real this time, added tile descriptions, a better start screen, stuns, some abstraction and created ability to be a mage.
 
+# 6/11
+
+Added Knight class, added Arbalist enemy, added enemy and hero sprites, finished tile descriptions, finished hero descriptions, updated attack, added console, fixed many bugs, Added Rogue class, fixed stuns, added diverse ranges, fixed up GUI.
+
 ## Curt Lin
 
 ### 5/22

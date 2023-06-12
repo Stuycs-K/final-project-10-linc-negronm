@@ -1,7 +1,7 @@
 class Skeleton extends Enemy {
-  public int abilityCounter;
   Skeleton(int X, int Y) {
     super(25, X, Y);
+    range = 60;
   }
 
   public String getClassif() {
@@ -26,16 +26,21 @@ class Skeleton extends Enemy {
     }
     if (stunCounter > 0) {
       stunCounter--;
-      println("i am stunned");
+      addToConsole("Skeleton is stunned and cannot move!");
       if (stunCounter <= 0){
         isStunned = false;
+        addToConsole("Skeleton recovers from his stun!");
       }
       return;
     } else {
       if (abilityCounter >= 3 && random(1) > 0.5) {
         ability(r.hero);
+        abMsg = "Skeleton hit you hard for 10 damage!";
+        addToConsole(abMsg);
       } else {
         basicAttack(r.hero);
+        atkMsg = "Skeleton struck you for 5 damage!";
+        addToConsole(atkMsg);
       }
     }
   }

@@ -19,6 +19,7 @@ class Hero extends Character {
     return "hero";
   }
   
+  
   public boolean isStunned() {
     return false;
   }
@@ -36,6 +37,10 @@ class Hero extends Character {
   public void takeDmg(int x) {
     health -= x;
   }
+  
+  public void debuff(float x){
+    damageBuff -= x;
+  }
   public int getHealth() {
     return health;
   }
@@ -49,6 +54,9 @@ class Hero extends Character {
   
   public void ability2(Enemy e) {
   }
+  
+  public void ability2(){};
+  
   public void heal(int x) {
     health += x;
     if (health > maxHealth) {

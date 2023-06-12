@@ -9,9 +9,11 @@ class TreasureTile extends Tile {
     int x = (int)random(2);
     if( x ==0){
     h.heal((int)random(15,30));
+    addToConsole("You drink from the fountain and feel your wounds mending!");
     }
     if(x == 1){
-    h.damageBuff += 0.05;
+    h.damageBuff += 0.2;
+    addToConsole("You drink from the fountain and feel stronger!");
     }
   }
 }

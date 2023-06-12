@@ -2,7 +2,9 @@ class Enemy extends Character {
   public int abilityCounter;
   int moved;
   int stunCounter;
+  int range;
   boolean attacked;
+  String atkMsg, abMsg;
   public Enemy(int maxHP, int X, int Y) {
     maxHealth = maxHP;
     health = maxHP;
@@ -10,6 +12,7 @@ class Enemy extends Character {
     x = X;
     y = Y;
     moved =0;
+    range = 80;
     attacked = false;
     abilityCounter = 0;
     isStunned = false;
@@ -65,6 +68,11 @@ class Enemy extends Character {
   }
   public void ability() {
     takeDmg(-2);
+  }
+  
+  public void stun(int c){
+    stunCounter = c;
+    isStunned = true;
   }
 
   public void attack(Room r) {

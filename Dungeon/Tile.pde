@@ -62,7 +62,7 @@ class Tile {
     this.y =y;
   }
   public float calcDis(Tile other) {
-    return dist(x, y, other.getX(), other.getY());
+    return dist(x*20, y*20, other.getX()*20, other.getY()*20);
   }
   public int getX() {
     return x;
