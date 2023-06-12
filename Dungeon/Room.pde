@@ -34,7 +34,7 @@ class Room {
     } else if (HERO.equals("rogue")) {
       hero = new Rogue(heroX, heroY);
     } else {
-      println("invalid");
+      //println("invalid");
     }
     warlockCt = 0;
     gameStarted = false;
@@ -409,7 +409,7 @@ class Room {
             rect(x*20+10, y*20+10, 10, 10);
           }
           if (map[y][x].hasEnemy() && map[y][x].getChar().isStunned()) { // displays stunned characters
-            println("stunned");
+            //println("stunned");
             noFill();
             stroke(255, 255, 0);
             rectMode(CENTER);

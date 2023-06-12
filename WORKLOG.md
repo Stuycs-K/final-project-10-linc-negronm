@@ -79,3 +79,27 @@ Created the mage class and its abilities.
 ## 6/11
 
 Made Treasure tiles work, display work, and tile info work
+
+# Dev Log
+
+## Working Features
+Room generation and display, game over screen, character select screen
+Enemy and Hero movement, Enemy and Hero turns, move cap on Heroes and Enemies
+Enemy and Hero attacks, Special enemy/hero abilities, different ranges, damage buffs, and move cooldowns
+Different characters with different health and abilities, Different enemies with varied abilities
+Enemy resurrection and corpse placement
+Enemy stunning and move charging
+Enemies and Heroes cannot attack/move through walls
+Treasure tiles with random buffs that are randomly generated
+Button timers to prevent accidental key spamming
+Info cards with descriptions of heroes, enemies, and tiles
+Sprites that display with info cards
+Console that displays recent attacks
+
+## Broken Features
+Enemy pathfinding is suboptimal, gets stuck on walls and each other often
+Extra move if you move diagonally on your last move (Call it a feature)
+
+## Content resources
+Mr. K website sample code for countdown and Controller
+Processing docs

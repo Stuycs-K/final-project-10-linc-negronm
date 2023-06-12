@@ -270,7 +270,7 @@ void draw() {
             if (room.targX > 0 && room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX-1, room.targY);
             } else {
-              println("Out of ability range!");
+              addToConsole("Out of ability range!");
             }
           } else if (!(room.map[room.heroY][room.heroX-1].isWall() || left.getChar() != null && left.getChar().getType().equals("enemy"))) {
             room.swap(room.heroX, room.heroY, room.heroX-1, room.heroY); // movement in a direction
@@ -285,7 +285,7 @@ void draw() {
             if (room.targY > 0 && room.map[room.targY-1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX, room.targY-1);
             } else {
-              println("Out of ability range!");
+              addToConsole("Out of ability range!");
             }
           } else if (!(room.map[room.heroY-1][room.heroX].isWall() || up.getChar() != null && up.getChar().getType().equals("enemy"))) {
             room.swap(room.heroX, room.heroY, room.heroX, room.heroY-1);// movement in a direction
@@ -299,7 +299,7 @@ void draw() {
             if (room.targY < room.ySize-1 && room.map[room.targY+1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX, room.targY+1);
             } else {
-              println("Out of ability range!");
+             addToConsole("Out of ability range!");
             }
           } else if (!(room.map[room.heroY+1][room.heroX].isWall() || down.getChar() != null && down.getChar().getType().equals("enemy"))) {
             room.swap(room.heroX, room.heroY, room.heroX, room.heroY+1); // movement in a direction
@@ -313,7 +313,7 @@ void draw() {
             if (room.targX < room.xSize-1 && room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX+1, room.targY);
             } else {
-              println("Out of ability range!");
+             addToConsole("Out of ability range!");
             }
           } else if (!(room.map[room.heroY][room.heroX+1].isWall() || right.getChar() != null && right.getChar().getType().equals("enemy"))) {
             room.swap(room.heroX, room.heroY, room.heroX+1, room.heroY); // movement in a direction
@@ -325,7 +325,7 @@ void draw() {
         if (keyboardInput.isPressed(Controller.C_Confirm)) { //confirms an attack or ability by the player for all 3 possible actions
           if (room.targeting) {
             if (abilitiesUsed >= 2) {
-              println("CANNOT USE MORE ABILITIES!");
+             addToConsole("CANNOT USE MORE ABILITIES!");
             } else if (ability == BASICATTACK) {
               room.attack(BASICATTACK);
               room.hero.basicStats[2] = turnNum;
