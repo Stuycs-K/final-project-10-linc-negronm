@@ -107,7 +107,7 @@ class Room {
 
 
   public void swapTarget(int x, int y) {
-    if (x < 0 || x >= xSize || y < 0 || y >= ySize){
+    if (x < 0 || x >= xSize || y < 0 || y >= ySize) {
       return;
     }
     map[targY][targX].untarget();
@@ -174,7 +174,7 @@ class Room {
         }
       }
     } // end of mage
-    
+
     else if (hero.getClassif().equals("rogue")) {
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
@@ -405,9 +405,9 @@ class Room {
     int tileRow = y/20;
     return map[tileRow][tileCol];
   }
-  
-    
-  
+
+
+
 
   public boolean isWallBetween(int X, int Y, int desX, int desY) { //checks if a wall Tile exists between two tiles
     boolean result = false;
@@ -643,9 +643,9 @@ class Room {
         strokeWeight(3);
         text("SKELETON", width/2, height/2-125); // tile name
         fill(255, 0, 0); // pic color
-        if (tchar.getHealth() <= 0){
+        if (tchar.getHealth() <= 0) {
           image(skeletonCorpse, 250, 195, 141, 257);
-        }else {
+        } else {
           image(skeleton, 250, 195, 141, 257); // tile pic
         }
         fill(255);
@@ -663,17 +663,36 @@ class Room {
         strokeWeight(3);
         text("WARLOCK", width/2, height/2-125); // tile name
         fill(150, 0, 255); // pic color
-        if (tchar.getHealth() <= 0){
+        if (tchar.getHealth() <= 0) {
           image(warlockCorpse, 250, 195, 141, 257);
-        }else {
+        } else {
           image(warlock, 250, 195, 141, 257); // tile pic
         }
         fill(255);
         textSize(18);
         textAlign(CORNER);
         text(" - A powerful warlock with the power to raise the dead!" +
-          " \n - Every 10 turns, he will attempt to resurrect an ally." +
+          " \n - Every 5 turns, he will attempt to resurrect an ally." +
           " \n - Using the dark arts is draining, so he will be temporarily stunned after.", width/2-100, height/2-95, 330, 230); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      } else if (tchar.getClassif().equals("arbalist")) {
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("ARBALIST", width/2, height/2-125); // tile name
+        fill(150, 0, 255); // pic color
+        if (tchar.getHealth() <= 0) {
+          image(arbalistCorpse, 250, 195, 141, 257);
+        } else {
+          image(arbalist, 250, 195, 141, 257); // tile pic
+        }
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text(" - An undead soldier with a heavy crossbow." +
+          " \n - Every 4 turns, he will launch a disorienting flare that decreases your damage.", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
