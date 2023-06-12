@@ -11,7 +11,7 @@ class TreasureTile extends Tile {
     h.heal((int)random(15,30));
     }
     if(x == 1){
-    h.damageBuff += 0.05;
+    h.damageBuff += 0.2;
     }
   }
 }

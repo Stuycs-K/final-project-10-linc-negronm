@@ -12,7 +12,7 @@ int turnNum;
 int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
-PImage bg, over, knight, mage, rogue, skeleton, skeletonCorpse, warlock, warlockCorpse, arbalist, arbalistCorpse;
+PImage bg, over, knight, mage, rogue, skeleton, skeletonCorpse, warlock, warlockCorpse, arbalist, arbalistCorpse, treasureTile;
 boolean gameStarted = false;
 Tile popupTile;
 boolean popup = false;
@@ -113,6 +113,7 @@ void setup() {
   warlockCorpse = loadImage("warlockCorpse.png");
   arbalist = loadImage("arbalist.png");
   arbalistCorpse = loadImage("arbalistCorpse.png");
+  treasureTile = loadImage("treasureTile.png");
   background(255);
   size(960, 660);
   textSize(24);

@@ -12,6 +12,7 @@ class Room {
   public float[] enemyDist;
   public Hero hero;
   public boolean gameStarted;
+  int fountainCt = 0;
 
 
 
@@ -229,9 +230,10 @@ class Room {
             map[y][x] = new Wall(x, y);
           } else {
             int chance = (int)random(0, 300);
-            if( chance == 0){
+            if ( chance == 0) {
               map[y][x] = new TreasureTile(x, y);
-            }else{
+              fountainCt++;
+            } else {
               map[y][x] = new Tile(x, y);
             }
           }
@@ -271,6 +273,15 @@ class Room {
         enemyCount++;
         enemies[i] = e;
         i++;
+      }
+    }
+
+    while (fountainCt < 3) {
+      randx = int(random(1, xSize-1));
+      randy = int(random(1, ySize-1));
+      if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
+        map[randy][randx] = new TreasureTile(randx, randy);
+        fountainCt++;
       }
     }
   }
@@ -365,8 +376,8 @@ class Room {
               textAlign(CENTER);
               text(map[y][x].getChar().health, x*20+10, y*20);
             }
-          } else if(map[y][x].isTreasure()){
-            fill(0,255,0);
+          } else if (map[y][x].isTreasure()) {
+            fill(0, 255, 0);
             rect(x*20, y*20, 20, 20);
           } else {
             fill(200);
@@ -376,7 +387,7 @@ class Room {
           fill(255);
           textSize(8);
           textAlign(CENTER);
-          text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+10, y*20+10);
+          //text(""+map[y][x].getX()+","+map[y][x].getY(), x*20+10, y*20+10);
           if (targeting && map[y][x].isTargeted) {
             noFill();
             stroke(255, 255, 0);
@@ -629,37 +640,37 @@ class Room {
       textAlign(CENTER);
       text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
     } else if (tchar == null) {
-      if( t.isTreasure()){
-      textAlign(CENTER);
-      textSize(36);
-      fill(255);
-      strokeWeight(3);
-      text("TREASURE TILE", width/2, height/2-125); // tile name
-      fill(0,255,0);
-      rect(260, 185, 80, 80, 15); // tile pic
-      fill(255);
-      textSize(18);
-      textAlign(CORNER);
-      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-      text(" - Randomly gives either some amount of  \n   health or an attack buff " +
-          " \n - Walk next to the tile to receive the treasure", width/2-100, height/2-95); //Description
-      textAlign(CENTER);
-      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
-      }else{
-      textAlign(CENTER);
-      textSize(36);
-      fill(255);
-      strokeWeight(3);
-      text("FLOOR", width/2, height/2-125); // tile name
-      fill(200);
-      rect(260, 185, 80, 80, 15); // tile pic
-      fill(255);
-      textSize(18);
-      textAlign(CORNER);
-      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
-      text(" - It's the floor. ", width/2-100, height/2-95); //Description
-      textAlign(CENTER);
-      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      if ( t.isTreasure()) {
+        image(treasureTile, 250, 195, 141, 257); // tile pic
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("TREASURE TILE", width/2, height/2-125); // tile name
+        fill(0, 255, 0);
+
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text(" - A strange fountain with mystical properties " +
+          " \n - Go near the fountain to recieve a buff or a heal", width/2-100, height/2-95, 330, 230); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      } else {
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("FLOOR", width/2, height/2-125); // tile name
+        fill(200);
+        rect(260, 185, 80, 80, 15); // tile pic
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+        text(" - It's the floor. ", width/2-100, height/2-95); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
     } else if (tchar.getType().equals("enemy")) { // an enemy
       if (tchar.getClassif().equals("skeleton")) {
