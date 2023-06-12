@@ -1,6 +1,7 @@
 class Warlock extends Enemy {
   public Warlock(int X, int Y) {
     super(10, X, Y);
+    range = 100;
   }
 
   public String getClassif() {
@@ -35,7 +36,7 @@ class Warlock extends Enemy {
       }
       return;
     } else {
-      if (abilityCounter >= 10 && random(1) > 0.5) {
+      if (abilityCounter >= 5 && random(1) > 0.5) {
         ability(r.enemies);
       } else {
         basicAttack(r.hero);

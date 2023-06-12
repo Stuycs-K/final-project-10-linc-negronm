@@ -1,22 +1,21 @@
-class Skeleton extends Enemy {
-  Skeleton(int X, int Y) {
-    super(25, X, Y);
-    range = 60;
+class Arbalist extends Enemy{
+  Arbalist(int X, int Y) {
+    super(12, X, Y);
+    range = 160;
   }
 
   public String getClassif() {
-    return "skeleton";
+    return "arbalist";
   }
 
   public void basicAttack(Hero h) {
-    h.takeDmg(5);
+    h.takeDmg(7);
     abilityCounter++;
   }
 
   public void ability(Hero h) {
-    h.takeDmg(10);
-    stunCounter = 1;
-    isStunned = true;
+    h.takeDmg(2);
+    h.debuff(0.1);
     abilityCounter = 0;
   }
 
@@ -32,7 +31,7 @@ class Skeleton extends Enemy {
       }
       return;
     } else {
-      if (abilityCounter >= 3 && random(1) > 0.5) {
+      if (abilityCounter >= 4 && random(1) > 0.5) {
         ability(r.hero);
       } else {
         basicAttack(r.hero);

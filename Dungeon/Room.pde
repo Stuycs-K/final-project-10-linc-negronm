@@ -2,12 +2,12 @@ class Room {
   private Tile[][] map;
   private int exitX, exitY;
   private int enemiesKilled, enemyCount;
-  private String[] enemyClasses = new String[]{"skeleton", "warlock"};
+  private String[] enemyClasses = new String[]{"skeleton", "warlock", "arbalist"};
   public int ySize, xSize;
   public int heroX, heroY;
   public boolean targeting;
   public int targX, targY;
-  public int warlockCt;
+  public int warlockCt, arbCt;
   public Enemy[] enemies;
   public float[] enemyDist;
   public Hero hero;
@@ -28,9 +28,13 @@ class Room {
     targX = heroX;
     targY = heroY;
     if (HERO.equals("mage")) {
-      hero = new Mage(500, heroX, heroY);
+      hero = new Mage(heroX, heroY);
+    } else if (HERO.equals("knight")) {
+      hero = new Knight(heroX, heroY);
+    } else if (HERO.equals("rogue")) {
+      hero = new Rogue(heroX, heroY);
     } else {
-      hero = new Hero(150, heroX, heroY);
+      println("invalid");
     }
     warlockCt = 0;
     gameStarted = false;
@@ -76,6 +80,8 @@ class Room {
       e = new Skeleton(X, Y);
     } else if (i == 1) {
       e = new Warlock(X, Y);
+    } else if (i == 2) {
+      e = new Arbalist(X, Y);
     } else {
       e = new Enemy(10, X, Y);
     }
@@ -99,17 +105,11 @@ class Room {
     //println("MOVED TILE NOW AT: " + moved.getX() + "," + moved.getY() + ")");
   }
 
-  public void dePath() {
-    for (int y = 0; y < map.length; y++) {
-      for (int x = 0; x < map[y].length; x++) {
-        if (map[y][x].isPath) {
-          map[y][x].isPath = false;
-        }
-      }
-    }
-  }
 
   public void swapTarget(int x, int y) {
+    if (x < 0 || x >= xSize || y < 0 || y >= ySize) {
+      return;
+    }
     map[targY][targX].untarget();
     map[y][x].target();
     targY = y;
@@ -122,31 +122,90 @@ class Room {
   }
 
   public void attack(int ability) {
-    for (int i = 0; i < enemies.length; i++) {
-      if (map[enemies[i].getY()][enemies[i].getX()].isTargeted && enemies[i].getHealth() > 0) {
-        if (ability == Dungeon.BASICATTACK) {
-          hero.basicAttack(enemies[i]);
-          abilitiesUsed++;
-        } else if (ability == Dungeon.ABILITY1) {
-          if (hero.isMage()) {
-            hero.ability1(this);
-            abilitiesUsed++;
-          } else {
-            hero.ability1(enemies[i]);
-            abilitiesUsed++;
+    if (hero.getClassif().equals("knight")) { // knight
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
           }
-        } else if (ability == Dungeon.ABILITY2) {
-          hero.ability2(enemies[i]);
-          abilitiesUsed++;
-        } else {
-          println("invalid ability");
-        }
-        if (enemies[i].getHealth() <= 0) {
-          enemiesKilled++;
         }
       }
-      map[enemies[i].getY()][enemies[i].getX()].untarget();
-    }
+
+      if (ability == ABILITY1) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall between
+            hero.ability1(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY2) {
+        hero.ability2();
+      }
+    }// end of knight
+
+
+    else if (hero.getClassif().equals("mage")) {
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY1) {
+        hero.ability1(this);
+      }
+
+      if (ability == ABILITY2) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+            hero.ability2(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+    } // end of mage
+
+    else if (hero.getClassif().equals("rogue")) {
+      if (ability == BASICATTACK) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+            hero.basicAttack(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY1) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+            hero.ability1(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+
+      if (ability == ABILITY2) {
+        for (int i = 0; i < enemies.length; i++) { // search enemies
+          Enemy e = enemies[i];
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+            hero.ability2(e);
+            map[e.getY()][e.getX()].untarget();
+          }
+        }
+      }
+    } // end of rogue
   }
 
   public void generateRoom() {
@@ -191,16 +250,21 @@ class Room {
     Enemy e;
     int randx, randy, randClass;
     int i = 0;
+    warlockCt = 0;
+    arbCt = 0;
     while (enemyCount < 6) {
       randx = int(random(xSize/2, xSize));
       randy = int(random(1, ySize-1));
       if (map[randy][randx].isWall() == false && map[randy][randx].getChar() == null) {
         randClass = int(random(0, enemyClasses.length));
-        while (randClass == 1 && warlockCt >= 2) {
+        while (randClass == 1 && warlockCt >= 2 || randClass == 2 && arbCt >= 1) {
           randClass = int(random(0, enemyClasses.length));
         }
         if (randClass == 1) {
           warlockCt++;
+        }
+        if (randClass == 2) {
+          arbCt++;
         }
         e = chooseEnemy(randClass, randx, randy);
         map[randy][randx].setChar(e);
@@ -227,17 +291,27 @@ class Room {
       fill(0, 0, 255);
       stroke(255);
       rect(20, 510, 80, 80);
+      fill(120);
+      rect(120, 510, 80, 80);
+      fill(2, 48, 32);
+      rect(220, 510, 80, 80);
       fill(255);
       textAlign(CENTER);
       text("Z", 60, 560);
       text("Mage", 60, 620);
+      text("X", 160, 560);
+      text("Knight", 160, 620);
+      text("C", 260, 560);
+      text("Rogue", 260, 620);
       textSize(24);
       text("WASD to move/target", width/2, 160);
       text("1, 2, 3 to select/deselect abilities", width/2, 190);
       text("SPACE to confirm a hit", width/2, 220);
       text("ENTER to end a turn", width/2, 250);
+      text("Click on a tile/hero to learn more about it!", width/2, 280);
     } else if (hero.getHealth() <= 0) {
       background(0);
+      image(over, 0, 0);
       fill(255, 0, 0);
       textAlign(CENTER);
       textSize(48);
@@ -262,7 +336,13 @@ class Room {
             rect(x*20, y*20, 20, 20);
           } else if (map[y][x].getChar() != null) {
             if (map[y][x].getChar().getType().equals("hero")) {
-              fill(0, 0, 255);
+              if (map[y][x].getChar().getClassif().equals("mage")) {
+                fill(0, 0, 255);
+              } else if (map[y][x].getChar().getClassif().equals("knight")) {
+                fill (120);
+              } else if (map[y][x].getChar().getClassif().equals("rogue")) {
+                fill(2, 48, 32);
+              }
               rect(x*20, y*20, 20, 20);
             } else if (map[y][x].getChar().getType().equals("enemy")) {
               Character e = map[y][x].getChar();
@@ -272,8 +352,10 @@ class Room {
                 fill(255, 0, 0);
               } else if (e.getClassif().equals("warlock")) {
                 fill(150, 0, 255);
+              } else if (e.getClassif().equals("arbalist")) {
+                fill (61, 43, 31);
               } else {
-                fill (255, 0, 0);
+                fill (0);
               }
               rect(x*20, y*20, 20, 20);
             }
@@ -323,15 +405,6 @@ class Room {
   }
 
 
-  private void printEnemies() {
-    String result = "[";
-    for (int i = 0; i < enemies.length-1; i++) {
-      result += enemies[i].toString() + ", ";
-    }
-    result += enemies[enemies.length-1].toString() + "]";
-    println(result);
-  }
-
   public Tile tileFromCoords(int x, int y) {
     if (x > 660) {
       return null;
@@ -341,62 +414,65 @@ class Room {
     return map[tileRow][tileCol];
   }
 
+
+
+
   public boolean isWallBetween(int X, int Y, int desX, int desY) { //checks if a wall Tile exists between two tiles
     boolean result = false;
-    if (desX > X) {
-      if (desY > Y) {
-        for (int i =X; i <=desX; i++) {
-          if (map[i][Y].isWall()) {
+    if (desX > X) { // loop from x to des x
+      if (desY > Y) { // loop from y to des y
+        for (int i =X; i <=desX; i++) { // same y different x
+          if (map[Y][i].isWall()) {
             result = true;
           }
-          if (map[i][desY].isWall()) {
-            result = true;
-          }
-        }
-        for (int i =Y; i <=desY; i++) {
-          if (map[X][i].isWall()) {
-            result = true;
-          }
-          if (map[desX][i].isWall()) {
+          if (map[desY][i].isWall()) {
             result = true;
           }
         }
-      } else if ( desY == Y) {
-        for (int i =X; i <=desX; i++) {
-          if (map[i][Y].isWall()) {
+        for (int i =Y; i <=desY; i++) { // same x different y
+          if (map[i][X].isWall()) {
+            result = true;
+          }
+          if (map[i][desX].isWall()) {
             result = true;
           }
         }
-      } else {
-        for (int i =X; i <=desX; i++) {
-          if (map[i][Y].isWall()) {
+      } else if ( desY == Y) { // same y level
+        for (int i =X; i <=desX; i++) { // go thru x
+          if (map[Y][i].isWall()) {
             result = true;
           }
-          if (map[i][desY].isWall()) {
+        }
+      } else { // des y to y
+        for (int i =X; i <=desX; i++) { // same y different x
+          if (map[Y][i].isWall()) {
+            result = true;
+          }
+          if (map[desY][i].isWall()) {
             result = true;
           }
         }
         for (int i =desY; i <=Y; i++) {
-          if (map[X][i].isWall()) {
+          if (map[i][X].isWall()) {
             result = true;
           }
-          if (map[desX][i].isWall()) {
+          if (map[i][desX].isWall()) {
             result = true;
           }
         }
       }
-    } else if ( desX == X) {
-      if (desY > Y) {
+    } else if ( desX == X) { // same x level
+      if (desY > Y) { // y to des y
         for (int i =Y; i <=desY; i++) {
-          if (map[X][i].isWall()) {
+          if (map[i][X].isWall()) {
             result = true;
           }
         }
-      } else if ( desY == Y) {
-        result =map[X][Y].isWall();
-      } else {
+      } else if ( desY == Y) { // same thing entirely
+        result = map[Y][X].isWall();
+      } else { // des y to y
         for (int i =desY; i <=Y; i++) {
-          if (map[X][i].isWall()) {
+          if (map[i][X].isWall()) {
             result = true;
           }
         }
@@ -404,47 +480,104 @@ class Room {
     } else {
       if (desY > Y) {
         for (int i =desX; i <=X; i++) {
-          if (map[i][Y].isWall()) {
+          if (map[Y][i].isWall()) {
             result = true;
           }
-          if (map[i][desY].isWall()) {
+          if (map[desY][i].isWall()) {
             result = true;
           }
         }
         for (int i =Y; i <=desY; i++) {
-          if (map[X][i].isWall()) {
+          if (map[i][X].isWall()) {
             result = true;
           }
-          if (map[desX][i].isWall()) {
+          if (map[i][desX].isWall()) {
             result = true;
           }
         }
       } else if ( desY == Y) {
         for (int i =desX; i <=X; i++) {
-          if (map[i][Y].isWall()) {
+          if (map[Y][i].isWall()) {
             result = true;
           }
         }
       } else {
         for (int i =desX; i <=X; i++) {
-          if (map[i][Y].isWall()) {
+          if (map[Y][i].isWall()) {
             result = true;
           }
-          if (map[i][desY].isWall()) {
+          if (map[desY][i].isWall()) {
             result = true;
           }
         }
         for (int i =desY; i <=Y; i++) {
-          if (map[X][i].isWall()) {
+          if (map[i][X].isWall()) {
             result = true;
           }
-          if (map[desX][i].isWall()) {
+          if (map[i][desX].isWall()) {
             result = true;
           }
         }
       }
     }
     return result;
+  }
+
+  public void showHeroInfo(String h) {
+    fill(0, 50);
+    strokeWeight(0);
+    rect(0, 0, 960, 660);
+    stroke(255);
+    strokeWeight(5);
+    rectMode(CENTER);
+    fill(0);
+    rect(width/2, height/2, 480, 330, 15);
+    rectMode(CORNER);
+    if (h.equals("mage")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("MAGE", width/2, height/2-125);
+      textAlign(CENTER);
+      image(mage, 260, 195, 141, 257);
+      textSize(18);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A mysterious man with knowledge of the occult. " +
+        " \n- Frail, but can target multiple enemies." +
+        " \n- Ability one: Abyssal Artillery: Do damage within 4 tiles." +
+        " \n- Ability two: Life Sap: Steals lifeforce from the enemy.", width/2-75, height/2-95, 310, 230);
+    } else if (h.equals("knight")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("KNIGHT", width/2, height/2-125);
+      image(knight, 260, 195, 141, 257);
+      textSize(18);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A helmeted man with a heavy handaxe. " +
+        " \n- Strong and can empower himself!" +
+        " \n- Ability one: Intimidate: Do less damage, but stun the enemy." +
+        " \n- Ability two: Inspiring Cry: Heal and buff yourself.", width/2-75, height/2-95, 330, 230);
+    } else if (h.equals("rogue")) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("ROGUE", width/2, height/2-125);
+      image(rogue, 260, 195, 141, 257);
+      textSize(18);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      textAlign(CORNER);
+      text(" - A mysterious man who'll kill for coin. " +
+        " \n- Can dispatch foes near and far alike." +
+        " \n- Ability one: Point Blank Shot: Does massive damage but only up close." +
+        " \n- Ability two: Open vein: Slice the enemy and heal yourself.", width/2-75, height/2-95, 330, 230);
+    }
+    strokeWeight(1);
   }
 
   public void showTileInfo(Tile t) {
@@ -461,7 +594,26 @@ class Room {
     fill(0);
     rect(width/2, height/2, 480, 330, 15);
     rectMode(CORNER);
-    if (t.isWall()) {
+    if (t.getX() == exitX && t.getY() == exitY) {
+      textAlign(CENTER);
+      textSize(36);
+      fill(255);
+      strokeWeight(3);
+      text("EXIT", width/2, height/2-125); // tile name
+      fill(255, 0, 255);
+      rect(260, 185, 80, 80, 15); // tile pic
+      fill(255);
+      textSize(18);
+      textAlign(CORNER);
+      text("(" + t.x + ", " + t.y + ")", 260, 285); // position
+      if (enemiesKilled >= 4) {
+        text(" - The door to the next Room! The seal seems to have broken! Head through the door to enter the next room.", width/2-100, height/2-95, 330, 230);
+      } else {
+        text(" - The door to the next Room! It seems to have a magical seal on it. Maybe if you kill enough enemies, the seal will break?", width/2-100, height/2-95, 330, 230); //Description
+      }
+      textAlign(CENTER);
+      text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+    } else if (t.isWall()) {
       textAlign(CENTER);
       textSize(36);
       fill(255);
@@ -517,11 +669,14 @@ class Room {
         strokeWeight(3);
         text("SKELETON", width/2, height/2-125); // tile name
         fill(255, 0, 0); // pic color
-        rect(260, 185, 80, 80, 15); // tile pic
+        if (tchar.getHealth() <= 0) {
+          image(skeletonCorpse, 250, 195, 141, 257);
+        } else {
+          image(skeleton, 250, 195, 141, 257); // tile pic
+        }
         fill(255);
         textSize(18);
         textAlign(CORNER);
-        text("(" + t.x + ", " + t.y + ")", 260, 285); // position
         text(" - A skeleton! Your basic trash mob." +
           " \n - Can attack you, or use a devastating special attack." +
           " \n - He needs a moment to catch his breath after, however.", width/2-100, height/2-95, 330, 230); //Description
@@ -534,17 +689,41 @@ class Room {
         strokeWeight(3);
         text("WARLOCK", width/2, height/2-125); // tile name
         fill(150, 0, 255); // pic color
-        rect(260, 185, 80, 80, 15); // tile pic
+        if (tchar.getHealth() <= 0) {
+          image(warlockCorpse, 250, 195, 141, 257);
+        } else {
+          image(warlock, 250, 195, 141, 257); // tile pic
+        }
         fill(255);
         textSize(18);
         textAlign(CORNER);
-        text("(" + t.x + ", " + t.y + ")", 260, 285); // position
         text(" - A powerful warlock with the power to raise the dead!" +
-          " \n - Every 10 turns, he will attempt to resurrect an ally." +
+          " \n - Every 5 turns, he will attempt to resurrect an ally." +
           " \n - Using the dark arts is draining, so he will be temporarily stunned after.", width/2-100, height/2-95, 330, 230); //Description
         textAlign(CENTER);
         text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
+      } else if (tchar.getClassif().equals("arbalist")) {
+        textAlign(CENTER);
+        textSize(36);
+        fill(255);
+        strokeWeight(3);
+        text("ARBALIST", width/2, height/2-125); // tile name
+        fill(150, 0, 255); // pic color
+        if (tchar.getHealth() <= 0) {
+          image(arbalistCorpse, 250, 195, 141, 257);
+        } else {
+          image(arbalist, 250, 195, 141, 257); // tile pic
+        }
+        fill(255);
+        textSize(18);
+        textAlign(CORNER);
+        text(" - An undead soldier with a heavy crossbow." +
+          " \n - Every 4 turns, he will launch a disorienting flare that decreases your damage.", width/2-100, height/2-95, 330, 230); //Description
+        textAlign(CENTER);
+        text("Press 'I' to dismiss", width/2, height/2+150); // dismiss
       }
+    } else if (tchar.getType().equals("hero")) {
+      showHeroInfo(tchar.getClassif());
     }
   }
 }
