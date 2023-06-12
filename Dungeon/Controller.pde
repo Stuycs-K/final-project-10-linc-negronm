@@ -16,10 +16,10 @@ class Controller {
   }
 
 
-  boolean isPressed(int code) {
+  boolean isPressed(int code) { //returns status of being pressed
     return inputs[code];
   }
-  void press(int code) {
+  void press(int code) { //flips the status of a key
     if (code == 'A')
       inputs[C_LEFT] = true;
     if (code == 'D')
@@ -41,7 +41,7 @@ class Controller {
     if (code == ENTER || code == RETURN)
       inputs[C_EndTurn] = true;
   }
-  void release(int code) {
+  void release(int code) { //flips the status of a key
     if (code == 'A')
       inputs[C_LEFT] = false;
     if (code == 'D')

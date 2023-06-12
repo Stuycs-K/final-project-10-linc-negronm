@@ -6,18 +6,17 @@ abstract class Character {
   int x, y;
   int moveCap;
 
-  abstract String getType();
-  abstract int getHealth();
-  abstract String getClassif();
-  abstract void move();
-  void takeDmg(int x) {
+  abstract String getType(); //returns type
+  abstract int getHealth(); //returns health
+  abstract String getClassif(); //returns class
+  void takeDmg(int x) { //takes an amount damage
     health-= x;
   }
-  void setY(int Y) {
+  void setY(int Y) { //sets Y coord
     y = Y;
   }
 
-  void setX(int X) {
+  void setX(int X) { //sets X cord
     x = X;
   }
   

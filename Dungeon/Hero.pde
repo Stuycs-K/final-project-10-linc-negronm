@@ -1,6 +1,6 @@
 class Hero extends Character {
-  float damageBuff;
-  int[] basicStats; //for each move index 0 is the range of the attack, index 1 is the cooldown of the move, index 2 is the last move count that the move was used
+  float damageBuff; //multiplier when doing attacks
+  int[] basicStats; //for each attack and ability index 0 is the range of the attack, index 1 is the cooldown of the move, index 2 is the last move count that the move was used
   int[] ability1Stats;
   int[] ability2Stats;
   public Hero(int maxHP, int X, int Y) {
@@ -15,12 +15,12 @@ class Hero extends Character {
     ability2Stats = new int[3];
   }
 
-  public String getType() {
+  public String getType() { 
     return "hero";
   }
   
   
-  public boolean isStunned() {
+  public boolean isStunned() { //unstunnable
     return false;
   }
   
@@ -47,7 +47,7 @@ class Hero extends Character {
     heal(5);
   }
   
-  public void ability1(Room r){
+  public void ability1(Room r){//two types for the subclasses' use
   }
   
   public void ability2(Enemy e) {
@@ -55,20 +55,20 @@ class Hero extends Character {
   
   public void ability2(){};
   
-  public void heal(int x) {
+  public void heal(int x) { //heals by an amount
     health += x;
     if (health > maxHealth) {
       health = maxHealth;
     }
   }
-  public boolean isDead() {
+  public boolean isDead() { //checks for alive status
     if ( health > 0) {
       return true;
     } else {
       return false;
     }
   }
-  public boolean isMage(){
+  public boolean isMage(){ //for the mage subclass
     return false;
   }
 }
