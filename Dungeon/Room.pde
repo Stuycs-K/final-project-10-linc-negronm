@@ -127,7 +127,7 @@ class Room {
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted and no wall
             hero.basicAttack(e);
             addToConsole("You chopped a " + e.getClassif() + " with your battleaxe!"); 
             abilitiesUsed++;
@@ -139,7 +139,7 @@ class Room {
       if (ability == ABILITY1) { // stun
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted and no wall between
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted and no wall between
             hero.ability1(e);
             addToConsole("You hit a " + e.getClassif() + " over the head and stunned it!"); 
             abilitiesUsed++;
@@ -160,7 +160,7 @@ class Room {
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if targeted
             hero.basicAttack(e);
             addToConsole("You cast a hex on a " + e.getClassif() + "!"); 
             abilitiesUsed++;
@@ -178,7 +178,7 @@ class Room {
       if (ability == ABILITY2) { // life steal
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && e.getHealth() > 0) { // if targeted
             hero.ability2(e);
             addToConsole("You drained a " + e.getClassif() + " of its lifeforce!"); 
             abilitiesUsed++;
@@ -192,7 +192,7 @@ class Room {
       if (ability == BASICATTACK) {
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
             hero.basicAttack(e);
             addToConsole("You took aim and shot a " + e.getClassif() + "!"); 
             abilitiesUsed++;
@@ -204,7 +204,7 @@ class Room {
       if (ability == ABILITY1) { // pbs
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
             hero.ability1(e);
             addToConsole("You hit a " + e.getClassif() + " with a point blank shot!"); 
             abilitiesUsed++;
@@ -216,7 +216,7 @@ class Room {
       if (ability == ABILITY2) { // vein
         for (int i = 0; i < enemies.length; i++) { // search enemies
           Enemy e = enemies[i];
-          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY()))) { // if targeted
+          if (map[e.getY()][e.getX()].isTargeted && !(isWallBetween(heroX, heroY, e.getX(), e.getY())) && e.getHealth() > 0) { // if targeted
             hero.ability2(e);
             addToConsole("You sliced a " + e.getClassif() + " and healed!"); 
             abilitiesUsed++;
