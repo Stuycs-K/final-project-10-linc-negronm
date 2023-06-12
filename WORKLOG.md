@@ -71,3 +71,7 @@ Made a minimum requirement for enemies killed to advance to the next room, creat
 ## 6/9
 
 Created the mage class and its abilities.
+
+## 6/11
+
+Made Treasure tiles work, display work, and tile info work
