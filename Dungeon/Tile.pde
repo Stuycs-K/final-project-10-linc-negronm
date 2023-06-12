@@ -79,4 +79,9 @@ class Tile {
   public boolean isWall() {
     return false;
   }
+  public boolean isTreasure() {
+    return false;
+  }
+  public void randomBuff(Hero h){
+  }
 }

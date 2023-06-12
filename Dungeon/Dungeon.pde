@@ -183,7 +183,24 @@ void draw() {
         roomNum++;
         heroMoved =0;
         room.hero.takeDmg(damageTaken);
-      } else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
+      }else if(left.isTreasure() || right.isTreasure() || up.isTreasure() || down.isTreasure()){
+        if(left.isTreasure()){
+          left.randomBuff(room.hero);
+          room.map[room.heroY][room.heroX-1] = new Tile(room.heroX-1, room.heroY);
+        }
+        if(right.isTreasure()){
+          right.randomBuff(room.hero);
+          room.map[room.heroY][room.heroX+1] = new Tile(room.heroX+1, room.heroY);
+        }
+        if(up.isTreasure()){
+          up.randomBuff(room.hero);
+          room.map[room.heroY -1][room.heroX] = new Tile (room.heroX, room.heroY -1);
+        }
+        if(down.isTreasure()){
+          down.randomBuff(room.hero);
+          room.map[room.heroY +1][room.heroX] = new Tile (room.heroX, room.heroY +1);
+        }
+      }else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
         countdown+=30;
         if (keyboardInput.isPressed(Controller.C_LEFT)) {
           if (room.targeting) { //for a direction does targetting to check range
