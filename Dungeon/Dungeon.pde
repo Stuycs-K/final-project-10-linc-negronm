@@ -11,7 +11,6 @@ int abilitiesUsed;
 int turnNum;
 int roomNum = 0;
 int enemiesKilled =0;
-int cash = 0;
 PImage bg, over, knight, mage, rogue, skeleton, skeletonCorpse, warlock, warlockCorpse, arbalist, arbalistCorpse, treasureTile; //images for game elements
 boolean gameStarted = false;
 Tile popupTile;
