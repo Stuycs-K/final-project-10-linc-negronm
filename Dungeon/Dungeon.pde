@@ -12,7 +12,7 @@ int turnNum;
 int roomNum = 0;
 int enemiesKilled =0;
 int cash = 0;
-PImage bg, over, knight, mage, rogue;
+PImage bg, over, knight, mage, rogue, skeleton, skeletonCorpse, warlock, warlockCorpse;
 boolean gameStarted = false;
 Tile popupTile;
 boolean popup = false;
@@ -107,6 +107,10 @@ void setup() {
   knight = loadImage("knight.png");
   mage = loadImage("mage.png");
   rogue = loadImage("rogue.png");
+  skeleton = loadImage("skeleton.png");
+  skeletonCorpse = loadImage("skeletonCorpse.png");
+  warlock = loadImage("warlock.png");
+  warlockCorpse = loadImage("warlockCorpse.png");
   background(255);
   size(960, 660);
   textSize(24);
@@ -217,11 +221,12 @@ void draw() {
         roomNum++;
         heroMoved =0;
         room.hero.takeDmg(damageTaken);
+        room.hero.damageBuff = 1.0;
       } else if (countdown == 0 && heroMoved <= 7 || countdown == 0 && keyboardInput.isPressed(Controller.C_EndTurn)) {
         countdown+=30;
         if (keyboardInput.isPressed(Controller.C_LEFT)) {
           if (room.targeting) { //for a direction does targetting to check range
-            if (room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
+            if (room.targX > 0 && room.map[room.targY][room.targX-1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX-1, room.targY);
             } else {
               println("Out of ability range!");
@@ -236,7 +241,7 @@ void draw() {
         }
         if (keyboardInput.isPressed(Controller.C_UP)) {
           if (room.targeting) {
-            if (room.map[room.targY-1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
+            if (room.targY > 0 && room.map[room.targY-1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX, room.targY-1);
             } else {
               println("Out of ability range!");
@@ -250,7 +255,7 @@ void draw() {
         }
         if (keyboardInput.isPressed(Controller.C_DOWN)) {
           if (room.targeting) {
-            if (room.map[room.targY+1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
+            if (room.targY < room.ySize-1 && room.map[room.targY+1][room.targX].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX, room.targY+1);
             } else {
               println("Out of ability range!");
@@ -264,7 +269,7 @@ void draw() {
         }
         if (keyboardInput.isPressed(Controller.C_RIGHT)) {
           if (room.targeting) {
-            if (room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
+            if (room.targX < room.xSize-1 && room.map[room.targY][room.targX+1].calcDis(room.map[room.heroY][room.heroX]) < abilityRange) {
               room.swapTarget(room.targX+1, room.targY);
             } else {
               println("Out of ability range!");
@@ -338,7 +343,7 @@ void draw() {
           while (room.enemies[i].moved < room.enemies[i].moveCap && !room.enemies[i].attacked) { // while enemy hasnt hit move cap and hasnt attacked
             //println("MOVED: " + room.enemies[i].moved);
             float eDist = enemyDistToHero(room.enemies[i], room.hero);
-            if (eDist >= 80 && room.enemies[i].getHealth() > 0) {// if enemy out of range
+            if (eDist >= room.enemies[i].range && room.enemies[i].getHealth() > 0) {// if enemy out of range
               //println(eDist + "tiles away");
               //println(i + " " + room.enemies[i].toString() + " attempting to move");
               pathFind(room.enemies[i], room.hero);
