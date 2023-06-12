@@ -83,23 +83,23 @@ Made Treasure tiles work, display work, and tile info work
 # Dev Log
 
 ## Working Features
-Room generation and display, game over screen, character select screen
-Enemy and Hero movement, Enemy and Hero turns, move cap on Heroes and Enemies
-Enemy and Hero attacks, Special enemy/hero abilities, different ranges, damage buffs, and move cooldowns
-Different characters with different health and abilities, Different enemies with varied abilities
-Enemy resurrection and corpse placement
-Enemy stunning and move charging
-Enemies and Heroes cannot attack/move through walls
-Treasure tiles with random buffs that are randomly generated
-Button timers to prevent accidental key spamming
-Info cards with descriptions of heroes, enemies, and tiles
-Sprites that display with info cards
-Console that displays recent attacks
+Room generation and display, game over screen, character select screen\n
+Enemy and Hero movement, Enemy and Hero turns, move cap on Heroes and Enemies\n
+Enemy and Hero attacks, Special enemy/hero abilities, different ranges, damage buffs, and move cooldowns\n
+Different characters with different health and abilities, Different enemies with varied abilities\n
+Enemy resurrection and corpse placement\n
+Enemy stunning and move charging\n
+Enemies and Heroes cannot attack/move through walls\n
+Treasure tiles with random buffs that are randomly generated\n
+Button timers to prevent accidental key spamming\n
+Info cards with descriptions of heroes, enemies, and tiles\n
+Sprites that display with info cards\n
+Console that displays recent attacks\n
 
 ## Broken Features
-Enemy pathfinding is suboptimal, gets stuck on walls and each other often
-Extra move if you move diagonally on your last move (Call it a feature)
+Enemy pathfinding is suboptimal, gets stuck on walls and each other often\n
+Extra move if you move diagonally on your last move (Call it a feature)\n
 
 ## Content resources
-Mr. K website sample code for countdown and Controller
+Mr. K website sample code for countdown and Controller\n
 Processing docs
